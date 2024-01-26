@@ -6,7 +6,7 @@ package com.github.peterrk.protocache;
 
 import java.util.function.Supplier;
 
-public class Dictionary<K extends IMapKey, V extends IUnit> extends IUnit.Complex {
+public class Dictionary<K extends IKey, V extends IUnit> extends IUnit.Complex {
     private final static DataView empty = new DataView(new byte[4]);
 
     static {

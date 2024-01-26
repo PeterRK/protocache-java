@@ -22,12 +22,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.google.flatbuffers</groupId>
-            <artifactId>flatbuffers-java</artifactId>
-            <version>23.5.26</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
         	<groupId>com.google.protobuf</groupId>
         	<artifactId>protobuf-java</artifactId>
         	<version>3.12.4</version>

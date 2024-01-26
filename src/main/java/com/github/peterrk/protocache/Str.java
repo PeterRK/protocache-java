@@ -7,7 +7,7 @@ package com.github.peterrk.protocache;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-public final class Str extends IUnit.Complex implements IMapKey {
+public final class Str extends IUnit.Complex implements IKey {
     private String value;
 
     public Str() {

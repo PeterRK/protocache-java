@@ -7,7 +7,7 @@ package com.github.peterrk.protocache;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public final class Int64 extends IUnit.Simple implements IMapKey {
+public final class Int64 extends IUnit.Simple implements IKey {
     private long value;
 
     public Int64() {

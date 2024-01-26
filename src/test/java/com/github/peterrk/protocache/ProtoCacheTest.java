@@ -19,10 +19,18 @@ public class ProtoCacheTest {
     public void binaryTest() {
         byte[] raw = null;
         try {
-            raw = Files.readAllBytes(Paths.get("test.pc"));
+            raw = Files.readAllBytes(Paths.get("test.pb"));
         } catch (IOException e) {
             Assertions.fail();
         }
+
+        try {
+            com.github.peterrk.protocache.pb.Main pb = com.github.peterrk.protocache.pb.Main.parseFrom(raw);
+            raw = ProtoCache.serialize(pb);
+        } catch (IOException e) {
+            Assertions.fail();
+        }
+
         Main root = new Main(new DataView(raw));
 
         Assertions.assertEquals(-999, root.getI32());

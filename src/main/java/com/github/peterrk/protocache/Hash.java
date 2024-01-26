@@ -16,8 +16,7 @@ public class Hash {
         long magic = 0xdeadbeefdeadbeefL;
         State s = new State(seed, seed, magic, magic);
 
-        ByteBuffer buf = ByteBuffer.wrap(key);
-        buf.order(ByteOrder.LITTLE_ENDIAN);
+        ByteBuffer buf = ByteBuffer.wrap(key).order(ByteOrder.LITTLE_ENDIAN);
         while (buf.remaining() >= 32) {
             s.c += buf.getLong();
             s.d += buf.getLong();
