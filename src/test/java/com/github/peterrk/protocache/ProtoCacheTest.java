@@ -49,12 +49,12 @@ public class ProtoCacheTest {
         Assertions.assertFalse(leaf.getFlag());
         Assertions.assertEquals("tmp", leaf.getStr());
 
-        Int32Array i32v = root.getI32v();
+        Int32Array i32v = root.getI32V();
         Assertions.assertEquals(i32v.size(), 2);
         Assertions.assertEquals(i32v.get(0), 1);
         Assertions.assertEquals(i32v.get(1), 2);
 
-        Int64Array u64v = root.getU64v();
+        Int64Array u64v = root.getU64V();
         Assertions.assertEquals(u64v.size(), 1);
         Assertions.assertEquals(u64v.get(0), 12345678987654321L);
 
@@ -67,13 +67,13 @@ public class ProtoCacheTest {
             Assertions.assertEquals(strv.get(i), expectedStrv[i]);
         }
 
-        Float32Array f32v = root.getF32v();
+        Float32Array f32v = root.getF32V();
         Assertions.assertEquals(f32v.size(), 2);
         Assertions.assertEquals(f32v.get(0), 1.1f);
         Assertions.assertEquals(f32v.get(1), 2.2f);
 
         double[] expectedF64v = new double[]{9.9, 8.8, 7.7, 6.6, 5.5};
-        Float64Array f64v = root.getF64v();
+        Float64Array f64v = root.getF64V();
         Assertions.assertEquals(f64v.size(), expectedF64v.length);
         for (int i = 0; i < expectedF64v.length; i++) {
             Assertions.assertEquals(f64v.get(i), expectedF64v[i]);
