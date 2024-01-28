@@ -5,6 +5,7 @@
 package com.github.peterrk.protocache;
 
 import com.github.peterrk.protocache.pc.*;
+import com.google.protobuf.util.JsonFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -19,14 +20,15 @@ public class ProtoCacheTest {
     public void binaryTest() {
         byte[] raw = null;
         try {
-            raw = Files.readAllBytes(Paths.get("test.pb"));
+            raw = Files.readAllBytes(Paths.get("test.json"));
         } catch (IOException e) {
             Assertions.fail();
         }
 
         try {
-            com.github.peterrk.protocache.pb.Main pb = com.github.peterrk.protocache.pb.Main.parseFrom(raw);
-            raw = ProtoCache.serialize(pb);
+            com.github.peterrk.protocache.pb.Main.Builder builder = com.github.peterrk.protocache.pb.Main.newBuilder();
+            JsonFormat.parser().ignoringUnknownFields().merge(new String(raw, StandardCharsets.UTF_8), builder);
+            raw = ProtoCache.serialize(builder.build());
         } catch (IOException e) {
             Assertions.fail();
         }
