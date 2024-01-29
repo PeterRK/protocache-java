@@ -65,4 +65,23 @@ public class Dictionary<K extends IKey, V extends IUnit> extends IUnit.Complex {
         }
         return IUnit.NewByField(valueField(idx), supplier);
     }
+
+    public K fastGetKey(int idx, K unit) {
+        unit.initByField(keyField(idx));
+        return unit;
+    }
+
+    public V fastGetValue(int idx, V unit) {
+        unit.initByField(valueField(idx));
+        return unit;
+    }
+
+    public V fastFind(K key, V unit) {
+        int idx = index.locate(key.toBytes());
+        if (idx >= index.getSize() || !key.equalToField(keyField(idx))) {
+            return null;
+        }
+        unit.initByField(valueField(idx));
+        return unit;
+    }
 }

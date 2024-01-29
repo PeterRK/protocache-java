@@ -7,6 +7,7 @@ package com.github.peterrk.protocache;
 import java.util.Arrays;
 
 public final class Bytes extends IUnit.Complex {
+    private final static byte[] empty = new byte[0];
     private byte[] value;
 
     static byte[] extractBytes(DataView data) {
@@ -33,7 +34,7 @@ public final class Bytes extends IUnit.Complex {
     @Override
     public void init(DataView data) {
         if (data == null) {
-            value = new byte[0];
+            value = empty;
             return;
         }
         value = extractBytes(data);

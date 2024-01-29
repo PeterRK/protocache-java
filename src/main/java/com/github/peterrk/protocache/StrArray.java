@@ -5,7 +5,12 @@
 package com.github.peterrk.protocache;
 
 public final class StrArray extends Array<Str> {
+    private Str tmp = null;
+
     public String get(int idx) {
-        return get(idx, Str::new).get();
+        if (tmp == null) {
+            tmp = new Str();
+        }
+        return fastGet(idx, tmp).get();
     }
 }

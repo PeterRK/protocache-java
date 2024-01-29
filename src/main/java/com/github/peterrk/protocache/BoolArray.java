@@ -5,12 +5,13 @@
 package com.github.peterrk.protocache;
 
 public class BoolArray extends IUnit.Complex {
+    private final static boolean[] empty = new boolean[0];
     private boolean[] value;
 
     @Override
     public void init(DataView data) {
         if (data == null) {
-            value = new boolean[0];
+            value = empty;
             return;
         }
         byte[] raw = Bytes.extractBytes(data);

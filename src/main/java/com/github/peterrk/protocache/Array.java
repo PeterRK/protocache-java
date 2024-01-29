@@ -35,4 +35,10 @@ public class Array<T extends IUnit.Complex> extends IUnit.Complex {
         DataView field = new DataView(view.data, view.offset + 4 + idx * width);
         return IUnit.NewByField(field, supplier);
     }
+
+    public T fastGet(int idx, T unit) {
+        DataView field = new DataView(view.data, view.offset + 4 + idx * width);
+        unit.initByField(field);
+        return unit;
+    }
 }
