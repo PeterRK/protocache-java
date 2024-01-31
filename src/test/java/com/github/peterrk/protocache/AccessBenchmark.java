@@ -1,9 +1,13 @@
 package com.github.peterrk.protocache;
 
+import com.google.gson.Gson;
+import io.fury.Fury;
+import io.fury.config.Language;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -22,6 +26,23 @@ public class AccessBenchmark {
     }
 
     @Benchmark
+    public void traverseDummy(DummyState ctx) {
+        ctx.traverse(ctx.root);
+    }
+
+    @Benchmark
+    public void traverseFury(FuryState ctx) {
+        com.github.peterrk.protocache.fr.Main root = (com.github.peterrk.protocache.fr.Main) ctx.fury.deserialize(ctx.raw);
+        ctx.traverse(root);
+    }
+
+    @Benchmark
+    public void traverseFuryJava(JavaFuryState ctx) {
+        com.github.peterrk.protocache.fr.Main root = (com.github.peterrk.protocache.fr.Main) ctx.fury.deserialize(ctx.raw);
+        ctx.traverse(root);
+    }
+
+    @Benchmark
     public void traverseProtoCache(ProtoCacheState ctx) {
         com.github.peterrk.protocache.pc.Main root = new com.github.peterrk.protocache.pc.Main(new DataView(ctx.raw));
         ctx.traverse(root);
@@ -37,6 +58,182 @@ public class AccessBenchmark {
     public void traverseFlatbuffers(FlatbuffersState ctx) {
         com.github.peterrk.protocache.fb.Main root = com.github.peterrk.protocache.fb.Main.getRootAsMain(ByteBuffer.wrap(ctx.raw));
         ctx.traverse(root);
+    }
+
+    @State(Scope.Thread)
+    public static class FuryState extends FuryStateBase {
+        Fury fury;
+
+        @Setup(value = Level.Trial)
+        public void setup() throws IOException {
+            byte[] tmp = Files.readAllBytes(Paths.get("test-fury.json"));
+            Gson gson = new Gson();
+            com.github.peterrk.protocache.fr.Main root = gson.fromJson(new String(tmp, StandardCharsets.UTF_8), com.github.peterrk.protocache.fr.Main.class);
+
+            fury = Fury.builder().withLanguage(Language.XLANG).build();
+            fury.register(com.github.peterrk.protocache.fr.Small.class, "test.Small");
+            fury.register(com.github.peterrk.protocache.fr.Main.class, "test.Main");
+
+            raw = fury.serialize(root);
+            //fury.deserialize(raw);
+
+            junk = new Junk();
+        }
+    }
+
+    @State(Scope.Thread)
+    public static class JavaFuryState extends FuryStateBase {
+        Fury fury;
+
+        @Setup(value = Level.Trial)
+        public void setup() throws IOException {
+            byte[] tmp = Files.readAllBytes(Paths.get("test-fury.json"));
+            Gson gson = new Gson();
+            com.github.peterrk.protocache.fr.Main root = gson.fromJson(new String(tmp, StandardCharsets.UTF_8), com.github.peterrk.protocache.fr.Main.class);
+
+            fury = Fury.builder().withLanguage(Language.JAVA).build();
+            fury.register(com.github.peterrk.protocache.fr.Small.class);
+            fury.register(com.github.peterrk.protocache.fr.Main.class);
+
+            raw = fury.serialize(root);
+            //fury.deserialize(raw);
+
+            junk = new Junk();
+        }
+    }
+
+    @State(Scope.Thread)
+    public static class DummyState extends FuryStateBase {
+        com.github.peterrk.protocache.fr.Main root;
+
+        @Setup(value = Level.Trial)
+        public void setup() throws IOException {
+            byte[] tmp = Files.readAllBytes(Paths.get("test-fury.json"));
+            Gson gson = new Gson();
+            root = gson.fromJson(new String(tmp, StandardCharsets.UTF_8), com.github.peterrk.protocache.fr.Main.class);
+            junk = new Junk();
+        }
+    }
+
+    @State(Scope.Thread)
+    public static class FuryStateBase {
+        Junk junk;
+        byte[] raw;
+
+        @TearDown(value = Level.Invocation)
+        public void reset() {
+            //junk.print();
+            junk.reset();
+        }
+
+        void traverse(com.github.peterrk.protocache.fr.Main root) {
+            junk.consume(root.i32);
+            junk.consume(root.u32);
+            junk.consume(root.i64);
+            junk.consume(root.u64);
+            junk.consume(root.flag);
+            junk.consume(root.mode);
+            if (root.str != null) {
+                junk.consume(root.str);
+            }
+            if (root.data != null) {
+                junk.consume(root.data);
+            }
+            junk.consume(root.f32);
+            junk.consume(root.f64);
+            if (root.object != null) {
+                traverse(root.object);
+            }
+            if (root.i32v != null) {
+                for (int v : root.i32v) {
+                    junk.consume(v);
+                }
+            }
+            if (root.u64v != null) {
+                for (long v : root.u64v) {
+                    junk.consume(v);
+                }
+            }
+            if (root.strv != null) {
+                for (String v : root.strv) {
+                    junk.consume(v);
+                }
+            }
+            if (root.datav != null) {
+                for (byte[] v : root.datav) {
+                    junk.consume(v);
+                }
+            }
+            if (root.f32v != null) {
+                for (float v : root.f32v) {
+                    junk.consume(v);
+                }
+            }
+            if (root.f64v != null) {
+                for (double v : root.f64v) {
+                    junk.consume(v);
+                }
+            }
+            if (root.objectv != null) {
+                for (com.github.peterrk.protocache.fr.Small v : root.objectv) {
+                    traverse(v);
+                }
+            }
+            junk.consume(root.t_u32);
+            junk.consume(root.t_i32);
+            junk.consume(root.t_s32);
+            junk.consume(root.t_u64);
+            junk.consume(root.t_i64);
+            junk.consume(root.t_s64);
+
+            if (root.index != null) {
+                for (Map.Entry<String, Integer> entry : root.index.entrySet()) {
+                    junk.consume(entry.getKey());
+                    junk.consume(entry.getValue());
+                }
+            }
+
+            if (root.objects != null) {
+                for (Map.Entry<Integer, com.github.peterrk.protocache.fr.Small> entry : root.objects.entrySet()) {
+                    junk.consume(entry.getKey());
+                    traverse(entry.getValue());
+                }
+            }
+
+            if (root.matrix != null) {
+                for (float[] u : root.matrix) {
+                    for (float v : u) {
+                        junk.consume(v);
+                    }
+                }
+            }
+
+            if (root.vector != null) {
+                for (Map<String, float[]> u : root.vector) {
+                    traverse(u);
+                }
+            }
+            if (root.arrays != null) {
+                traverse(root.arrays);
+            }
+        }
+
+        void traverse(com.github.peterrk.protocache.fr.Small root) {
+            junk.consume(root.i32);
+            junk.consume(root.flag);
+            if (root.str != null) {
+                junk.consume(root.str);
+            }
+        }
+
+        void traverse(Map<String, float[]> map) {
+            for (Map.Entry<String, float[]> entry : map.entrySet()) {
+                junk.consume(entry.getKey());
+                for (float v : entry.getValue()) {
+                    junk.consume(v);
+                }
+            }
+        }
     }
 
     private static final class Junk {
