@@ -11,7 +11,10 @@ import com.google.protobuf.Message;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 public class ProtoCache {
     public static byte[] serialize(Message message) {
@@ -67,7 +70,7 @@ public class ProtoCache {
         }
         if (parts.isEmpty()) {
             byte[] out = new byte[4];
-            ByteBuffer.wrap(out).putInt(0);
+            ByteBuffer.wrap(out).order(ByteOrder.LITTLE_ENDIAN).putInt(0);
             return out;
         }
         if (fields.length == 1 && fields[0].getName().equals("_")) {
@@ -257,11 +260,11 @@ public class ProtoCache {
     private static byte[] serializeList(Message message, Descriptors.FieldDescriptor field) {
         switch (field.getType()) {
             case MESSAGE:
-                return serializeObjectList(message, field,  (object) -> serialize((Message) object));
+                return serializeObjectList(message, field, (object) -> serialize((Message) object));
             case BYTES:
-                return serializeObjectList(message, field,  (object) -> serialize((ByteString) object));
+                return serializeObjectList(message, field, (object) -> serialize((ByteString) object));
             case STRING:
-                return serializeObjectList(message, field,  (object) -> serialize((String) object));
+                return serializeObjectList(message, field, (object) -> serialize((String) object));
             case DOUBLE:
                 return serializeScalarList(message, field, 2, (buffer, value) -> {
                     buffer.putDouble((Double) value);
@@ -374,7 +377,7 @@ public class ProtoCache {
     }
 
     private static byte[] serializeScalarList(Message message, Descriptors.FieldDescriptor field,
-                                                  int width, ByteBufferFiller<Object> filler) {
+                                              int width, ByteBufferFiller<Object> filler) {
         int size = message.getRepeatedFieldCount(field);
         if (size >= (1 << 28)) {
             throw new IllegalArgumentException("array size overflow");
@@ -531,8 +534,8 @@ public class ProtoCache {
         }
 
         @Override
-        public byte[] next() {
-            return iterator.next();
+        public DataView next() {
+            return new DataView(iterator.next());
         }
     }
 
@@ -542,9 +545,8 @@ public class ProtoCache {
         }
 
         @Override
-        public byte[] next() {
-            DataView view = Bytes.extract(new DataView(iterator.next()));
-            return Arrays.copyOfRange(view.data, view.offset, view.limit);
+        public DataView next() {
+            return Bytes.extract(new DataView(iterator.next()));
         }
     }
 }

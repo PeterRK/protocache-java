@@ -71,7 +71,7 @@ public class PerfectHash {
         return 32 - ((int) v & 0xff);
     }
 
-    private static int[] hash(int seed, int section, byte[] key) {
+    private static int[] hash(int seed, int section, DataView key) {
         int[] out = new int[3];
         Hash.V128 h = Hash.hash128(key, (long) seed & 0xffffffffL);
         out[0] = Integer.remainderUnsigned((int) h.low, section);
@@ -183,7 +183,7 @@ public class PerfectHash {
         return byteSize;
     }
 
-    public int locate(byte[] key) {
+    public int locate(DataView key) {
         if (size < 2) {
             return 0;
         }
@@ -216,7 +216,7 @@ public class PerfectHash {
 
         int total();
 
-        byte[] next();
+        DataView next();
     }
 
     private static class Vertex {
@@ -265,8 +265,7 @@ public class PerfectHash {
             int total = src.total();
             src.reset();
             for (int i = 0; i < total; i++) {
-                byte[] key = src.next();
-                int[] slots = hash(seed, section, key);
+                int[] slots = hash(seed, section, src.next());
                 Vertex[] edge = edges[i];
                 for (int j = 0; j < 3; j++) {
                     Vertex v = edge[j];

@@ -12,9 +12,9 @@ import java.util.BitSet;
 
 public class PerfectHashTest {
     private void test(int size) {
-        byte[][] keys = new byte[size][];
+        DataView[] keys = new DataView[size];
         for (int i = 0; i < size; i++) {
-            keys[i] = String.valueOf(i).getBytes(StandardCharsets.UTF_8);
+            keys[i] = new DataView(String.valueOf(i).getBytes(StandardCharsets.UTF_8));
         }
         PerfectHash ph = PerfectHash.build(new Reader(keys));
         BitSet mark = new BitSet(size);
@@ -45,10 +45,10 @@ public class PerfectHashTest {
     }
 
     private static final class Reader implements PerfectHash.KeySource {
-        private final byte[][] keys;
+        private final DataView[] keys;
         int current = 0;
 
-        public Reader(byte[][] keys) {
+        public Reader(DataView[] keys) {
             this.keys = keys;
         }
 
@@ -64,7 +64,7 @@ public class PerfectHashTest {
         }
 
         @Override
-        public byte[] next() {
+        public DataView next() {
             return keys[current++];
         }
     }

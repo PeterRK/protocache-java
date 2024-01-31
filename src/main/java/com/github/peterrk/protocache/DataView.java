@@ -6,6 +6,7 @@ package com.github.peterrk.protocache;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.util.Arrays;
 
 public final class DataView {
     public final byte[] data;
@@ -26,16 +27,12 @@ public final class DataView {
         this(data, 0);
     }
 
-    public boolean isValid() {
-        return data != null;
-    }
-
     public int size() {
         return limit - offset;
     }
 
     public byte getByte(int offset) {
-        return this.data[this.offset+offset];
+        return this.data[this.offset + offset];
     }
 
     public byte getByte() {
@@ -83,7 +80,7 @@ public final class DataView {
     }
 
     public void putByte(byte value, int offset) {
-        this.data[this.offset+offset] = value;
+        this.data[this.offset + offset] = value;
     }
 
     public void putByte(byte value) {

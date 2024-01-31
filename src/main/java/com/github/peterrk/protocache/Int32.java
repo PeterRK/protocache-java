@@ -4,10 +4,8 @@
 
 package com.github.peterrk.protocache;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
 public final class Int32 extends IUnit.Simple implements IKey {
+    private DataView view = null;
     private int value;
 
     public Int32() {
@@ -15,6 +13,7 @@ public final class Int32 extends IUnit.Simple implements IKey {
 
     public Int32(int value) {
         this.value = value;
+        this.view = null;
     }
 
     public int get() {
@@ -25,16 +24,20 @@ public final class Int32 extends IUnit.Simple implements IKey {
     public void init(DataView data) {
         if (data == null) {
             value = 0;
+            view = null;
             return;
         }
         value = data.getInt();
+        view = data;
     }
 
     @Override
-    public byte[] toBytes() {
-        byte[] out = new byte[4];
-        ByteBuffer.wrap(out).order(ByteOrder.LITTLE_ENDIAN).putInt(value);
-        return out;
+    public DataView view() {
+        if (view == null) {
+            view = new DataView(new byte[4]);
+            view.putInt(value);
+        }
+        return view;
     }
 
     @Override

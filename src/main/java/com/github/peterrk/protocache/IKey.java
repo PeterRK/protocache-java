@@ -5,7 +5,7 @@
 package com.github.peterrk.protocache;
 
 interface IKey extends IUnit {
-    byte[] toBytes();
+    DataView view();
 
     boolean equalToField(DataView field);
 }

@@ -5,14 +5,14 @@
 package com.github.peterrk.protocache;
 
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 
 public final class Str extends IUnit.Complex implements IKey {
     private final static String empty = "";
     private DataView view = null;
     private String value = null;
 
-    public Str() {}
+    public Str() {
+    }
 
     public Str(String value) {
         this.value = value;
@@ -38,11 +38,11 @@ public final class Str extends IUnit.Complex implements IKey {
     }
 
     @Override
-    public byte[] toBytes() {
-        if (view != null) {
-            return Arrays.copyOfRange(view.data, view.offset, view.limit);
+    public DataView view() {
+        if (view == null) {
+            view = new DataView(value.getBytes(StandardCharsets.UTF_8));
         }
-        return value.getBytes(StandardCharsets.UTF_8);
+        return view;
     }
 
     @Override

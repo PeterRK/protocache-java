@@ -59,7 +59,7 @@ public class Dictionary<K extends IKey, V extends IUnit> extends IUnit.Complex {
     }
 
     public V find(K key, Supplier<V> supplier) {
-        int idx = index.locate(key.toBytes());
+        int idx = index.locate(key.view());
         if (idx >= index.getSize() || !key.equalToField(keyField(idx))) {
             return null;
         }
@@ -77,7 +77,7 @@ public class Dictionary<K extends IKey, V extends IUnit> extends IUnit.Complex {
     }
 
     public V fastFind(K key, V unit) {
-        int idx = index.locate(key.toBytes());
+        int idx = index.locate(key.view());
         if (idx >= index.getSize() || !key.equalToField(keyField(idx))) {
             return null;
         }

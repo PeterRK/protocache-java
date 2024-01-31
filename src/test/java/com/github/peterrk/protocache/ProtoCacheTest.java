@@ -20,12 +20,8 @@ public class ProtoCacheTest {
     public void binaryTest() {
         byte[] raw = null;
         try {
+//            raw = Files.readAllBytes(Paths.get("test.pc"));
             raw = Files.readAllBytes(Paths.get("test.json"));
-        } catch (IOException e) {
-            Assertions.fail();
-        }
-
-        try {
             com.github.peterrk.protocache.pb.Main.Builder builder = com.github.peterrk.protocache.pb.Main.newBuilder();
             JsonFormat.parser().ignoringUnknownFields().merge(new String(raw, StandardCharsets.UTF_8), builder);
             raw = ProtoCache.serialize(builder.build());
