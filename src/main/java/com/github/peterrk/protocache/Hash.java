@@ -12,61 +12,61 @@ public class Hash {
         return (x << k) | (x >>> (64 - k));
     }
 
-    public static V128 hash128(byte[] key, long seed) {
+    public static V128 hash128(ByteBuffer key, long seed) {
         long magic = 0xdeadbeefdeadbeefL;
         State s = new State(seed, seed, magic, magic);
 
-        ByteBuffer buf = ByteBuffer.wrap(key).order(ByteOrder.LITTLE_ENDIAN);
-        while (buf.remaining() >= 32) {
-            s.c += buf.getLong();
-            s.d += buf.getLong();
+        int len = key.remaining();
+        key.order(ByteOrder.LITTLE_ENDIAN);
+        while (key.remaining() >= 32) {
+            s.c += key.getLong();
+            s.d += key.getLong();
             s.mix();
-            s.a += buf.getLong();
-            s.b += buf.getLong();
+            s.a += key.getLong();
+            s.b += key.getLong();
         }
-        if (buf.remaining() >= 16) {
-            s.c += buf.getLong();
-            s.d += buf.getLong();
+        if (key.remaining() >= 16) {
+            s.c += key.getLong();
+            s.d += key.getLong();
             s.mix();
         }
 
-        s.d += ((long) key.length) << 56;
-        int off = key.length & ~0xf;
-        switch (key.length & 0xf) {
+        s.d += ((long) len) << 56;
+        switch (len & 0xf) {
             case 15:
-                s.d += ((long) key[off + 14]) << 48;
+                s.d += ((long) key.get(key.position() + 14) & 0xff) << 48;
             case 14:
-                s.d += ((long) key[off + 13]) << 40;
+                s.d += ((long) key.get(key.position() + 13) & 0xff) << 40;
             case 13:
-                s.d += ((long) key[off + 12]) << 32;
+                s.d += ((long) key.get(key.position() + 12) & 0xff) << 32;
             case 12:
-                s.c += buf.getLong();
-                s.d += buf.getInt();
+                s.c += key.getLong();
+                s.d += key.getInt() & 0xffffffffL;
                 break;
             case 11:
-                s.d += ((long) key[off + 10]) << 16;
+                s.d += ((long) key.get(key.position() + 10) & 0xff) << 16;
             case 10:
-                s.d += ((long) key[off + 9]) << 8;
+                s.d += ((long) key.get(key.position() + 9) & 0xff) << 8;
             case 9:
-                s.d += key[off + 8];
+                s.d += key.get(key.position() + 8) & 0xff;
             case 8:
-                s.c += buf.getLong();
+                s.c += key.getLong();
                 break;
             case 7:
-                s.c += ((long) key[off + 6]) << 48;
+                s.c += ((long) key.get(key.position() + 6) & 0xff) << 48;
             case 6:
-                s.c += ((long) key[off + 5]) << 40;
+                s.c += ((long) key.get(key.position() + 5) & 0xff) << 40;
             case 5:
-                s.c += ((long) key[off + 4]) << 32;
+                s.c += ((long) key.get(key.position() + 4) & 0xff) << 32;
             case 4:
-                s.c += buf.getInt();
+                s.c += key.getInt() & 0xffffffffL;
                 break;
             case 3:
-                s.c += ((long) key[off + 2]) << 16;
+                s.c += ((long) key.get(key.position() + 2) & 0xff) << 16;
             case 2:
-                s.c += ((long) key[off + 1]) << 8;
+                s.c += ((long) key.get(key.position() + 1) & 0xff) << 8;
             case 1:
-                s.c += key[off];
+                s.c += key.get() & 0xff;
                 break;
             case 0:
                 s.c += magic;
@@ -76,10 +76,12 @@ public class Hash {
         return new V128(s.a, s.b);
     }
 
+    public static V128 hash128(byte[] key, long seed) {
+        return hash128(ByteBuffer.wrap(key), seed);
+    }
     public static V128 hash128(byte[] key) {
         return hash128(key, 0);
     }
-
     public static long hash64(byte[] key, long seed) {
         return hash128(key, seed).low;
     }

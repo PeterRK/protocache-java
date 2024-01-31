@@ -543,7 +543,8 @@ public class ProtoCache {
 
         @Override
         public byte[] next() {
-            return Bytes.extractBytes(new DataView(iterator.next()));
+            DataView view = Bytes.extract(new DataView(iterator.next()));
+            return Arrays.copyOfRange(view.data, view.offset, view.limit);
         }
     }
 }

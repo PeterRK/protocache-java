@@ -5,27 +5,25 @@
 package com.github.peterrk.protocache;
 
 public class BoolArray extends IUnit.Complex {
-    private final static boolean[] empty = new boolean[0];
-    private boolean[] value;
+    private DataView view = null;
+    private int cnt = 0;
 
     @Override
     public void init(DataView data) {
         if (data == null) {
-            value = empty;
+            cnt = 0;
+            view = null;
             return;
         }
-        byte[] raw = Bytes.extractBytes(data);
-        value = new boolean[raw.length];
-        for (int i = 0; i < value.length; i++) {
-            value[i] = raw[i] != 0;
-        }
+        view = Bytes.extract(data);
+        cnt = view.size();
     }
 
     public int size() {
-        return value.length;
+        return cnt;
     }
 
     public boolean get(int idx) {
-        return value[idx];
+        return view.getByte(idx) != 0;
     }
 }

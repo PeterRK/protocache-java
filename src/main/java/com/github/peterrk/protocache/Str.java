@@ -8,30 +8,40 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 public final class Str extends IUnit.Complex implements IKey {
-    private String value;
+    private final static String empty = "";
+    private DataView view = null;
+    private String value = null;
 
-    public Str() {
-    }
+    public Str() {}
 
     public Str(String value) {
         this.value = value;
+        this.view = null;
     }
 
     public String get() {
+        if (value == null) {
+            value = new String(view.data, view.offset, view.size(), StandardCharsets.UTF_8);
+        }
         return value;
     }
 
     @Override
     public void init(DataView data) {
         if (data == null) {
-            value = "";
+            value = empty;
+            view = null;
             return;
         }
-        value = new String(Bytes.extractBytes(data), StandardCharsets.UTF_8);
+        value = null;
+        view = Bytes.extract(data);
     }
 
     @Override
     public byte[] toBytes() {
+        if (view != null) {
+            return Arrays.copyOfRange(view.data, view.offset, view.limit);
+        }
         return value.getBytes(StandardCharsets.UTF_8);
     }
 
@@ -41,6 +51,7 @@ public final class Str extends IUnit.Complex implements IKey {
         if ((mark & 3) == 3) {
             field = new DataView(field.data, field.offset + (mark & 0xfffffffc));
         }
-        return Arrays.equals(toBytes(), Bytes.extractBytes(field));
+        DataView unit = Bytes.extract(field);
+        return get().equals(new String(unit.data, unit.offset, unit.size(), StandardCharsets.UTF_8));
     }
 }

@@ -10,10 +10,16 @@ import java.nio.ByteOrder;
 public final class DataView {
     public final byte[] data;
     public final int offset;
+    public final int limit;
 
-    public DataView(byte[] data, int offset) {
+    public DataView(byte[] data, int offset, int limit) {
         this.data = data;
         this.offset = offset;
+        this.limit = limit;
+    }
+
+    public DataView(byte[] data, int offset) {
+        this(data, offset, data.length);
     }
 
     public DataView(byte[] data) {
@@ -25,7 +31,15 @@ public final class DataView {
     }
 
     public int size() {
-        return data.length - offset;
+        return limit - offset;
+    }
+
+    public byte getByte(int offset) {
+        return this.data[this.offset+offset];
+    }
+
+    public byte getByte() {
+        return getByte(0);
     }
 
     public short getShort(int offset) {
@@ -66,6 +80,14 @@ public final class DataView {
 
     public double getDouble() {
         return getDouble(0);
+    }
+
+    public void putByte(byte value, int offset) {
+        this.data[this.offset+offset] = value;
+    }
+
+    public void putByte(byte value) {
+        putByte(value, 0);
     }
 
     public void putShort(short value, int offset) {
