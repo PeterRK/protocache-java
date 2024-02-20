@@ -9,6 +9,25 @@ import java.nio.ByteOrder;
 import java.util.Arrays;
 
 public final class DataView {
+    private static final sun.misc.Unsafe unsafe;
+    private static final long bytesBaseOffset;
+    static {
+        sun.misc.Unsafe handle = null;
+        int offset = 0;
+        try {
+            java.lang.reflect.Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
+            field.setAccessible(true);
+            handle = (sun.misc.Unsafe)field.get(null);
+            offset = handle.arrayBaseOffset(byte[].class);
+            byte[] tmp = new byte[]{(byte)0xff, 0};
+            if (handle.getShort(tmp, offset) != 0xff) {
+                handle = null;
+            }
+        } catch (Exception ignored) {}
+        unsafe = handle;
+        bytesBaseOffset = offset;
+    }
+
     public final byte[] data;
     public final int offset;
     public final int limit;
@@ -40,6 +59,13 @@ public final class DataView {
     }
 
     public short getShort(int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-2) {
+                throw new IndexOutOfBoundsException();
+            }
+            return unsafe.getShort(this.data, bytesBaseOffset+offset);
+        }
         return ByteBuffer.wrap(this.data, this.offset + offset, 2).order(ByteOrder.LITTLE_ENDIAN).getShort();
     }
 
@@ -48,6 +74,13 @@ public final class DataView {
     }
 
     public int getInt(int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-4) {
+                throw new IndexOutOfBoundsException();
+            }
+            return unsafe.getInt(this.data, bytesBaseOffset+offset);
+        }
         return ByteBuffer.wrap(this.data, this.offset + offset, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
     }
 
@@ -56,6 +89,13 @@ public final class DataView {
     }
 
     public long getLong(int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-8) {
+                throw new IndexOutOfBoundsException();
+            }
+            return unsafe.getLong(this.data, bytesBaseOffset+offset);
+        }
         return ByteBuffer.wrap(this.data, this.offset + offset, 8).order(ByteOrder.LITTLE_ENDIAN).getLong();
     }
 
@@ -64,6 +104,13 @@ public final class DataView {
     }
 
     public float getFloat(int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-4) {
+                throw new IndexOutOfBoundsException();
+            }
+            return unsafe.getFloat(this.data, bytesBaseOffset+offset);
+        }
         return ByteBuffer.wrap(this.data, this.offset + offset, 4).order(ByteOrder.LITTLE_ENDIAN).getFloat();
     }
 
@@ -72,6 +119,13 @@ public final class DataView {
     }
 
     public double getDouble(int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-8) {
+                throw new IndexOutOfBoundsException();
+            }
+            return unsafe.getDouble(this.data, bytesBaseOffset+offset);
+        }
         return ByteBuffer.wrap(this.data, this.offset + offset, 8).order(ByteOrder.LITTLE_ENDIAN).getDouble();
     }
 
@@ -88,6 +142,14 @@ public final class DataView {
     }
 
     public void putShort(short value, int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-2) {
+                throw new IndexOutOfBoundsException();
+            }
+            unsafe.putShort(this.data, bytesBaseOffset+offset, value);
+            return;
+        }
         ByteBuffer.wrap(this.data, this.offset + offset, 2).order(ByteOrder.LITTLE_ENDIAN).putShort(value);
     }
 
@@ -96,6 +158,14 @@ public final class DataView {
     }
 
     public void putInt(int value, int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-4) {
+                throw new IndexOutOfBoundsException();
+            }
+            unsafe.putInt(this.data, bytesBaseOffset+offset, value);
+            return;
+        }
         ByteBuffer.wrap(this.data, this.offset + offset, 4).order(ByteOrder.LITTLE_ENDIAN).putInt(value);
     }
 
@@ -104,6 +174,14 @@ public final class DataView {
     }
 
     public void putLong(long value, int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-8) {
+                throw new IndexOutOfBoundsException();
+            }
+            unsafe.putLong(this.data, bytesBaseOffset+offset, value);
+            return;
+        }
         ByteBuffer.wrap(this.data, this.offset + offset, 8).order(ByteOrder.LITTLE_ENDIAN).putLong(value);
     }
 
@@ -112,6 +190,14 @@ public final class DataView {
     }
 
     public void putFloat(float value, int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-4) {
+                throw new IndexOutOfBoundsException();
+            }
+            unsafe.putFloat(this.data, bytesBaseOffset+offset, value);
+            return;
+        }
         ByteBuffer.wrap(this.data, this.offset + offset, 4).order(ByteOrder.LITTLE_ENDIAN).putFloat(value);
     }
 
@@ -120,6 +206,14 @@ public final class DataView {
     }
 
     public void putDouble(double value, int offset) {
+        if (unsafe != null) {
+            offset += this.offset;
+            if (offset < 0 || offset > this.limit-8) {
+                throw new IndexOutOfBoundsException();
+            }
+            unsafe.putDouble(this.data, bytesBaseOffset+offset, value);
+            return;
+        }
         ByteBuffer.wrap(this.data, this.offset + offset, 8).order(ByteOrder.LITTLE_ENDIAN).putDouble(value);
     }
 
