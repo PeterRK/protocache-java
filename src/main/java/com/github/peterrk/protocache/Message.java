@@ -7,34 +7,37 @@ package com.github.peterrk.protocache;
 import java.util.function.Supplier;
 
 public class Message extends IUnit.Complex {
-    private final static DataView empty = new DataView(new byte[4]);
+    private final static byte[] empty = new byte[4];
 
     static {
-        empty.putInt(0);
+        Data.putInt(empty, 0, 0);
     }
 
-    private DataView view;
+    private byte[] data;
+    private int offset = -1;
 
     public Message() {
     }
 
-    public Message(DataView data) {
-        init(data);
+    public Message(byte[] data, int offset) {
+        init(data, offset);
     }
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
-            view = empty;
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
+            this.data = empty;
+            this.offset = 0;
             return;
         }
-        view = data;
+        this.data = data;
+        this.offset = offset;
     }
 
     public boolean hasField(int id) {
-        int section = (int) view.data[view.offset] & 0xff;
+        int section = (int) data[offset] & 0xff;
         if (id < 12) {
-            int v = view.getInt() >>> 8;
+            int v = Data.getInt(data, offset) >>> 8;
             int width = (v >>> (id << 1)) & 3;
             return width != 0;
         } else {
@@ -43,20 +46,20 @@ public class Message extends IUnit.Complex {
             if (a >= section) {
                 return false;
             }
-            long v = view.getLong(4 + a * 8);
+            long v = Data.getLong(data, offset + 4 + a * 8);
             int width = (int) (v >>> (b << 1)) & 3;
             return width != 0;
         }
     }
 
-    private DataView getField(int id) {
-        int section = (int) view.data[view.offset] & 0xff;
+    private int getFieldOffset(int id) {
+        int section = (int) data[offset] & 0xff;
         int off = 1 + section * 2;
         if (id < 12) {
-            int v = view.getInt() >>> 8;
+            int v = Data.getInt(data, offset) >>> 8;
             int width = (v >>> (id << 1)) & 3;
             if (width == 0) {
-                return null;
+                return -1;
             }
             v &= ~(0xffffffff << (id << 1));
             v = (v & 0x33333333) + ((v >>> 2) & 0x33333333);
@@ -68,12 +71,12 @@ public class Message extends IUnit.Complex {
             int a = (id - 12) / 25;
             int b = (id - 12) % 25;
             if (a >= section) {
-                return null;
+                return -1;
             }
-            long v = view.getLong(4 + a * 8);
+            long v = Data.getLong(data, offset + 4 + a * 8);
             int width = (int) (v >>> (b << 1)) & 3;
             if (width == 0) {
-                return null;
+                return -1;
             }
             off += (int) (v >>> 50);
             v &= ~(0xffffffffffffffffL << (b << 1));
@@ -84,86 +87,90 @@ public class Message extends IUnit.Complex {
             v = v + (v >>> 32);
             off += ((int) v & 0xff);
         }
-        return new DataView(view.data, view.offset + off * 4);
+        return offset + off * 4;
     }
 
     public boolean getBool(int id) {
-        DataView field = getField(id);
-        if (field == null) {
+        int fieldOffset = getFieldOffset(id);
+        if (fieldOffset < 0) {
             return false;
         }
-        return field.data[field.offset] != 0;
+        return data[fieldOffset] != 0;
     }
 
     public int getInt32(int id) {
-        DataView field = getField(id);
-        if (field == null) {
+        int fieldOffset = getFieldOffset(id);
+        if (fieldOffset < 0) {
             return 0;
         }
-        return field.getInt();
+        return Data.getInt(data, fieldOffset);
     }
 
     public long getInt64(int id) {
-        DataView field = getField(id);
-        if (field == null) {
+        int fieldOffset = getFieldOffset(id);
+        if (fieldOffset < 0) {
             return 0;
         }
-        return field.getLong();
+        return Data.getLong(data, fieldOffset);
     }
 
     public float getFloat32(int id) {
-        DataView field = getField(id);
-        if (field == null) {
+        int fieldOffset = getFieldOffset(id);
+        if (fieldOffset < 0) {
             return 0;
         }
-        return field.getFloat();
+        return Data.getFloat(data, fieldOffset);
     }
 
     public double getFloat64(int id) {
-        DataView field = getField(id);
-        if (field == null) {
+        int fieldOffset = getFieldOffset(id);
+        if (fieldOffset < 0) {
             return 0;
         }
-        return field.getDouble();
+        return Data.getDouble(data, fieldOffset);
     }
 
     public byte[] getBytes(int id) {
-        return IUnit.NewByField(getField(id), Bytes::new).get();
+        return IUnit.NewByField(data, getFieldOffset(id), Bytes::new).get();
     }
 
     public String getStr(int id) {
-        return IUnit.NewByField(getField(id), Str::new).get();
+        return IUnit.NewByField(data, getFieldOffset(id), Str::new).get();
     }
 
     public <T extends IUnit.Complex> T getField(int id, Supplier<T> supplier) {
-        return IUnit.NewByField(getField(id), supplier);
+        return IUnit.NewByField(data, getFieldOffset(id), supplier);
+    }
+    public <T extends IUnit.Complex> T fastGetField(int id, T unit) {
+        unit.initByField(data, getFieldOffset(id));
+        return unit;
     }
 
     public BoolArray getBoolArray(int id) {
-        return IUnit.NewByField(getField(id), BoolArray::new);
+        return IUnit.NewByField(data, getFieldOffset(id), BoolArray::new);
     }
 
     public Int32Array getInt32Array(int id) {
-        return IUnit.NewByField(getField(id), Int32Array::new);
+        return IUnit.NewByField(data, getFieldOffset(id), Int32Array::new);
     }
 
     public Int64Array getInt64Array(int id) {
-        return IUnit.NewByField(getField(id), Int64Array::new);
+        return IUnit.NewByField(data, getFieldOffset(id), Int64Array::new);
     }
 
     public Float32Array getFloat32Array(int id) {
-        return IUnit.NewByField(getField(id), Float32Array::new);
+        return IUnit.NewByField(data, getFieldOffset(id), Float32Array::new);
     }
 
     public Float64Array getFloat64Array(int id) {
-        return IUnit.NewByField(getField(id), Float64Array::new);
+        return IUnit.NewByField(data, getFieldOffset(id), Float64Array::new);
     }
 
     public StrArray getStrArray(int id) {
-        return IUnit.NewByField(getField(id), StrArray::new);
+        return IUnit.NewByField(data, getFieldOffset(id), StrArray::new);
     }
 
     public BytesArray getBytesArray(int id) {
-        return IUnit.NewByField(getField(id), BytesArray::new);
+        return IUnit.NewByField(data, getFieldOffset(id), BytesArray::new);
     }
 }

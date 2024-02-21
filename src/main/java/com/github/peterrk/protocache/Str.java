@@ -7,8 +7,8 @@ package com.github.peterrk.protocache;
 import java.nio.charset.StandardCharsets;
 
 public final class Str extends IUnit.Complex implements IKey {
-    private final static String empty = "";
-    private DataView view = null;
+    final static String empty = "";
+    private byte[] raw = null;
     private String value = null;
 
     public Str() {
@@ -16,42 +16,39 @@ public final class Str extends IUnit.Complex implements IKey {
 
     public Str(String value) {
         this.value = value;
-        this.view = null;
     }
 
     public String get() {
-        if (value == null) {
-            value = new String(view.data, view.offset, view.size(), StandardCharsets.UTF_8);
-        }
         return value;
     }
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             value = empty;
-            view = null;
+            raw = Bytes.empty;
             return;
         }
-        value = null;
-        view = Bytes.extract(data);
+        Data.View view = Bytes.extract(data, offset);
+        value = new String(view.data, view.offset, view.size(), StandardCharsets.UTF_8);
+        raw = null;
     }
 
     @Override
-    public DataView view() {
-        if (view == null) {
-            view = new DataView(value.getBytes(StandardCharsets.UTF_8));
+    public byte[] bytes() {
+        if (raw == null) {
+            raw = value.getBytes(StandardCharsets.UTF_8);
         }
-        return view;
+        return raw;
     }
 
     @Override
-    public boolean equalToField(DataView field) {
-        int mark = field.getInt();
+    public boolean equalToField(byte[] data, int offset) {
+        int mark = Data.getInt(data, offset);
         if ((mark & 3) == 3) {
-            field = new DataView(field.data, field.offset + (mark & 0xfffffffc));
+            offset += (mark & 0xfffffffc);
         }
-        DataView unit = Bytes.extract(field);
+        Data.View unit = Bytes.extract(data, offset);
         return get().equals(new String(unit.data, unit.offset, unit.size(), StandardCharsets.UTF_8));
     }
 }

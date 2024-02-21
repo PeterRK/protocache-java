@@ -5,7 +5,7 @@
 package com.github.peterrk.protocache;
 
 public final class Int32 extends IUnit.Simple implements IKey {
-    private DataView view = null;
+    private byte[] raw = null;
     private int value;
 
     public Int32() {
@@ -13,7 +13,6 @@ public final class Int32 extends IUnit.Simple implements IKey {
 
     public Int32(int value) {
         this.value = value;
-        this.view = null;
     }
 
     public int get() {
@@ -21,27 +20,28 @@ public final class Int32 extends IUnit.Simple implements IKey {
     }
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             value = 0;
-            view = null;
-            return;
+        } else {
+            value = Data.getInt(data, offset);
         }
-        value = data.getInt();
-        view = data;
+        if (raw != null) {
+            Data.putInt(raw, 0, value);
+        }
     }
 
     @Override
-    public DataView view() {
-        if (view == null) {
-            view = new DataView(new byte[4]);
-            view.putInt(value);
+    public byte[] bytes() {
+        if (raw == null) {
+            raw = new byte[4];
+            Data.putInt(raw, 0, value);
         }
-        return view;
+        return raw;
     }
 
     @Override
-    public boolean equalToField(DataView field) {
-        return value == field.getInt();
+    public boolean equalToField(byte[] data, int offset) {
+        return value == Data.getInt(data, offset);
     }
 }

@@ -7,17 +7,20 @@ package com.github.peterrk.protocache;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-public class Hash {
+class Hash {
     private static long rot(long x, int k) {
         return (x << k) | (x >>> (64 - k));
     }
 
-    public static V128 hash128(DataView key, long seed) {
+    public static V128 hash128(byte[] data) {
+        return hash128(data, 0);
+    }
+    public static V128 hash128(byte[] data, long seed) {
         long magic = 0xdeadbeefdeadbeefL;
         State s = new State(seed, seed, magic, magic);
 
-        int len = key.size();
-        ByteBuffer buf = ByteBuffer.wrap(key.data, key.offset, key.size()).order(ByteOrder.LITTLE_ENDIAN);
+        int len = data.length;
+        ByteBuffer buf = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
         while (buf.remaining() >= 32) {
             s.c += buf.getLong();
             s.d += buf.getLong();
@@ -76,25 +79,9 @@ public class Hash {
         return new V128(s.a, s.b);
     }
 
-    public static V128 hash128(byte[] key, long seed) {
-        return hash128(new DataView(key), seed);
-    }
-
-    public static V128 hash128(byte[] key) {
-        return hash128(key, 0);
-    }
-
-    public static long hash64(byte[] key, long seed) {
-        return hash128(key, seed).low;
-    }
-
-    public static long hash64(byte[] key) {
-        return hash64(key, 0);
-    }
-
-    public static final class V128 {
-        public long low;
-        public long high;
+    static final class V128 {
+        public final long low;
+        public final long high;
 
         V128(long low, long high) {
             this.low = low;

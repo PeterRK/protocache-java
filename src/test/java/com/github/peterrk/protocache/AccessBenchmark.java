@@ -44,7 +44,7 @@ public class AccessBenchmark {
 
     @Benchmark
     public void traverseProtoCache(ProtoCacheState ctx) {
-        com.github.peterrk.protocache.pc.Main root = new com.github.peterrk.protocache.pc.Main(new DataView(ctx.raw));
+        com.github.peterrk.protocache.pc.Main root = new com.github.peterrk.protocache.pc.Main(ctx.raw);
         ctx.traverse(root);
     }
 
@@ -318,7 +318,7 @@ public class AccessBenchmark {
             junk.consume(root.getData());
             junk.consume(root.getF32());
             junk.consume(root.getF64());
-            traverse(root.getObject());
+            traverse(root.getObject(tmpSmall));
             Int32Array i32v = root.getI32V();
             for (int i = 0; i < i32v.size(); i++) {
                 junk.consume(i32v.get(i));
@@ -355,7 +355,6 @@ public class AccessBenchmark {
             junk.consume(root.getTI64());
             junk.consume(root.getTS64());
 
-
             Dictionary<Str, Int32> map1 = root.getIndex();
             for (int i = 0; i < map1.size(); i++) {
                 junk.consume(map1.fastGetKey(i, tmpStr).get());
@@ -374,7 +373,7 @@ public class AccessBenchmark {
             for (int i = 0; i < vec.size(); i++) {
                 traverse(vec.fastGet(i, tmpArrMap));
             }
-            traverse(root.getArrays());
+            traverse(root.getArrays(tmpArrMap));
         }
 
         void traverse(com.github.peterrk.protocache.pc.Small root) {

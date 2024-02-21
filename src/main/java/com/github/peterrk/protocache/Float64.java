@@ -12,11 +12,11 @@ public final class Float64 extends IUnit.Simple {
     }
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             value = 0;
             return;
         }
-        value = data.getDouble();
+        value = Data.getDouble(data, offset);
     }
 }

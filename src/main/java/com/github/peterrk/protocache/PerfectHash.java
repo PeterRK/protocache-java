@@ -9,19 +9,23 @@ import java.util.BitSet;
 import java.util.Random;
 
 public class PerfectHash {
-
-    private final DataView data;
-    private final int size;
+    final byte[] data;
+    final int offset;
+    final int byteSize;
+    final int size;
     private final int section;
 
-    private final int byteSize;
+    public PerfectHash(byte[] data) {
+        this(data, 0);
+    }
 
-    public PerfectHash(DataView data) {
-        if (data.size() < 4) {
+    PerfectHash(byte[] data, int offset) {
+        if (data.length-offset < 4) {
             throw new IllegalArgumentException("too short data");
         }
         this.data = data;
-        this.size = this.data.getInt() & 0xfffffff;
+        this.offset = offset;
+        this.size = Data.getInt(data, offset) & 0xfffffff;
         if (size < 2) {
             section = 0;
             byteSize = 4;
@@ -37,17 +41,14 @@ public class PerfectHash {
             n += n / 8;
         }
         byteSize = n + 8;
-        if (data.size() < byteSize) {
+        if (data.length-offset < byteSize) {
             throw new IllegalArgumentException("too short data");
         }
     }
 
-    public PerfectHash(byte[] data) {
-        this(new DataView(data));
-    }
-
     private PerfectHash(byte[] data, int size, int section) {
-        this.data = new DataView(data);
+        this.data = data;
+        this.offset = 0;
         this.size = size;
         this.section = section;
         this.byteSize = data.length;
@@ -71,7 +72,7 @@ public class PerfectHash {
         return 32 - ((int) v & 0xff);
     }
 
-    private static int[] hash(int seed, int section, DataView key) {
+    private static int[] hash(int seed, int section, byte[] key) {
         int[] out = new int[3];
         Hash.V128 h = Hash.hash128(key, (long) seed & 0xffffffffL);
         out[0] = Integer.remainderUnsigned((int) h.low, section);
@@ -80,16 +81,16 @@ public class PerfectHash {
         return out;
     }
 
-    private static int bit2(DataView bitmap, int pos) {
+    private static int bit2(byte[] data, int offset, int pos) {
         int blk = pos >>> 2;
         int sft = (pos & 3) << 1;
-        return (bitmap.data[bitmap.offset + blk] >>> sft) & 3;
+        return (data[offset + blk] >>> sft) & 3;
     }
 
-    private static void setBit2on11(DataView bitmap, int pos, int val) {
+    private static void setBit2on11(byte[] data, int offset, int pos, int val) {
         int blk = pos >>> 2;
         int sft = (pos & 3) << 1;
-        bitmap.data[bitmap.offset + blk] ^= (byte) ((~val & 3) << sft);
+        data[offset + blk] ^= (byte) ((~val & 3) << sft);
     }
 
     private static byte[] build(KeySource src, int width) {
@@ -106,38 +107,37 @@ public class PerfectHash {
         int[] free = new int[size];
         BitSet book = new BitSet(size);
 
-        DataView header = new DataView(data);
-        DataView bitmap = new DataView(data, 8);
-        DataView table = new DataView(data, 8 + bmsz);
-        header.putInt(size);
+        Data.View bitmap = new Data.View(data, 8);
+        int tableOffset = 8 + bmsz;
+        Data.putInt(data, 0, size);
 
         Random rand = new Random();
         for (int chance = (width == 1) ? 40 : 16; chance >= 0; chance--) {
             int seed = rand.nextInt();
-            header.putInt(seed, 4);
+            Data.putInt(data, 4, seed);
             if (!graph.init(seed, src) || !graph.tear(free, book)) {
                 continue;
             }
-            graph.mapping(free, book, bitmap);
+            graph.mapping(free, book, data, bitmap.offset);
             if (bmsz > 8) {
                 int cnt = 0;
                 switch (width) {
                     case 4:
                         for (int i = 0; i < bmsz / 8; i++) {
-                            table.putInt(cnt, i * 4);
-                            cnt += countValidSlot(bitmap.getLong(i * 8));
+                            Data.putInt(data, tableOffset+i*4, cnt);
+                            cnt += countValidSlot(Data.getLong(data, 8 + i * 8));
                         }
                         break;
                     case 2:
                         for (int i = 0; i < bmsz / 8; i++) {
-                            table.putShort((short) cnt, i * 2);
-                            cnt += countValidSlot(bitmap.getLong(i * 8));
+                            Data.putShort(data, tableOffset+i*2, (short) cnt);
+                            cnt += countValidSlot(Data.getLong(data, 8 + i * 8));
                         }
                         break;
                     default:
                         for (int i = 0; i < bmsz / 8; i++) {
-                            table.data[table.offset + i] = (byte) cnt;
-                            cnt += countValidSlot(bitmap.getLong(i * 8));
+                            data[tableOffset + i] = (byte) cnt;
+                            cnt += countValidSlot(Data.getLong(data, 8 + i * 8));
                         }
                         break;
                 }
@@ -164,49 +164,45 @@ public class PerfectHash {
         } else if (size > 1) {
             data = build(src, 1);
         } else {
-            PerfectHash out = new PerfectHash(new byte[4], size, 0);
-            out.data.putInt(size);
-            return out;
+            byte[] raw = new byte[4];
+            Data.putInt(raw, 0, size);
+            return new PerfectHash(raw, size, 0);
         }
         return new PerfectHash(data, size, calcSectionSize(size));
     }
 
-    public DataView getData() {
-        return data;
+    public Data.View getData() {
+        return new Data.View(data, offset, offset+byteSize);
     }
 
     public int getSize() {
         return size;
     }
 
-    public int getByteSize() {
-        return byteSize;
-    }
-
-    public int locate(DataView key) {
+    int locate(byte[] key) {
         if (size < 2) {
             return 0;
         }
-        int[] slots = hash(data.getInt(4), section, key);
+        int[] slots = hash(Data.getInt(data, offset+4), section, key);
 
-        DataView bitmap = new DataView(data.data, data.offset + 8);
-        int m = bit2(bitmap, slots[0]) + bit2(bitmap, slots[1]) + bit2(bitmap, slots[2]);
+        int bitmapOffset = offset + 8;
+        int m = bit2(data, bitmapOffset, slots[0]) + bit2(data, bitmapOffset, slots[1]) + bit2(data, bitmapOffset, slots[2]);
         int slot = slots[m % 3];
 
         int a = slot >>> 5;
         int b = slot & 31;
-        DataView table = new DataView(data.data, data.offset + 8 + calcBitmapSize(section));
+        int tableOffset = bitmapOffset + calcBitmapSize(section);
 
         int off = 0;
         if (size > 0xffff) {
-            off = table.getInt(a * 4);
+            off = Data.getInt(data, tableOffset + a * 4);
         } else if (size > 0xff) {
-            off = (int) table.getShort(a * 2) & 0xffff;
+            off = (int) Data.getShort(data, tableOffset + a * 2) & 0xffff;
         } else if (size > 24) {
-            off = (int) table.data[table.offset + a] & 0xff;
+            off = (int) data[tableOffset + a] & 0xff;
         }
 
-        long block = bitmap.getLong(a * 8);
+        long block = Data.getLong(data,bitmapOffset + a * 8);
         block |= 0xffffffffffffffffL << (b << 1);
         return off + countValidSlot(block);
     }
@@ -216,7 +212,7 @@ public class PerfectHash {
 
         int total();
 
-        DataView next();
+        byte[] next();
     }
 
     private static class Vertex {
@@ -321,9 +317,9 @@ public class PerfectHash {
         }
 
 
-        public void mapping(int[] free, BitSet book, DataView bitmap) {
+        public void mapping(int[] free, BitSet book, byte[] data, int offset) {
             book.clear();
-            Arrays.fill(bitmap.data, bitmap.offset, bitmap.offset + calcBitmapSize(nodes.length / 3), (byte) -1);
+            Arrays.fill(data, offset, offset + calcBitmapSize(nodes.length / 3), (byte) -1);
 
             for (int i = free.length - 1; i >= 0; i--) {
                 Vertex[] edge = edges[free[i]];
@@ -333,15 +329,15 @@ public class PerfectHash {
                 if (testAndSet(book, a)) {
                     book.set(b);
                     book.set(c);
-                    int sum = bit2(bitmap, b) + bit2(bitmap, c);
-                    setBit2on11(bitmap, a, (6 - sum) % 3);
+                    int sum = bit2(data, offset, b) + bit2(data, offset, c);
+                    setBit2on11(data, offset, a, (6 - sum) % 3);
                 } else if (testAndSet(book, b)) {
                     book.set(c);
-                    int sum = bit2(bitmap, a) + bit2(bitmap, c);
-                    setBit2on11(bitmap, b, (7 - sum) % 3);
+                    int sum = bit2(data, offset, a) + bit2(data, offset, c);
+                    setBit2on11(data, offset, b, (7 - sum) % 3);
                 } else if (testAndSet(book, c)) {
-                    int sum = bit2(bitmap, a) + bit2(bitmap, b);
-                    setBit2on11(bitmap, c, (8 - sum) % 3);
+                    int sum = bit2(data, offset, a) + bit2(data, offset, b);
+                    setBit2on11(data, offset, c, (8 - sum) % 3);
                 } else {
                     throw new RuntimeException("broken graph");
                 }

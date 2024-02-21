@@ -7,29 +7,28 @@ package com.github.peterrk.protocache;
 import java.util.function.Supplier;
 
 public class Dictionary<K extends IKey, V extends IUnit> extends IUnit.Complex {
-    private final static DataView empty = new DataView(new byte[4]);
-
+    private final static byte[] empty = new byte[4];
     static {
-        empty.putInt(0);
+        Data.putInt(empty, 0, 0);
     }
 
     private PerfectHash index;
-    private DataView body;
+    private int bodyOffset;
     private int keyWidth;
     private int valueWidth;
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             index = new PerfectHash(empty);
-            body = null;
+            bodyOffset = 4;
             keyWidth = 0;
             valueWidth = 0;
             return;
         }
-        index = new PerfectHash(data);
-        body = new DataView(data.data, data.offset + ((index.getByteSize() + 3) & 0xfffffffc));
-        int mark = data.getInt();
+        index = new PerfectHash(data, offset);
+        bodyOffset = offset + ((index.byteSize + 3) & 0xfffffffc);
+        int mark = Data.getInt(data, offset);
         keyWidth = ((mark >>> 30) & 3) * 4;
         valueWidth = ((mark >>> 28) & 3) * 4;
         if (keyWidth == 0 || valueWidth == 0) {
@@ -42,46 +41,46 @@ public class Dictionary<K extends IKey, V extends IUnit> extends IUnit.Complex {
     }
 
 
-    private DataView keyField(int idx) {
-        return new DataView(body.data, body.offset + idx * (keyWidth + valueWidth));
+    private int keyFieldOffset(int idx) {
+        return bodyOffset+ idx * (keyWidth + valueWidth);
     }
 
-    private DataView valueField(int idx) {
-        return new DataView(body.data, body.offset + idx * (keyWidth + valueWidth) + keyWidth);
+    private int valueFieldOffset(int idx) {
+        return bodyOffset  + idx * (keyWidth + valueWidth) + keyWidth;
     }
 
     public K key(int idx, Supplier<K> supplier) {
-        return IUnit.NewByField(keyField(idx), supplier);
+        return IUnit.NewByField(index.data, keyFieldOffset(idx), supplier);
     }
 
     public V value(int idx, Supplier<V> supplier) {
-        return IUnit.NewByField(valueField(idx), supplier);
+        return IUnit.NewByField(index.data, valueFieldOffset(idx), supplier);
     }
 
     public V find(K key, Supplier<V> supplier) {
-        int idx = index.locate(key.view());
-        if (idx >= index.getSize() || !key.equalToField(keyField(idx))) {
+        int idx = index.locate(key.bytes());
+        if (idx >= index.getSize() || !key.equalToField(index.data, keyFieldOffset(idx))) {
             return null;
         }
-        return IUnit.NewByField(valueField(idx), supplier);
+        return IUnit.NewByField(index.data, valueFieldOffset(idx), supplier);
     }
 
     public K fastGetKey(int idx, K unit) {
-        unit.initByField(keyField(idx));
+        unit.initByField(index.data, keyFieldOffset(idx));
         return unit;
     }
 
     public V fastGetValue(int idx, V unit) {
-        unit.initByField(valueField(idx));
+        unit.initByField(index.data, valueFieldOffset(idx));
         return unit;
     }
 
     public V fastFind(K key, V unit) {
-        int idx = index.locate(key.view());
-        if (idx >= index.getSize() || !key.equalToField(keyField(idx))) {
+        int idx = index.locate(key.bytes());
+        if (idx >= index.getSize() || !key.equalToField(index.data, keyFieldOffset(idx))) {
             return null;
         }
-        unit.initByField(valueField(idx));
+        unit.initByField(index.data, valueFieldOffset(idx));
         return unit;
     }
 }

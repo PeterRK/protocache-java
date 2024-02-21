@@ -5,7 +5,7 @@
 package com.github.peterrk.protocache;
 
 public final class Int64 extends IUnit.Simple implements IKey {
-    private DataView view = null;
+    private byte[] raw = null;
     private long value;
 
     public Int64() {
@@ -13,7 +13,6 @@ public final class Int64 extends IUnit.Simple implements IKey {
 
     public Int64(long value) {
         this.value = value;
-        this.view = null;
     }
 
     public long get() {
@@ -21,27 +20,28 @@ public final class Int64 extends IUnit.Simple implements IKey {
     }
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             value = 0;
-            view = null;
-            return;
+        } else {
+            value = Data.getLong(data, offset);
         }
-        value = data.getLong();
-        view = data;
+        if (raw != null) {
+            Data.putLong(raw, 0, value);
+        }
     }
 
     @Override
-    public DataView view() {
-        if (view == null) {
-            view = new DataView(new byte[8]);
-            view.putLong(value);
+    public byte[] bytes() {
+        if (raw == null) {
+            raw = new byte[8];
+            Data.putLong(raw, 0, value);
         }
-        return view;
+        return raw;
     }
 
     @Override
-    public boolean equalToField(DataView field) {
-        return value == field.getLong();
+    public boolean equalToField(byte[] data, int offset) {
+        return value == Data.getLong(data, offset);
     }
 }

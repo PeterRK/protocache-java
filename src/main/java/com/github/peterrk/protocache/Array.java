@@ -9,22 +9,26 @@ import java.util.function.Supplier;
 public class Array<T extends IUnit.Complex> extends IUnit.Complex {
     private int size;
     private int width;
-    private DataView view;
+    private byte[] data;
+    private int bodyOffset = -1;
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             size = 0;
             width = 0;
+            this.data = null;
+            this.bodyOffset = -1;
             return;
         }
-        int mark = data.getInt();
+        int mark = Data.getInt(data, offset);
         if ((mark & 3) == 0) {
             throw new IllegalArgumentException("illegal array");
         }
         size = mark >>> 2;
         width = (mark & 3) * 4;
-        view = data;
+        this.data = data;
+        this.bodyOffset = offset + 4;
     }
 
     public int size() {
@@ -32,13 +36,13 @@ public class Array<T extends IUnit.Complex> extends IUnit.Complex {
     }
 
     public T get(int idx, Supplier<T> supplier) {
-        DataView field = new DataView(view.data, view.offset + 4 + idx * width);
-        return IUnit.NewByField(field, supplier);
+        int fieldOffset = bodyOffset + idx * width;
+        return IUnit.NewByField(data, fieldOffset, supplier);
     }
 
     public T fastGet(int idx, T unit) {
-        DataView field = new DataView(view.data, view.offset + 4 + idx * width);
-        unit.initByField(field);
+        int fieldOffset = bodyOffset + idx * width;
+        unit.initByField(data, fieldOffset);
         return unit;
     }
 }

@@ -34,7 +34,8 @@ public final class Main extends com.github.peterrk.protocache.Message {
 	public static final int FIELD_arrays = 29;
 
 	public Main(){}
-	public Main(com.github.peterrk.protocache.DataView data){ super(data); }
+	public Main(byte[] data){ this(data, 0); }
+	public Main(byte[] data, int offset){ super(data, offset); }
 
 	public int getI32() { return getInt32(FIELD_i32); }
 	public int getU32() { return getInt32(FIELD_u32); }
@@ -49,15 +50,42 @@ public final class Main extends com.github.peterrk.protocache.Message {
 	public com.github.peterrk.protocache.pc.Small getObject() {
 		return getField(FIELD_object, com.github.peterrk.protocache.pc.Small::new);
 	}
+	public com.github.peterrk.protocache.pc.Small getObject(com.github.peterrk.protocache.pc.Small unit) {
+		return fastGetField(FIELD_object, unit);
+	}
 	public com.github.peterrk.protocache.Int32Array getI32V() { return getInt32Array(FIELD_i32v); }
+	public com.github.peterrk.protocache.Int32Array getI32V(com.github.peterrk.protocache.Int32Array unit) {
+		return fastGetField(FIELD_i32v, unit);
+	}
 	public com.github.peterrk.protocache.Int64Array getU64V() { return getInt64Array(FIELD_u64v); }
+	public com.github.peterrk.protocache.Int64Array getU64V(com.github.peterrk.protocache.Int64Array unit) {
+		return fastGetField(FIELD_u64v, unit);
+	}
 	public com.github.peterrk.protocache.StrArray getStrv() { return getStrArray(FIELD_strv); }
+	public com.github.peterrk.protocache.StrArray getStrv(com.github.peterrk.protocache.StrArray unit) {
+		return fastGetField(FIELD_strv, unit);
+	}
 	public com.github.peterrk.protocache.BytesArray getDatav() { return getBytesArray(FIELD_datav); }
+	public com.github.peterrk.protocache.BytesArray getDatav(com.github.peterrk.protocache.BytesArray unit) {
+		return fastGetField(FIELD_datav, unit);
+	}
 	public com.github.peterrk.protocache.Float32Array getF32V() { return getFloat32Array(FIELD_f32v); }
+	public com.github.peterrk.protocache.Float32Array getF32V(com.github.peterrk.protocache.Float32Array unit) {
+		return fastGetField(FIELD_f32v, unit);
+	}
 	public com.github.peterrk.protocache.Float64Array getF64V() { return getFloat64Array(FIELD_f64v); }
+	public com.github.peterrk.protocache.Float64Array getF64V(com.github.peterrk.protocache.Float64Array unit) {
+		return fastGetField(FIELD_f64v, unit);
+	}
 	public com.github.peterrk.protocache.BoolArray getFlags() { return getBoolArray(FIELD_flags); }
+	public com.github.peterrk.protocache.BoolArray getFlags(com.github.peterrk.protocache.BoolArray unit) {
+		return fastGetField(FIELD_flags, unit);
+	}
 	public com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small> getObjectv() {
 		return getField(FIELD_objectv, com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small>::new);
+	}
+	public com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small> getObjectv(com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small> unit) {
+		return fastGetField(FIELD_objectv, unit);
 	}
 	public int getTU32() { return getInt32(FIELD_t_u32); }
 	public int getTI32() { return getInt32(FIELD_t_i32); }
@@ -68,16 +96,31 @@ public final class Main extends com.github.peterrk.protocache.Message {
 	public com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Str,com.github.peterrk.protocache.Int32> getIndex() {
 		return getField(FIELD_index, com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Str,com.github.peterrk.protocache.Int32>::new);
 	}
+	public com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Str,com.github.peterrk.protocache.Int32> getIndex(com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Str,com.github.peterrk.protocache.Int32> unit) {
+		return fastGetField(FIELD_index, unit);
+	}
 	public com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Int32,com.github.peterrk.protocache.pc.Small> getObjects() {
 		return getField(FIELD_objects, com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Int32,com.github.peterrk.protocache.pc.Small>::new);
+	}
+	public com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Int32,com.github.peterrk.protocache.pc.Small> getObjects(com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Int32,com.github.peterrk.protocache.pc.Small> unit) {
+		return fastGetField(FIELD_objects, unit);
 	}
 	public com.github.peterrk.protocache.pc.Vec2D getMatrix() {
 		return getField(FIELD_matrix, com.github.peterrk.protocache.pc.Vec2D::new);
 	}
+	public com.github.peterrk.protocache.pc.Vec2D getMatrix(com.github.peterrk.protocache.pc.Vec2D unit) {
+		return fastGetField(FIELD_matrix, unit);
+	}
 	public com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap> getVector() {
 		return getField(FIELD_vector, com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap>::new);
 	}
+	public com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap> getVector(com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap> unit) {
+		return fastGetField(FIELD_vector, unit);
+	}
 	public com.github.peterrk.protocache.pc.ArrMap getArrays() {
 		return getField(FIELD_arrays, com.github.peterrk.protocache.pc.ArrMap::new);
+	}
+	public com.github.peterrk.protocache.pc.ArrMap getArrays(com.github.peterrk.protocache.pc.ArrMap unit) {
+		return fastGetField(FIELD_arrays, unit);
 	}
 }

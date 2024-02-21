@@ -5,17 +5,17 @@
 package com.github.peterrk.protocache;
 
 public class BoolArray extends IUnit.Complex {
-    private DataView view = null;
+    private Data.View view = null;
     private int cnt = 0;
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             cnt = 0;
             view = null;
             return;
         }
-        view = Bytes.extract(data);
+        view = Bytes.extract(data, offset);
         cnt = view.size();
     }
 
@@ -24,6 +24,6 @@ public class BoolArray extends IUnit.Complex {
     }
 
     public boolean get(int idx) {
-        return view.getByte(idx) != 0;
+        return view.data[view.offset+idx] != 0;
     }
 }

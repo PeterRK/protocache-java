@@ -11,10 +11,7 @@ import com.google.protobuf.Message;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ProtoCache {
     public static byte[] serialize(Message message) {
@@ -115,8 +112,7 @@ public class ProtoCache {
             }
         }
         byte[] out = new byte[size * 4];
-        DataView view = new DataView(out);
-        view.putInt(head);
+        Data.putInt(out, 0, head);
 
         int off = 4;
         for (int i = 12; i < parts.size(); ) {
@@ -138,7 +134,7 @@ public class ProtoCache {
                     cnt += 1;
                 }
             }
-            view.putLong(mark, off);
+            Data.putLong(out, off, mark);
             off += 8;
         }
 
@@ -162,7 +158,7 @@ public class ProtoCache {
             if (one.length / 4 < 4) {
                 off += one.length;
             } else {
-                view.putInt((tail - off) | 3, off);
+                Data.putInt(out, off, (tail - off) | 3);
                 System.arraycopy(one, 0, out, tail, one.length);
                 tail += one.length;
                 off += 4;
@@ -349,8 +345,7 @@ public class ProtoCache {
             throw new IllegalArgumentException("array size overflow");
         }
         byte[] out = new byte[(int) ret.size * 4];
-        DataView view = new DataView(out);
-        view.putInt((parts.length << 2) | ret.width);
+        Data.putInt(out, 0, (parts.length << 2) | ret.width);
         ret.width *= 4;
 
         int off = 4;
@@ -364,7 +359,7 @@ public class ProtoCache {
         off = 4;
         for (byte[] one : parts) {
             if (one.length > ret.width) {
-                view.putInt((tail - off) | 3, off);
+                Data.putInt(out, off, (tail - off) | 3);
                 System.arraycopy(one, 0, out, tail, one.length);
                 tail += one.length;
             }
@@ -438,8 +433,7 @@ public class ProtoCache {
             outValues[pos] = values.get(i);
         }
 
-        DataView indexData = index.getData();
-        int indexSize = (indexData.size() + 3) / 4;
+        int indexSize = (index.byteSize + 3) / 4;
         BestArray k = detectBestArray(outKeys);
         BestArray v = detectBestArray(outValues);
 
@@ -450,11 +444,10 @@ public class ProtoCache {
             throw new IllegalArgumentException("map size overflow");
         }
         byte[] out = new byte[(int) size * 4];
-        System.arraycopy(indexData.data, indexData.offset, out, 0, indexData.size());
-        DataView view = new DataView(out);
-        int mark = view.getInt();
+        System.arraycopy(index.data, index.offset, out, 0, index.byteSize);
+        int mark = Data.getInt(out, 0);
         mark |= (k.width << 30) | (v.width << 28);
-        view.putInt(mark);
+        Data.putInt(out, 0, mark);
 
         k.width *= 4;
         v.width *= 4;
@@ -478,13 +471,13 @@ public class ProtoCache {
             byte[] key = outKeys[i];
             byte[] value = outValues[i];
             if (key.length > k.width) {
-                view.putInt((tail - off) | 3, off);
+                Data.putInt(out, off,(tail - off) | 3);
                 System.arraycopy(key, 0, out, tail, key.length);
                 tail += key.length;
             }
             off += k.width;
             if (value.length > v.width) {
-                view.putInt((tail - off) | 3, off);
+                Data.putInt(out, off,(tail - off) | 3);
                 System.arraycopy(value, 0, out, tail, value.length);
                 tail += value.length;
             }
@@ -534,8 +527,8 @@ public class ProtoCache {
         }
 
         @Override
-        public DataView next() {
-            return new DataView(iterator.next());
+        public byte[] next() {
+            return iterator.next();
         }
     }
 
@@ -545,8 +538,9 @@ public class ProtoCache {
         }
 
         @Override
-        public DataView next() {
-            return Bytes.extract(new DataView(iterator.next()));
+        public byte[] next() {
+            Data.View view = Bytes.extract(iterator.next(), 0);
+            return Arrays.copyOfRange(view.data, view.offset, view.limit);
         }
     }
 }

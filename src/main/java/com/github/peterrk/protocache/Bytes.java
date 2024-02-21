@@ -7,22 +7,22 @@ package com.github.peterrk.protocache;
 import java.util.Arrays;
 
 public final class Bytes extends IUnit.Complex {
-    private final static byte[] empty = new byte[0];
-    private DataView view = null;
+    final static byte[] empty = new byte[0];
+    private Data.View view = null;
     private byte[] value = null;
 
-    static DataView extract(DataView data) {
-        int off = data.offset;
+    static Data.View extract(byte[] data, int offset) {
+        int off = offset;
         int mark = 0;
         for (int sft = 0; sft < 32; sft += 7) {
-            byte b = data.data[off++];
+            byte b = data[off++];
             mark |= ((int) b & 0x7f) << sft;
             if ((b & 0x80) == 0) {
                 if ((mark & 3) != 0) {
                     break;
                 }
                 int size = mark >>> 2;
-                return new DataView(data.data, off, off + size);
+                return new Data.View(data, off, off + size);
             }
         }
         throw new IllegalArgumentException("illegal bytes unit");
@@ -36,13 +36,13 @@ public final class Bytes extends IUnit.Complex {
     }
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             value = empty;
             view = null;
             return;
         }
         value = null;
-        view = extract(data);
+        view = extract(data, offset);
     }
 }

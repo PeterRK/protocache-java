@@ -12,11 +12,11 @@ public final class Bool extends IUnit.Simple {
     }
 
     @Override
-    public void init(DataView data) {
-        if (data == null) {
+    public void init(byte[] data, int offset) {
+        if (offset < 0) {
             value = false;
             return;
         }
-        value = data.data[data.offset] != 0;
+        value = data[offset] != 0;
     }
 }
