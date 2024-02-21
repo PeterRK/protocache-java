@@ -5,12 +5,7 @@
 package com.github.peterrk.protocache;
 
 public class BytesArray extends Array<Bytes> {
-    private Bytes tmp = null;
-
     public byte[] get(int idx) {
-        if (tmp == null) {
-            tmp = new Bytes();
-        }
-        return fastGet(idx, tmp).get();
+        return Bytes.extract(data, Complex.jump(data, fieldOffset(idx)));
     }
 }

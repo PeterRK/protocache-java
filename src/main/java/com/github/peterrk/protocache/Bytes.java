@@ -8,30 +8,25 @@ import java.util.Arrays;
 
 public final class Bytes extends IUnit.Complex {
     final static byte[] empty = new byte[0];
-    private Data.View view = null;
     private byte[] value = null;
 
-    static Data.View extract(byte[] data, int offset) {
-        int off = offset;
+    static byte[] extract(byte[] data, int offset) {
         int mark = 0;
         for (int sft = 0; sft < 32; sft += 7) {
-            byte b = data[off++];
+            byte b = data[offset++];
             mark |= ((int) b & 0x7f) << sft;
             if ((b & 0x80) == 0) {
                 if ((mark & 3) != 0) {
                     break;
                 }
                 int size = mark >>> 2;
-                return new Data.View(data, off, off + size);
+                return Arrays.copyOfRange(data, offset, offset + size);
             }
         }
-        throw new IllegalArgumentException("illegal bytes unit");
+        throw new IllegalArgumentException("illegal bytes");
     }
 
     public byte[] get() {
-        if (value == null) {
-            value = Arrays.copyOfRange(view.data, view.offset, view.limit);
-        }
         return value;
     }
 
@@ -39,10 +34,8 @@ public final class Bytes extends IUnit.Complex {
     public void init(byte[] data, int offset) {
         if (offset < 0) {
             value = empty;
-            view = null;
             return;
         }
-        value = null;
-        view = extract(data, offset);
+        value = extract(data, offset);
     }
 }

@@ -43,49 +43,84 @@ public final class Main extends com.github.peterrk.protocache.Message {
 	public long getU64() { return getInt64(FIELD_u64); }
 	public boolean getFlag() { return getBool(FIELD_flag); }
 	public int getMode() { return getInt32(FIELD_mode); }
-	public String getStr() { return getStr(FIELD_str); }
-	public byte[] getData() { return getBytes(FIELD_data); }
+	private String _str = null;
+	public String getStr() {
+		if (_str == null) {
+			_str = getStr(FIELD_str);
+		}
+		return _str;
+	}
+	private byte[] _data = null;
+	public byte[] getData() {
+		if (_data == null) {
+			_data = getBytes(FIELD_data);
+		}
+		return _data;
+	}
 	public float getF32() { return getFloat32(FIELD_f32); }
 	public double getF64() { return getFloat64(FIELD_f64); }
+	private com.github.peterrk.protocache.pc.Small _object = null;
 	public com.github.peterrk.protocache.pc.Small getObject() {
-		return getField(FIELD_object, com.github.peterrk.protocache.pc.Small::new);
+		if (_object == null) {
+			_object = getField(FIELD_object, com.github.peterrk.protocache.pc.Small::new);
+		}
+		return _object;
 	}
-	public com.github.peterrk.protocache.pc.Small getObject(com.github.peterrk.protocache.pc.Small unit) {
-		return fastGetField(FIELD_object, unit);
+	private com.github.peterrk.protocache.Int32Array _i32v = null;
+	public com.github.peterrk.protocache.Int32Array getI32V() {
+		if (_i32v == null) {
+			_i32v = getInt32Array(FIELD_i32v);
+		}
+		return _i32v;
 	}
-	public com.github.peterrk.protocache.Int32Array getI32V() { return getInt32Array(FIELD_i32v); }
-	public com.github.peterrk.protocache.Int32Array getI32V(com.github.peterrk.protocache.Int32Array unit) {
-		return fastGetField(FIELD_i32v, unit);
+	private com.github.peterrk.protocache.Int64Array _u64v = null;
+	public com.github.peterrk.protocache.Int64Array getU64V() {
+		if (_u64v == null) {
+			_u64v = getInt64Array(FIELD_u64v);
+		}
+		return _u64v;
 	}
-	public com.github.peterrk.protocache.Int64Array getU64V() { return getInt64Array(FIELD_u64v); }
-	public com.github.peterrk.protocache.Int64Array getU64V(com.github.peterrk.protocache.Int64Array unit) {
-		return fastGetField(FIELD_u64v, unit);
+	private com.github.peterrk.protocache.StrArray _strv = null;
+	public com.github.peterrk.protocache.StrArray getStrv() {
+		if (_strv == null) {
+			_strv = getStrArray(FIELD_strv);
+		}
+		return _strv;
 	}
-	public com.github.peterrk.protocache.StrArray getStrv() { return getStrArray(FIELD_strv); }
-	public com.github.peterrk.protocache.StrArray getStrv(com.github.peterrk.protocache.StrArray unit) {
-		return fastGetField(FIELD_strv, unit);
+	private com.github.peterrk.protocache.BytesArray _datav = null;
+	public com.github.peterrk.protocache.BytesArray getDatav() {
+		if (_datav == null) {
+			_datav = getBytesArray(FIELD_datav);
+		}
+		return _datav;
 	}
-	public com.github.peterrk.protocache.BytesArray getDatav() { return getBytesArray(FIELD_datav); }
-	public com.github.peterrk.protocache.BytesArray getDatav(com.github.peterrk.protocache.BytesArray unit) {
-		return fastGetField(FIELD_datav, unit);
+	private com.github.peterrk.protocache.Float32Array _f32v = null;
+	public com.github.peterrk.protocache.Float32Array getF32V() {
+		if (_f32v == null) {
+			_f32v = getFloat32Array(FIELD_f32v);
+		}
+		return _f32v;
 	}
-	public com.github.peterrk.protocache.Float32Array getF32V() { return getFloat32Array(FIELD_f32v); }
-	public com.github.peterrk.protocache.Float32Array getF32V(com.github.peterrk.protocache.Float32Array unit) {
-		return fastGetField(FIELD_f32v, unit);
+	private com.github.peterrk.protocache.Float64Array _f64v = null;
+	public com.github.peterrk.protocache.Float64Array getF64V() {
+		if (_f64v == null) {
+			_f64v = getFloat64Array(FIELD_f64v);
+		}
+		return _f64v;
 	}
-	public com.github.peterrk.protocache.Float64Array getF64V() { return getFloat64Array(FIELD_f64v); }
-	public com.github.peterrk.protocache.Float64Array getF64V(com.github.peterrk.protocache.Float64Array unit) {
-		return fastGetField(FIELD_f64v, unit);
+	private com.github.peterrk.protocache.BoolArray _flags = null;
+	public com.github.peterrk.protocache.BoolArray getFlags() {
+		if (_flags == null) {
+			_flags = getBoolArray(FIELD_flags);
+		}
+		return _flags;
 	}
-	public com.github.peterrk.protocache.BoolArray getFlags() { return getBoolArray(FIELD_flags); }
-	public com.github.peterrk.protocache.BoolArray getFlags(com.github.peterrk.protocache.BoolArray unit) {
-		return fastGetField(FIELD_flags, unit);
-	}
+	private com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small> _objectv = null;
 	public com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small> getObjectv() {
-		return getField(FIELD_objectv, com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small>::new);
-	}
-	public com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small> getObjectv(com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small> unit) {
-		return fastGetField(FIELD_objectv, unit);
+		if (_objectv == null) {
+			_objectv = getField(FIELD_objectv, com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.Small>::new);
+		}
+		return _objectv;
 	}
 	public int getTU32() { return getInt32(FIELD_t_u32); }
 	public int getTI32() { return getInt32(FIELD_t_i32); }
@@ -93,34 +128,59 @@ public final class Main extends com.github.peterrk.protocache.Message {
 	public long getTU64() { return getInt64(FIELD_t_u64); }
 	public long getTI64() { return getInt64(FIELD_t_i64); }
 	public long getTS64() { return getInt64(FIELD_t_s64); }
-	public com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Str,com.github.peterrk.protocache.Int32> getIndex() {
-		return getField(FIELD_index, com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Str,com.github.peterrk.protocache.Int32>::new);
+	private com.github.peterrk.protocache.StrDict<com.github.peterrk.protocache.Int32> _index = null;
+	public com.github.peterrk.protocache.StrDict<com.github.peterrk.protocache.Int32> getIndex() {
+		if (_index == null) {
+			_index = getField(FIELD_index, com.github.peterrk.protocache.StrDict<com.github.peterrk.protocache.Int32>::new);
+		}
+		return _index;
 	}
-	public com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Str,com.github.peterrk.protocache.Int32> getIndex(com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Str,com.github.peterrk.protocache.Int32> unit) {
-		return fastGetField(FIELD_index, unit);
+	private com.github.peterrk.protocache.Int32Dict<com.github.peterrk.protocache.pc.Small> _objects = null;
+	public com.github.peterrk.protocache.Int32Dict<com.github.peterrk.protocache.pc.Small> getObjects() {
+		if (_objects == null) {
+			_objects = getField(FIELD_objects, com.github.peterrk.protocache.Int32Dict<com.github.peterrk.protocache.pc.Small>::new);
+		}
+		return _objects;
 	}
-	public com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Int32,com.github.peterrk.protocache.pc.Small> getObjects() {
-		return getField(FIELD_objects, com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Int32,com.github.peterrk.protocache.pc.Small>::new);
-	}
-	public com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Int32,com.github.peterrk.protocache.pc.Small> getObjects(com.github.peterrk.protocache.Dictionary<com.github.peterrk.protocache.Int32,com.github.peterrk.protocache.pc.Small> unit) {
-		return fastGetField(FIELD_objects, unit);
-	}
+	private com.github.peterrk.protocache.pc.Vec2D _matrix = null;
 	public com.github.peterrk.protocache.pc.Vec2D getMatrix() {
-		return getField(FIELD_matrix, com.github.peterrk.protocache.pc.Vec2D::new);
+		if (_matrix == null) {
+			_matrix = getField(FIELD_matrix, com.github.peterrk.protocache.pc.Vec2D::new);
+		}
+		return _matrix;
 	}
-	public com.github.peterrk.protocache.pc.Vec2D getMatrix(com.github.peterrk.protocache.pc.Vec2D unit) {
-		return fastGetField(FIELD_matrix, unit);
-	}
+	private com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap> _vector = null;
 	public com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap> getVector() {
-		return getField(FIELD_vector, com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap>::new);
+		if (_vector == null) {
+			_vector = getField(FIELD_vector, com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap>::new);
+		}
+		return _vector;
 	}
-	public com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap> getVector(com.github.peterrk.protocache.Array<com.github.peterrk.protocache.pc.ArrMap> unit) {
-		return fastGetField(FIELD_vector, unit);
-	}
+	private com.github.peterrk.protocache.pc.ArrMap _arrays = null;
 	public com.github.peterrk.protocache.pc.ArrMap getArrays() {
-		return getField(FIELD_arrays, com.github.peterrk.protocache.pc.ArrMap::new);
+		if (_arrays == null) {
+			_arrays = getField(FIELD_arrays, com.github.peterrk.protocache.pc.ArrMap::new);
+		}
+		return _arrays;
 	}
-	public com.github.peterrk.protocache.pc.ArrMap getArrays(com.github.peterrk.protocache.pc.ArrMap unit) {
-		return fastGetField(FIELD_arrays, unit);
-	}
-}
+
+	@Override
+	public void init(byte[] data, int offset) {
+		_str = null;
+		_data = null;
+		_object = null;
+		_i32v = null;
+		_u64v = null;
+		_strv = null;
+		_datav = null;
+		_f32v = null;
+		_f64v = null;
+		_flags = null;
+		_objectv = null;
+		_index = null;
+		_objects = null;
+		_matrix = null;
+		_vector = null;
+		_arrays = null;
+		super.init(data, offset);
+	}}

@@ -86,29 +86,29 @@ public class ProtoCacheTest {
 
         Array<Small> objv = root.getObjectv();
         Assertions.assertEquals(objv.size(), 3);
-        Assertions.assertEquals(objv.get(0, Small::new).getI32(), 1);
-        Assertions.assertTrue(objv.get(1, Small::new).getFlag());
-        Assertions.assertEquals(objv.get(2, Small::new).getStr(), "good luck!");
+        Assertions.assertEquals(objv.fastGet(0, leaf).getI32(), 1);
+        Assertions.assertTrue(objv.fastGet(1, leaf).getFlag());
+        Assertions.assertEquals(objv.fastGet(2, leaf).getStr(), "good luck!");
 
         Assertions.assertFalse(root.hasField(Main.FIELD_t_i32));
 
-        Dictionary<Str, Int32> map1 = root.getIndex();
+        Int32 i32 = new Int32();
+        StrDict<Int32> map1 = root.getIndex();
         Assertions.assertEquals(map1.size(), 6);
-        Int32 val1 = map1.find(new Str("abc-1"), Int32::new);
+        Int32 val1 = map1.find("abc-1", Int32::new);
         Assertions.assertNotNull(val1);
         Assertions.assertEquals(val1.get(), 1);
-        val1 = map1.find(new Str("abc-2"), Int32::new);
+        val1 = map1.fastFind("abc-2", i32);
         Assertions.assertNotNull(val1);
         Assertions.assertEquals(val1.get(), 2);
-        Assertions.assertNull(map1.find(new Str("abc-3"), Int32::new));
-        Assertions.assertNull(map1.find(new Str("abc-4"), Int32::new));
+        Assertions.assertNull(map1.fastFind("abc-3", i32));
+        Assertions.assertNull(map1.find("abc-4", Int32::new));
 
-        Dictionary<Int32, Small> map2 = root.getObjects();
+        Int32Dict<Small> map2 = root.getObjects();
         for (int i = 0; i < map2.size(); i++) {
-            Int32 key = map2.key(i, Int32::new);
-            Assertions.assertNotEquals(key.get(), 0);
-            Small value = map2.value(i, Small::new);
-            Assertions.assertEquals(key.get(), value.getI32());
+            int key = map2.key(i);
+            Assertions.assertNotEquals(key, 0);
+            Assertions.assertEquals(key, map2.fastGetValue(i, leaf).getI32());
         }
 
         Vec2D matrix = root.getMatrix();
@@ -120,14 +120,14 @@ public class ProtoCacheTest {
         Array<ArrMap> vector = root.getVector();
         Assertions.assertEquals(vector.size(), 2);
         ArrMap map3 = vector.get(0, ArrMap::new);
-        ArrMap.Array val3 = map3.find(new Str("lv2"), ArrMap.Array::new);
+        ArrMap.Array val3 = map3.find("lv2", ArrMap.Array::new);
         Assertions.assertNotNull(val3);
         Assertions.assertEquals(val3.size(), 2);
         Assertions.assertEquals(val3.get(0), 21);
         Assertions.assertEquals(val3.get(1), 22);
 
         ArrMap map4 = root.getArrays();
-        ArrMap.Array val4 = map4.find(new Str("lv5"), ArrMap.Array::new);
+        ArrMap.Array val4 = map4.find("lv5", ArrMap.Array::new);
         Assertions.assertEquals(val4.size(), 2);
         Assertions.assertEquals(val4.get(0), 51);
         Assertions.assertEquals(val4.get(1), 52);

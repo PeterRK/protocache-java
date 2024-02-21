@@ -24,16 +24,20 @@ interface IUnit {
     }
 
     abstract class Complex implements IUnit {
+        static int jump(byte[] data, int offset) {
+            int mark = Data.getInt(data, offset);
+            if ((mark & 3) == 3) {
+                offset += (mark & 0xfffffffc);
+            }
+            return offset;
+        }
+
         public void initByField(byte[] data, int offset) {
             if (offset < 0) {
                 init(null, offset);
                 return;
             }
-            int mark = Data.getInt(data, offset);
-            if ((mark & 3) == 3) {
-                offset += (mark & 0xfffffffc);
-            }
-            init(data, offset);
+            init(data, jump(data, offset));
         }
     }
 }

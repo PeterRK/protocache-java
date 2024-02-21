@@ -12,5 +12,16 @@ public final class Small extends com.github.peterrk.protocache.Message {
 
 	public int getI32() { return getInt32(FIELD_i32); }
 	public boolean getFlag() { return getBool(FIELD_flag); }
-	public String getStr() { return getStr(FIELD_str); }
-}
+	private String _str = null;
+	public String getStr() {
+		if (_str == null) {
+			_str = getStr(FIELD_str);
+		}
+		return _str;
+	}
+
+	@Override
+	public void init(byte[] data, int offset) {
+		_str = null;
+		super.init(data, offset);
+	}}

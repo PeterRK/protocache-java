@@ -15,6 +15,7 @@ class Hash {
     public static V128 hash128(byte[] data) {
         return hash128(data, 0);
     }
+
     public static V128 hash128(byte[] data, long seed) {
         long magic = 0xdeadbeefdeadbeefL;
         State s = new State(seed, seed, magic, magic);

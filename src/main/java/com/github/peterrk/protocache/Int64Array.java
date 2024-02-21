@@ -4,7 +4,7 @@
 
 package com.github.peterrk.protocache;
 
-public final class Int64Array extends IUnit.Complex {
+public class Int64Array extends IUnit.Complex {
     private int size;
     private byte[] data;
     private int bodyOffset = -1;

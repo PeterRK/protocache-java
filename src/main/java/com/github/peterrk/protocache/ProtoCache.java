@@ -11,7 +11,10 @@ import com.google.protobuf.Message;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 
 public class ProtoCache {
     public static byte[] serialize(Message message) {
@@ -471,13 +474,13 @@ public class ProtoCache {
             byte[] key = outKeys[i];
             byte[] value = outValues[i];
             if (key.length > k.width) {
-                Data.putInt(out, off,(tail - off) | 3);
+                Data.putInt(out, off, (tail - off) | 3);
                 System.arraycopy(key, 0, out, tail, key.length);
                 tail += key.length;
             }
             off += k.width;
             if (value.length > v.width) {
-                Data.putInt(out, off,(tail - off) | 3);
+                Data.putInt(out, off, (tail - off) | 3);
                 System.arraycopy(value, 0, out, tail, value.length);
                 tail += value.length;
             }
@@ -539,8 +542,7 @@ public class ProtoCache {
 
         @Override
         public byte[] next() {
-            Data.View view = Bytes.extract(iterator.next(), 0);
-            return Arrays.copyOfRange(view.data, view.offset, view.limit);
+            return Bytes.extract(iterator.next(), 0);
         }
     }
 }

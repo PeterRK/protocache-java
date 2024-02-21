@@ -20,7 +20,7 @@ public class PerfectHash {
     }
 
     PerfectHash(byte[] data, int offset) {
-        if (data.length-offset < 4) {
+        if (data.length - offset < 4) {
             throw new IllegalArgumentException("too short data");
         }
         this.data = data;
@@ -41,7 +41,7 @@ public class PerfectHash {
             n += n / 8;
         }
         byteSize = n + 8;
-        if (data.length-offset < byteSize) {
+        if (data.length - offset < byteSize) {
             throw new IllegalArgumentException("too short data");
         }
     }
@@ -124,13 +124,13 @@ public class PerfectHash {
                 switch (width) {
                     case 4:
                         for (int i = 0; i < bmsz / 8; i++) {
-                            Data.putInt(data, tableOffset+i*4, cnt);
+                            Data.putInt(data, tableOffset + i * 4, cnt);
                             cnt += countValidSlot(Data.getLong(data, 8 + i * 8));
                         }
                         break;
                     case 2:
                         for (int i = 0; i < bmsz / 8; i++) {
-                            Data.putShort(data, tableOffset+i*2, (short) cnt);
+                            Data.putShort(data, tableOffset + i * 2, (short) cnt);
                             cnt += countValidSlot(Data.getLong(data, 8 + i * 8));
                         }
                         break;
@@ -172,7 +172,7 @@ public class PerfectHash {
     }
 
     public Data.View getData() {
-        return new Data.View(data, offset, offset+byteSize);
+        return new Data.View(data, offset, offset + byteSize);
     }
 
     public int getSize() {
@@ -183,7 +183,7 @@ public class PerfectHash {
         if (size < 2) {
             return 0;
         }
-        int[] slots = hash(Data.getInt(data, offset+4), section, key);
+        int[] slots = hash(Data.getInt(data, offset + 4), section, key);
 
         int bitmapOffset = offset + 8;
         int m = bit2(data, bitmapOffset, slots[0]) + bit2(data, bitmapOffset, slots[1]) + bit2(data, bitmapOffset, slots[2]);
@@ -202,7 +202,7 @@ public class PerfectHash {
             off = (int) data[tableOffset + a] & 0xff;
         }
 
-        long block = Data.getLong(data,bitmapOffset + a * 8);
+        long block = Data.getLong(data, bitmapOffset + a * 8);
         block |= 0xffffffffffffffffL << (b << 1);
         return off + countValidSlot(block);
     }

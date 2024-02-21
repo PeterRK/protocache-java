@@ -9,7 +9,7 @@ import java.util.function.Supplier;
 public class Array<T extends IUnit.Complex> extends IUnit.Complex {
     private int size;
     private int width;
-    private byte[] data;
+    protected byte[] data;
     private int bodyOffset = -1;
 
     @Override
@@ -35,14 +35,16 @@ public class Array<T extends IUnit.Complex> extends IUnit.Complex {
         return size;
     }
 
+    protected int fieldOffset(int idx) {
+        return bodyOffset + idx * width;
+    }
+
     public T get(int idx, Supplier<T> supplier) {
-        int fieldOffset = bodyOffset + idx * width;
-        return IUnit.NewByField(data, fieldOffset, supplier);
+        return IUnit.NewByField(data, fieldOffset(idx), supplier);
     }
 
     public T fastGet(int idx, T unit) {
-        int fieldOffset = bodyOffset + idx * width;
-        unit.initByField(data, fieldOffset);
+        unit.initByField(data, fieldOffset(idx));
         return unit;
     }
 }

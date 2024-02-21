@@ -141,6 +141,7 @@ public class Message extends IUnit.Complex {
     public <T extends IUnit.Complex> T getField(int id, Supplier<T> supplier) {
         return IUnit.NewByField(data, getFieldOffset(id), supplier);
     }
+
     public <T extends IUnit.Complex> T fastGetField(int id, T unit) {
         unit.initByField(data, getFieldOffset(id));
         return unit;

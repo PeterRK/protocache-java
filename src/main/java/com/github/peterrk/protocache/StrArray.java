@@ -4,13 +4,8 @@
 
 package com.github.peterrk.protocache;
 
-public final class StrArray extends Array<Str> {
-    private Str tmp = null;
-
+public class StrArray extends Array<Str> {
     public String get(int idx) {
-        if (tmp == null) {
-            tmp = new Str();
-        }
-        return fastGet(idx, tmp).get();
+        return Str.extract(data, Complex.jump(data, fieldOffset(idx)));
     }
 }

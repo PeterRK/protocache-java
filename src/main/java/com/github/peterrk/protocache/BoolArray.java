@@ -5,18 +5,33 @@
 package com.github.peterrk.protocache;
 
 public class BoolArray extends IUnit.Complex {
-    private Data.View view = null;
+    private byte[] data;
+    private int bodyOffset = -1;
     private int cnt = 0;
 
     @Override
     public void init(byte[] data, int offset) {
         if (offset < 0) {
             cnt = 0;
-            view = null;
+            this.data = null;
+            this.bodyOffset = -1;
             return;
         }
-        view = Bytes.extract(data, offset);
-        cnt = view.size();
+        this.data = data;
+        int mark = 0;
+        for (int sft = 0; sft < 32; sft += 7) {
+            byte b = data[offset++];
+            mark |= ((int) b & 0x7f) << sft;
+            if ((b & 0x80) == 0) {
+                if ((mark & 3) != 0) {
+                    break;
+                }
+                cnt = mark >>> 2;
+                bodyOffset = offset;
+                return;
+            }
+        }
+        throw new IllegalArgumentException("illegal bool array");
     }
 
     public int size() {
@@ -24,6 +39,6 @@ public class BoolArray extends IUnit.Complex {
     }
 
     public boolean get(int idx) {
-        return view.data[view.offset+idx] != 0;
+        return data[bodyOffset + idx] != 0;
     }
 }

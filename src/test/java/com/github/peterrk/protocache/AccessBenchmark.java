@@ -286,15 +286,13 @@ public class AccessBenchmark {
 
     @State(Scope.Thread)
     public static class ProtoCacheState {
+        private final Int32 tmpI32 = new Int32();
+        private final com.github.peterrk.protocache.pc.Small tmpSmall = new com.github.peterrk.protocache.pc.Small();
+        private final com.github.peterrk.protocache.pc.ArrMap tmpArrMap = new com.github.peterrk.protocache.pc.ArrMap();
+        private final com.github.peterrk.protocache.pc.ArrMap.Array tmpArrMapArray = new com.github.peterrk.protocache.pc.ArrMap.Array();
+        private final com.github.peterrk.protocache.pc.Vec2D.Vec1D tmpVec2DVec1D = new com.github.peterrk.protocache.pc.Vec2D.Vec1D();
         Junk junk = new Junk();
         byte[] raw;
-
-        private Str tmpStr = new Str();
-        private Int32 tmpI32 = new Int32();
-        private com.github.peterrk.protocache.pc.Small tmpSmall = new com.github.peterrk.protocache.pc.Small();
-        private com.github.peterrk.protocache.pc.ArrMap tmpArrMap = new com.github.peterrk.protocache.pc.ArrMap();
-        private com.github.peterrk.protocache.pc.ArrMap.Array tmpArrMapArray = new com.github.peterrk.protocache.pc.ArrMap.Array();
-        private com.github.peterrk.protocache.pc.Vec2D.Vec1D tmpVec2DVec1D = new com.github.peterrk.protocache.pc.Vec2D.Vec1D();
 
         @Setup(value = Level.Trial)
         public void setup() throws IOException {
@@ -318,7 +316,7 @@ public class AccessBenchmark {
             junk.consume(root.getData());
             junk.consume(root.getF32());
             junk.consume(root.getF64());
-            traverse(root.getObject(tmpSmall));
+            traverse(root.getObject());
             Int32Array i32v = root.getI32V();
             for (int i = 0; i < i32v.size(); i++) {
                 junk.consume(i32v.get(i));
@@ -355,15 +353,15 @@ public class AccessBenchmark {
             junk.consume(root.getTI64());
             junk.consume(root.getTS64());
 
-            Dictionary<Str, Int32> map1 = root.getIndex();
+            StrDict<Int32> map1 = root.getIndex();
             for (int i = 0; i < map1.size(); i++) {
-                junk.consume(map1.fastGetKey(i, tmpStr).get());
+                junk.consume(map1.key(i));
                 junk.consume(map1.fastGetValue(i, tmpI32).get());
             }
 
-            Dictionary<Int32, com.github.peterrk.protocache.pc.Small> map2 = root.getObjects();
+            Int32Dict<com.github.peterrk.protocache.pc.Small> map2 = root.getObjects();
             for (int i = 0; i < map2.size(); i++) {
-                junk.consume(map2.fastGetKey(i, tmpI32).get());
+                junk.consume(map2.key(i));
                 traverse(map2.fastGetValue(i, tmpSmall));
             }
 
@@ -373,7 +371,7 @@ public class AccessBenchmark {
             for (int i = 0; i < vec.size(); i++) {
                 traverse(vec.fastGet(i, tmpArrMap));
             }
-            traverse(root.getArrays(tmpArrMap));
+            traverse(root.getArrays());
         }
 
         void traverse(com.github.peterrk.protocache.pc.Small root) {
@@ -384,7 +382,7 @@ public class AccessBenchmark {
 
         void traverse(com.github.peterrk.protocache.pc.ArrMap map) {
             for (int i = 0; i < map.size(); i++) {
-                junk.consume(map.fastGetKey(i, tmpStr).get());
+                junk.consume(map.key(i));
                 map.fastGetValue(i, tmpArrMapArray);
                 for (int j = 0; j < tmpArrMapArray.size(); j++) {
                     junk.consume(tmpArrMapArray.get(j));
@@ -505,19 +503,18 @@ public class AccessBenchmark {
 
     @State(Scope.Thread)
     public static class FlatbuffersState {
+        private final com.google.flatbuffers.ByteVector tmpByteVector = new com.google.flatbuffers.ByteVector();
+        private final com.github.peterrk.protocache.fb.Bytes tmpBytes = new com.github.peterrk.protocache.fb.Bytes();
+        private final com.github.peterrk.protocache.fb.Small tmpSmall = new com.github.peterrk.protocache.fb.Small();
+        private final com.github.peterrk.protocache.fb.Map1Entry tmpMap1Entry = new com.github.peterrk.protocache.fb.Map1Entry();
+        private final com.github.peterrk.protocache.fb.Map2Entry tmpMap2Entry = new com.github.peterrk.protocache.fb.Map2Entry();
+        private final com.github.peterrk.protocache.fb.ArrMapEntry tmpArrMapEntry = new com.github.peterrk.protocache.fb.ArrMapEntry();
+        private final com.github.peterrk.protocache.fb.Array tmpArray = new com.github.peterrk.protocache.fb.Array();
+        private final com.github.peterrk.protocache.fb.Vec1D tmpVec1D = new com.github.peterrk.protocache.fb.Vec1D();
+        private final com.github.peterrk.protocache.fb.Vec2D tmpVec2D = new com.github.peterrk.protocache.fb.Vec2D();
+        private final com.github.peterrk.protocache.fb.ArrMap tmpArrMap = new com.github.peterrk.protocache.fb.ArrMap();
         Junk junk;
         byte[] raw;
-
-        private com.google.flatbuffers.ByteVector tmpByteVector = new com.google.flatbuffers.ByteVector();
-        private com.github.peterrk.protocache.fb.Bytes tmpBytes = new com.github.peterrk.protocache.fb.Bytes();
-        private com.github.peterrk.protocache.fb.Small tmpSmall = new com.github.peterrk.protocache.fb.Small();
-        private com.github.peterrk.protocache.fb.Map1Entry tmpMap1Entry = new com.github.peterrk.protocache.fb.Map1Entry();
-        private com.github.peterrk.protocache.fb.Map2Entry tmpMap2Entry = new com.github.peterrk.protocache.fb.Map2Entry();
-        private com.github.peterrk.protocache.fb.ArrMapEntry tmpArrMapEntry = new com.github.peterrk.protocache.fb.ArrMapEntry();
-        private com.github.peterrk.protocache.fb.Array tmpArray = new com.github.peterrk.protocache.fb.Array();
-        private com.github.peterrk.protocache.fb.Vec1D tmpVec1D = new com.github.peterrk.protocache.fb.Vec1D();
-        private com.github.peterrk.protocache.fb.Vec2D tmpVec2D = new com.github.peterrk.protocache.fb.Vec2D();
-        private com.github.peterrk.protocache.fb.ArrMap tmpArrMap = new com.github.peterrk.protocache.fb.ArrMap();
 
         @Setup(value = Level.Trial)
         public void setup() throws IOException {

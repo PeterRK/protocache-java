@@ -6,16 +6,24 @@ package com.github.peterrk.protocache;
 
 import java.nio.charset.StandardCharsets;
 
-public final class Str extends IUnit.Complex implements IKey {
+public final class Str extends IUnit.Complex {
     final static String empty = "";
-    private byte[] raw = null;
     private String value = null;
 
-    public Str() {
-    }
-
-    public Str(String value) {
-        this.value = value;
+    static String extract(byte[] data, int offset) {
+        int mark = 0;
+        for (int sft = 0; sft < 32; sft += 7) {
+            byte b = data[offset++];
+            mark |= ((int) b & 0x7f) << sft;
+            if ((b & 0x80) == 0) {
+                if ((mark & 3) != 0) {
+                    break;
+                }
+                int size = mark >>> 2;
+                return new String(data, offset, size, StandardCharsets.UTF_8);
+            }
+        }
+        throw new IllegalArgumentException("illegal string");
     }
 
     public String get() {
@@ -26,29 +34,8 @@ public final class Str extends IUnit.Complex implements IKey {
     public void init(byte[] data, int offset) {
         if (offset < 0) {
             value = empty;
-            raw = Bytes.empty;
             return;
         }
-        Data.View view = Bytes.extract(data, offset);
-        value = new String(view.data, view.offset, view.size(), StandardCharsets.UTF_8);
-        raw = null;
-    }
-
-    @Override
-    public byte[] bytes() {
-        if (raw == null) {
-            raw = value.getBytes(StandardCharsets.UTF_8);
-        }
-        return raw;
-    }
-
-    @Override
-    public boolean equalToField(byte[] data, int offset) {
-        int mark = Data.getInt(data, offset);
-        if ((mark & 3) == 3) {
-            offset += (mark & 0xfffffffc);
-        }
-        Data.View unit = Bytes.extract(data, offset);
-        return get().equals(new String(unit.data, unit.offset, unit.size(), StandardCharsets.UTF_8));
+        value = extract(data, offset);
     }
 }
