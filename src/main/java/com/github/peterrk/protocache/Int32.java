@@ -5,9 +5,9 @@
 package com.github.peterrk.protocache;
 
 public final class Int32 extends IUnit.Simple {
-    private float value;
+    private int value;
 
-    public float get() {
+    public int get() {
         return value;
     }
 

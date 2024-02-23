@@ -5,9 +5,9 @@
 package com.github.peterrk.protocache;
 
 public final class Int64 extends IUnit.Simple {
-    private double value;
+    private long value;
 
-    public double get() {
+    public long get() {
         return value;
     }
 

@@ -11,8 +11,16 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+/*
+import org.openjdk.jmh.profile.AsyncProfiler;
+import org.openjdk.jmh.runner.options.Options;
+import org.openjdk.jmh.runner.options.OptionsBuilder;
+import org.openjdk.jmh.runner.Runner;
+*/
 
 @Fork(value = 1)
 @BenchmarkMode(Mode.AverageTime)
@@ -23,6 +31,14 @@ public class AccessBenchmark {
 
     public static void main(String[] args) throws Exception {
         org.openjdk.jmh.Main.main(args);
+/*
+        Options opt = new OptionsBuilder()
+                .include(AccessBenchmark.class.getSimpleName())
+                .addProfiler(AsyncProfiler.class)
+                .build();
+
+        new Runner(opt).run();
+ */
     }
 
     @Benchmark
@@ -69,10 +85,12 @@ public class AccessBenchmark {
             byte[] tmp = Files.readAllBytes(Paths.get("test-fury.json"));
             Gson gson = new Gson();
             com.github.peterrk.protocache.fr.Main root = gson.fromJson(new String(tmp, StandardCharsets.UTF_8), com.github.peterrk.protocache.fr.Main.class);
+            wash(root);
 
             fury = Fury.builder().withLanguage(Language.XLANG).build();
             fury.register(com.github.peterrk.protocache.fr.Small.class, "test.Small");
             fury.register(com.github.peterrk.protocache.fr.Main.class, "test.Main");
+            fury.register(java.util.Map.class, "java.util.Map");
 
             raw = fury.serialize(root);
             //fury.deserialize(raw);
@@ -90,10 +108,12 @@ public class AccessBenchmark {
             byte[] tmp = Files.readAllBytes(Paths.get("test-fury.json"));
             Gson gson = new Gson();
             com.github.peterrk.protocache.fr.Main root = gson.fromJson(new String(tmp, StandardCharsets.UTF_8), com.github.peterrk.protocache.fr.Main.class);
+            wash(root);
 
             fury = Fury.builder().withLanguage(Language.JAVA).build();
             fury.register(com.github.peterrk.protocache.fr.Small.class);
             fury.register(com.github.peterrk.protocache.fr.Main.class);
+            fury.register(java.util.Map.class);
 
             raw = fury.serialize(root);
             //fury.deserialize(raw);
@@ -124,6 +144,15 @@ public class AccessBenchmark {
         public void reset() {
             //junk.print();
             junk.reset();
+        }
+
+        public static void wash(com.github.peterrk.protocache.fr.Main root) {
+            root.index = new HashMap<>(root.index);
+            root.objects = new HashMap<>(root.objects);
+            for (int i = 0; i < root.vector.length; i++) {
+                root.vector[i] = new HashMap<>(root.vector[i]);
+            }
+            root.arrays = new HashMap<>(root.arrays);
         }
 
         void traverse(com.github.peterrk.protocache.fr.Main root) {

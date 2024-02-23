@@ -1,7 +1,6 @@
 package com.github.peterrk.protocache.fr;
 
-import java.util.HashMap;
-import java.util.TreeMap;
+import java.util.Map;
 
 public class Main {
     public int i32;
@@ -29,9 +28,9 @@ public class Main {
     public long t_u64;
     public long t_i64;
     public long t_s64;
-    public TreeMap<String,Integer> index;  //FIXME: HashMap doesn't work
-    public TreeMap<Integer,Small> objects;
+    public Map<String, Integer> index;
+    public Map<Integer, Small> objects;
     public float[][] matrix;
-    public TreeMap<String,float[]>[] vector;
-    public TreeMap<String,float[]> arrays;
+    public Map<String, float[]>[] vector;
+    public Map<String, float[]> arrays;
 }
