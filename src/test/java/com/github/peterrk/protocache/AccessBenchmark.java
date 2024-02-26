@@ -203,6 +203,11 @@ public class AccessBenchmark {
                     junk.consume(v);
                 }
             }
+            if (root.flags != null) {
+                for (boolean v : root.flags) {
+                    junk.consume(v);
+                }
+            }
             if (root.objectv != null) {
                 for (com.github.peterrk.protocache.fr.Small v : root.objectv) {
                     traverse(v);
@@ -370,6 +375,10 @@ public class AccessBenchmark {
             for (int i = 0; i < f64v.size(); i++) {
                 junk.consume(f64v.get(i));
             }
+            BoolArray flags = root.getFlags();
+            for (int i = 0; i < flags.size(); i++) {
+                junk.consume(flags.get(i));
+            }
             Array<com.github.peterrk.protocache.pc.Small> objv = root.getObjectv();
             for (int i = 0; i < objv.size(); i++) {
                 traverse(objv.fastGet(i, tmpSmall));
@@ -475,6 +484,9 @@ public class AccessBenchmark {
             }
             for (int i = 0; i < root.getF64VCount(); i++) {
                 junk.consume(root.getF64V(i));
+            }
+            for (int i = 0; i < root.getFlagsCount(); i++) {
+                junk.consume(root.getFlags(i));
             }
             for (int i = 0; i < root.getObjectvCount(); i++) {
                 traverse(root.getObjectv(i));
@@ -602,6 +614,9 @@ public class AccessBenchmark {
             }
             for (int i = 0; i < root.f64vLength(); i++) {
                 junk.consume(root.f64v(i));
+            }
+            for (int i = 0; i < root.flagsLength(); i++) {
+                junk.consume(root.flags(i));
             }
             for (int i = 0; i < root.objectvLength(); i++) {
                 traverse(root.objectv(tmpSmall, i));

@@ -194,7 +194,7 @@ public class ProtoCache {
                 });
             case FLOAT:
                 return serializeScalar(value, 1, (buffer, v) -> {
-                    buffer.putFloat((float) v);
+                    buffer.putFloat((Float) v);
                 });
             case FIXED64:
             case UINT64:
