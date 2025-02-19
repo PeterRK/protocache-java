@@ -4,8 +4,8 @@ Alternative flat binary format for [Protobuf schema](https://protobuf.dev/progra
 
 |  | Protobuf | ProtoCache | FlatBuffers | Fury | Fury-Java |
 |:-------|----:|----:|----:|----:|----:|
-| Data Size | 574B | 780B | 1296B | 1041B | 588B |
-| Decode + Traverse | 4203ns | 1506ns | 2186ns | 4255ns | 1987ns |
+| Data Size | 574B | 780B | 1296B | 989B | 565B |
+| Decode + Traverse | 2624ns | 937ns | 1280ns | 2646ns | 1252ns |
 
 Without zero-copy technique, the Java version is slow. [Fury](https://fury.apache.org) claims better performace than Protobuf and FlatBuffers, but our benchmark shows that's not truth unless giving up cross-language compatibility.
 

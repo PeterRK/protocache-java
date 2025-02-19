@@ -1,8 +1,8 @@
 package com.github.peterrk.protocache;
 
 import com.google.gson.Gson;
-import io.fury.Fury;
-import io.fury.config.Language;
+import org.apache.fury.Fury;
+import org.apache.fury.config.Language;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
