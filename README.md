@@ -24,7 +24,7 @@ raw = ProtoCache.serialize(pb);
 
 pc.Main root = new pc.Main(new DataView(raw));
 ```
-Serializing a protobuf message with protocache.Serialize is the only way to create protocache binary at present. It's easy to access by wrapping the data with generated code.
+Serializing a protobuf message with `protocache.Serialize` is the only way to create protocache binary at present. It's easy to access by wrapping the data with generated code.
 
 ## Reflection
 TODO

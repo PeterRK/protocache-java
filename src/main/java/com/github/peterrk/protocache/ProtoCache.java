@@ -19,26 +19,33 @@ import java.util.List;
 public class ProtoCache {
     public static byte[] serialize(Message message) {
         Descriptors.Descriptor descriptor = message.getDescriptorForType();
-
-        ArrayList<Descriptors.FieldDescriptor> temp = new ArrayList<>(descriptor.getFields());
-        if (temp.isEmpty()) {
+        List<Descriptors.FieldDescriptor> originFields = descriptor.getFields();
+        if (originFields.isEmpty()) {
             throw new IllegalArgumentException(String.format("no fields in %s", descriptor.getFullName()));
         }
-
-        temp.sort(Comparator.comparingInt(Descriptors.FieldDescriptor::getNumber));
-        int maxId = temp.get(temp.size() - 1).getNumber();
+        int maxId = 1;
+        for (Descriptors.FieldDescriptor field : originFields) {
+            if (field == null || field.getNumber() <= 0) {
+                throw new IllegalArgumentException(String.format("illegal field in %s", descriptor.getFullName()));
+            }
+            if (maxId < field.getNumber()) {
+                maxId = field.getNumber();
+            }
+        }
         if (maxId > (12 + 25 * 255)) {
             throw new IllegalArgumentException(String.format("too many fields in %s", descriptor.getFullName()));
         }
-        if ((maxId - temp.size()) > 6 && maxId > temp.size() * 2) {
+        if ((maxId - originFields.size()) > 6 && maxId > originFields.size() * 2) {
             throw new IllegalArgumentException(String.format("message %s is too sparse", descriptor.getFullName()));
         }
         Descriptors.FieldDescriptor[] fields = new Descriptors.FieldDescriptor[maxId];
-        for (int i = 0; i < temp.size(); i++) {
-            Descriptors.FieldDescriptor one = temp.get(i);
-            fields[one.getNumber() - 1] = one;
+        for (Descriptors.FieldDescriptor field : originFields) {
+            int j = field.getNumber() - 1;
+            if (fields[j] != null) {
+                throw new IllegalArgumentException(String.format("duplicate field id %d in %s", field.getNumber(), descriptor.getFullName()));
+            }
+            fields[j] = field;
         }
-
         ArrayList<byte[]> parts = new ArrayList<>(fields.length);
         for (Descriptors.FieldDescriptor field : fields) {
             if (field == null) {
