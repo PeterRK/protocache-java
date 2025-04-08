@@ -134,6 +134,25 @@ public class ProtoCacheTest {
     }
 
     @Test
+    public void compressTest() {
+        byte[] raw = null;
+        try {
+            //raw = Files.readAllBytes(Paths.get("test.pc"));
+            raw = Files.readAllBytes(Paths.get("test.json"));
+            com.github.peterrk.protocache.pb.Main.Builder builder = com.github.peterrk.protocache.pb.Main.newBuilder();
+            JsonFormat.parser().ignoringUnknownFields().merge(new String(raw, StandardCharsets.UTF_8), builder);
+            raw = ProtoCache.serialize(builder.build());
+        } catch (IOException e) {
+            Assertions.fail();
+        }
+
+        byte[] compressed = Utils.compress(raw);
+        Assertions.assertTrue(compressed.length != 0 && compressed.length < raw.length);
+        byte[] back = Utils.decompress(compressed);
+        Assertions.assertArrayEquals(raw, back);
+    }
+
+    @Test
     public void reflectTest() {
         //TODO
     }
