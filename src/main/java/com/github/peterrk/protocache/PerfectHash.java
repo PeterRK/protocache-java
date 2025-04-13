@@ -217,17 +217,13 @@ public class PerfectHash {
 
     private static class Vertex {
         public int slot;
+        public int prev;
         public int next;
-    }
-
-    private static class Node {
-        public int head;
-        public int size;
     }
 
     private static final class Graph {
         public final Vertex[][] edges;
-        public final Node[] nodes;
+        public final int[] nodes;
 
         public Graph(int size) {
             edges = new Vertex[size][];
@@ -238,10 +234,7 @@ public class PerfectHash {
                 }
             }
             int section = calcSectionSize(size);
-            nodes = new Node[section * 3];
-            for (int i = 0; i < nodes.length; i++) {
-                nodes[i] = new Node();
-            }
+            nodes = new int[section * 3];
         }
 
         private static boolean testAndSet(BitSet book, int pos) {
@@ -253,10 +246,7 @@ public class PerfectHash {
         }
 
         public boolean init(int seed, KeySource src) {
-            for (Node value : nodes) {
-                value.head = -1;
-                value.size = 0;
-            }
+            Arrays.fill(nodes, -1);
             int section = nodes.length / 3;
             int total = src.total();
             src.reset();
@@ -266,11 +256,11 @@ public class PerfectHash {
                 for (int j = 0; j < 3; j++) {
                     Vertex v = edge[j];
                     v.slot = slots[j];
-                    Node node = nodes[v.slot];
-                    v.next = node.head;
-                    node.head = i;
-                    if (++node.size > 50) {
-                        return false;
+                    v.prev = -1;
+                    v.next = nodes[v.slot];
+                    nodes[v.slot] = i;
+                    if (v.next != -1) {
+                        edges[v.next][j].prev = i;
                     }
                 }
             }
@@ -285,7 +275,7 @@ public class PerfectHash {
                 Vertex[] edge = edges[i];
                 for (int j = 0; j < 3; j++) {
                     Vertex v = edge[j];
-                    if (nodes[v.slot].size == 1 && testAndSet(book, i)) {
+                    if (v.prev == -1 && v.next == -1 && testAndSet(book, i)) {
                         free[tail++] = i;
                     }
                 }
@@ -296,19 +286,21 @@ public class PerfectHash {
                 Vertex[] edge = edges[curr];
                 for (int j = 0; j < 3; j++) {
                     Vertex v = edge[j];
-                    Node node = nodes[v.slot];
-                    if (node.head == curr) {
-                        node.head = v.next;
-                    } else {
-                        Vertex u = edges[node.head][j];
-                        while (u.next != curr) {
-                            u = edges[u.next][j];
-                        }
-                        u.next = v.next;
+                    int i = -1;
+                    if (v.prev != -1) {
+                        i = v.prev;
+                        edges[i][j].next = v.next;
                     }
-                    v.next = -1;
-                    if (--node.size == 1 && testAndSet(book, node.head)) {
-                        free[tail++] = node.head;
+                    if (v.next != -1) {
+                        i = v.next;
+                        edges[i][j].prev = v.prev;
+                    }
+                    if (i == -1) {
+                        continue;
+                    }
+                    Vertex u = edges[i][j];
+                    if (u.prev == -1 && v.next == -1 && testAndSet(book, i)) {
+                        free[tail++] = i;
                     }
                 }
             }
