@@ -299,7 +299,7 @@ public class PerfectHash {
                         continue;
                     }
                     Vertex u = edges[i][j];
-                    if (u.prev == -1 && v.next == -1 && testAndSet(book, i)) {
+                    if (u.prev == -1 && u.next == -1 && testAndSet(book, i)) {
                         free[tail++] = i;
                     }
                 }
