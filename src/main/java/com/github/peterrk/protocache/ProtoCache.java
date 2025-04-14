@@ -12,7 +12,6 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 
@@ -195,7 +194,7 @@ public class ProtoCache {
         return out;
     }
 
-    private static <T> byte[] serializeScalar(T value, int width, ByteBufferFiller<T> filler) {
+    private static <T> byte[] serializeScalar(T value, int width, IByteBufferFiller<T> filler) {
         byte[] out = new byte[width * 4];
         ByteBuffer buffer = ByteBuffer.wrap(out).order(ByteOrder.LITTLE_ENDIAN);
         filler.fill(buffer, value);
@@ -358,7 +357,7 @@ public class ProtoCache {
         return new BestArray(sizes[mode], mode + 1);
     }
 
-    private static byte[] serializeObjectList(Message message, Descriptors.FieldDescriptor field, Serializer<Object> serializer) {
+    private static byte[] serializeObjectList(Message message, Descriptors.FieldDescriptor field, ISerializer<Object> serializer) {
         int cnt = message.getRepeatedFieldCount(field);
         byte[][] parts = new byte[cnt][];
         for (int i = 0; i < cnt; i++) {
@@ -397,7 +396,7 @@ public class ProtoCache {
     }
 
     private static byte[] serializeScalarList(Message message, Descriptors.FieldDescriptor field,
-                                              int width, ByteBufferFiller<Object> filler) {
+                                              int width, IByteBufferFiller<Object> filler) {
         int size = message.getRepeatedFieldCount(field);
         if (size >= (1 << 28)) {
             throw new IllegalArgumentException("array size overflow");
@@ -426,7 +425,7 @@ public class ProtoCache {
             values.add(serializeField(valueField, m.getField(valueField)));
         }
 
-        PerfectHash.KeySource reader;
+        PerfectHash.IKeySource reader;
         switch (keyField.getType()) {
             case STRING:
                 reader = new StrReader(keys);
@@ -514,11 +513,11 @@ public class ProtoCache {
         return out;
     }
 
-    private interface ByteBufferFiller<T> {
+    private interface IByteBufferFiller<T> {
         void fill(ByteBuffer buffer, T object);
     }
 
-    private interface Serializer<T> {
+    private interface ISerializer<T> {
         byte[] serialize(T object);
     }
 
@@ -533,7 +532,7 @@ public class ProtoCache {
         }
     }
 
-    private static class SimpleReader implements PerfectHash.KeySource {
+    private static class SimpleReader implements PerfectHash.IKeySource {
         protected final List<byte[]> data;
         protected Iterator<byte[]> iterator;
 

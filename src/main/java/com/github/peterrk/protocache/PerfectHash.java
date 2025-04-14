@@ -93,7 +93,7 @@ public class PerfectHash {
         data[offset + blk] ^= (byte) ((~val & 3) << sft);
     }
 
-    private static byte[] build(KeySource src, int width) {
+    private static byte[] build(IKeySource src, int width) {
         int size = src.total();
         int section = calcSectionSize(size);
         int bmsz = calcBitmapSize(section);
@@ -115,7 +115,8 @@ public class PerfectHash {
         for (int chance = (width == 1) ? 40 : 16; chance >= 0; chance--) {
             int seed = rand.nextInt();
             Data.putInt(data, 4, seed);
-            if (!graph.init(seed, src) || !graph.tear(free, book)) {
+            graph.init(seed, src);
+            if (!graph.tear(free, book)) {
                 continue;
             }
             graph.mapping(free, book, data, bitmap.offset);
@@ -151,7 +152,7 @@ public class PerfectHash {
         throw new RuntimeException("fail to build perfect-hash");
     }
 
-    public static PerfectHash build(KeySource src) {
+    public static PerfectHash build(IKeySource src) {
         int size = src.total();
         if (size < 0 || size > 0xfffffff) {
             throw new IllegalArgumentException("illegal size");
@@ -207,11 +208,9 @@ public class PerfectHash {
         return off + countValidSlot(block);
     }
 
-    public interface KeySource {
+    public interface IKeySource {
         void reset();
-
         int total();
-
         byte[] next();
     }
 
@@ -245,7 +244,7 @@ public class PerfectHash {
             return true;
         }
 
-        public boolean init(int seed, KeySource src) {
+        public void init(int seed, IKeySource src) {
             Arrays.fill(nodes, -1);
             int section = nodes.length / 3;
             int total = src.total();
@@ -264,7 +263,6 @@ public class PerfectHash {
                     }
                 }
             }
-            return true;
         }
 
         public boolean tear(int[] free, BitSet book) {

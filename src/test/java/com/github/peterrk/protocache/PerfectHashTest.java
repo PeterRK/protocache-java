@@ -44,7 +44,7 @@ public class PerfectHashTest {
         test(100000);
     }
 
-    private static final class Reader implements PerfectHash.KeySource {
+    private static final class Reader implements PerfectHash.IKeySource {
         private final byte[][] keys;
         int current = 0;
 
