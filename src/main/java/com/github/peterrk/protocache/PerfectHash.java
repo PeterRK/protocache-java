@@ -115,7 +115,8 @@ public class PerfectHash {
         for (int chance = (width == 1) ? 40 : 16; chance >= 0; chance--) {
             int seed = rand.nextInt();
             Data.putInt(data, 4, seed);
-            if (!graph.init(seed, src) || !graph.tear(free, book)) {
+            graph.init(seed, src);
+            if (!graph.tear(free, book)) {
                 continue;
             }
             graph.mapping(free, book, data, bitmap.offset);
@@ -245,7 +246,7 @@ public class PerfectHash {
             return true;
         }
 
-        public boolean init(int seed, KeySource src) {
+        public void init(int seed, KeySource src) {
             Arrays.fill(nodes, -1);
             int section = nodes.length / 3;
             int total = src.total();
@@ -264,7 +265,6 @@ public class PerfectHash {
                     }
                 }
             }
-            return true;
         }
 
         public boolean tear(int[] free, BitSet book) {
