@@ -134,6 +134,23 @@ public class ProtoCacheTest {
     }
 
     @Test
+    public void aliasTest() {
+        byte[] raw = null;
+        try {
+            raw = Files.readAllBytes(Paths.get("test-alias.json"));
+            com.github.peterrk.protocache.pb.Main.Builder builder = com.github.peterrk.protocache.pb.Main.newBuilder();
+            JsonFormat.parser().ignoringUnknownFields().merge(new String(raw, StandardCharsets.UTF_8), builder);
+            raw = ProtoCache.serialize(builder.build());
+        } catch (IOException e) {
+            Assertions.fail();
+        }
+        Assertions.assertEquals(raw.length, 48);
+        Assertions.assertEquals(Data.getInt(raw, 16), 0xd);
+        Assertions.assertEquals(Data.getInt(raw, 20), 1);
+        Assertions.assertEquals(Data.getInt(raw, 24), 1);
+    }
+
+    @Test
     public void compressTest() {
         byte[] raw = null;
         try {

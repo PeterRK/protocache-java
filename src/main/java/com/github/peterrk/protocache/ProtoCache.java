@@ -68,20 +68,35 @@ public class ProtoCache {
                     parts.add(null);
                     continue;
                 }
-                parts.add(serializeField(field, message.getField(field)));
+                byte[] unit = serializeField(field, message.getField(field));
+                if (unit != null && unit.length == 4
+                        && field.getType() == Descriptors.FieldDescriptor.Type.MESSAGE) {
+                    unit = null;
+                }
+                parts.add(unit);
             }
         }
 
+        if (fields.length == 1 && fields[0].getName().equals("_")) {
+            // trim message wrapper
+            byte[] out = parts.get(0);
+            if (out == null) {
+                out = new byte[4];
+                if (fields[0].isMapField()) {
+                    Data.putInt(out, 0, 5 << 28);
+                } else {
+                    Data.putInt(out, 0, 1);
+                }
+            }
+            return out;
+        }
         while (!parts.isEmpty() && parts.get(parts.size() - 1) == null) {
             parts.remove(parts.size() - 1);
         }
         if (parts.isEmpty()) {
             byte[] out = new byte[4];
-            ByteBuffer.wrap(out).order(ByteOrder.LITTLE_ENDIAN).putInt(0);
+            Data.putInt(out, 0, 0);
             return out;
-        }
-        if (fields.length == 1 && fields[0].getName().equals("_")) {
-            return parts.get(0);    // trim message wrapper
         }
 
         int section = (parts.size() + 12) / 25;
