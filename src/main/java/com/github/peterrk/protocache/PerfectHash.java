@@ -105,7 +105,7 @@ public class PerfectHash {
 
         Graph graph = new Graph(size);
         int[] free = new int[size];
-        BitSet book = new BitSet(size);
+        BitSet book = new BitSet(section*3);
 
         Data.View bitmap = new Data.View(data, 8);
         int tableOffset = 8 + bmsz;
