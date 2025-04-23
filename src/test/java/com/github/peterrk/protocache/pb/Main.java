@@ -40,6 +40,7 @@ private static final long serialVersionUID = 0L;
     flags_ = emptyBooleanList();
     objectv_ = java.util.Collections.emptyList();
     vector_ = java.util.Collections.emptyList();
+    modev_ = emptyIntList();
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -813,6 +814,64 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
     return arrays_ == null ? com.github.peterrk.protocache.pb.ArrMap.getDefaultInstance() : arrays_;
   }
 
+  public static final int MODEV_FIELD_NUMBER = 32;
+  @SuppressWarnings("serial")
+  private com.google.protobuf.Internal.IntList modev_;
+  private static final com.google.protobuf.Internal.IntListAdapter.IntConverter<
+      com.github.peterrk.protocache.pb.Mode> modev_converter_ =
+          new com.google.protobuf.Internal.IntListAdapter.IntConverter<
+              com.github.peterrk.protocache.pb.Mode>() {
+            public com.github.peterrk.protocache.pb.Mode convert(int from) {
+              com.github.peterrk.protocache.pb.Mode result = com.github.peterrk.protocache.pb.Mode.forNumber(from);
+              return result == null ? com.github.peterrk.protocache.pb.Mode.UNRECOGNIZED : result;
+            }
+          };
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @return A list containing the modev.
+   */
+  @java.lang.Override
+  public java.util.List<com.github.peterrk.protocache.pb.Mode> getModevList() {
+    return new com.google.protobuf.Internal.IntListAdapter<
+        com.github.peterrk.protocache.pb.Mode>(modev_, modev_converter_);
+  }
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @return The count of modev.
+   */
+  @java.lang.Override
+  public int getModevCount() {
+    return modev_.size();
+  }
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @param index The index of the element to return.
+   * @return The modev at the given index.
+   */
+  @java.lang.Override
+  public com.github.peterrk.protocache.pb.Mode getModev(int index) {
+    return modev_converter_.convert(modev_.getInt(index));
+  }
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @return A list containing the enum numeric values on the wire for modev.
+   */
+  @java.lang.Override
+  public java.util.List<java.lang.Integer>
+  getModevValueList() {
+    return modev_;
+  }
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @param index The index of the value to return.
+   * @return The enum numeric value on the wire of modev at the given index.
+   */
+  @java.lang.Override
+  public int getModevValue(int index) {
+    return modev_.getInt(index);
+  }
+  private int modevMemoizedSerializedSize;
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -943,6 +1002,13 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
     }
     if (((bitField0_ & 0x00000004) != 0)) {
       output.writeMessage(30, getArrays());
+    }
+    if (getModevList().size() > 0) {
+      output.writeUInt32NoTag(258);
+      output.writeUInt32NoTag(modevMemoizedSerializedSize);
+    }
+    for (int i = 0; i < modev_.size(); i++) {
+      output.writeEnumNoTag(modev_.getInt(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -1134,6 +1200,18 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(30, getArrays());
     }
+    {
+      int dataSize = 0;
+      for (int i = 0; i < modev_.size(); i++) {
+        dataSize += com.google.protobuf.CodedOutputStream
+          .computeEnumSizeNoTag(modev_.getInt(i));
+      }
+      size += dataSize;
+      if (!getModevList().isEmpty()) {  size += 2;
+        size += com.google.protobuf.CodedOutputStream
+          .computeUInt32SizeNoTag(dataSize);
+      }modevMemoizedSerializedSize = dataSize;
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -1219,6 +1297,7 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
       if (!getArrays()
           .equals(other.getArrays())) return false;
     }
+    if (!modev_.equals(other.modev_)) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -1325,6 +1404,10 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
     if (hasArrays()) {
       hash = (37 * hash) + ARRAYS_FIELD_NUMBER;
       hash = (53 * hash) + getArrays().hashCode();
+    }
+    if (getModevCount() > 0) {
+      hash = (37 * hash) + MODEV_FIELD_NUMBER;
+      hash = (53 * hash) + modev_.hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -1548,6 +1631,8 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
         arraysBuilder_.dispose();
         arraysBuilder_ = null;
       }
+      modev_ = emptyIntList();
+      bitField0_ = (bitField0_ & ~0x40000000);
       return this;
     }
 
@@ -1599,6 +1684,11 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
       } else {
         result.vector_ = vectorBuilder_.build();
       }
+      if (((bitField0_ & 0x40000000) != 0)) {
+        modev_.makeImmutable();
+        bitField0_ = (bitField0_ & ~0x40000000);
+      }
+      result.modev_ = modev_;
     }
 
     private void buildPartial0(com.github.peterrk.protocache.pb.Main result) {
@@ -1913,6 +2003,16 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
       if (other.hasArrays()) {
         mergeArrays(other.getArrays());
       }
+      if (!other.modev_.isEmpty()) {
+        if (modev_.isEmpty()) {
+          modev_ = other.modev_;
+          bitField0_ = (bitField0_ & ~0x40000000);
+        } else {
+          ensureModevIsMutable();
+          modev_.addAll(other.modev_);
+        }
+        onChanged();
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -2179,6 +2279,23 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
               bitField0_ |= 0x20000000;
               break;
             } // case 242
+            case 256: {
+              int tmpRaw = input.readEnum();
+              ensureModevIsMutable();
+              modev_.addInt(tmpRaw);
+              break;
+            } // case 256
+            case 258: {
+              int length = input.readRawVarint32();
+              int oldLimit = input.pushLimit(length);
+              while(input.getBytesUntilLimit() > 0) {
+                int tmpRaw = input.readEnum();
+                ensureModevIsMutable();
+                modev_.addInt(tmpRaw);
+              }
+              input.popLimit(oldLimit);
+              break;
+            } // case 258
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -4523,6 +4640,146 @@ com.github.peterrk.protocache.pb.Small defaultValue) {
         arrays_ = null;
       }
       return arraysBuilder_;
+    }
+
+    private com.google.protobuf.Internal.IntList modev_ =
+      emptyIntList();
+    private void ensureModevIsMutable() {
+      if (!((bitField0_ & 0x40000000) != 0)) {
+        modev_ = makeMutableCopy(modev_);
+        bitField0_ |= 0x40000000;
+      }
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @return A list containing the modev.
+     */
+    public java.util.List<com.github.peterrk.protocache.pb.Mode> getModevList() {
+      return new com.google.protobuf.Internal.IntListAdapter<
+          com.github.peterrk.protocache.pb.Mode>(modev_, modev_converter_);
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @return The count of modev.
+     */
+    public int getModevCount() {
+      return modev_.size();
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @param index The index of the element to return.
+     * @return The modev at the given index.
+     */
+    public com.github.peterrk.protocache.pb.Mode getModev(int index) {
+      return modev_converter_.convert(modev_.getInt(index));
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @param index The index to set the value at.
+     * @param value The modev to set.
+     * @return This builder for chaining.
+     */
+    public Builder setModev(
+        int index, com.github.peterrk.protocache.pb.Mode value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      ensureModevIsMutable();
+      modev_.setInt(index, value.getNumber());
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @param value The modev to add.
+     * @return This builder for chaining.
+     */
+    public Builder addModev(com.github.peterrk.protocache.pb.Mode value) {
+      if (value == null) {
+        throw new NullPointerException();
+      }
+      ensureModevIsMutable();
+      modev_.addInt(value.getNumber());
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @param values The modev to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllModev(
+        java.lang.Iterable<? extends com.github.peterrk.protocache.pb.Mode> values) {
+      ensureModevIsMutable();
+      for (com.github.peterrk.protocache.pb.Mode value : values) {
+        modev_.addInt(value.getNumber());
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearModev() {
+      modev_ = emptyIntList();
+      bitField0_ = (bitField0_ & ~0x40000000);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @return A list containing the enum numeric values on the wire for modev.
+     */
+    public java.util.List<java.lang.Integer>
+    getModevValueList() {
+      return java.util.Collections.unmodifiableList(modev_);
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @param index The index of the value to return.
+     * @return The enum numeric value on the wire of modev at the given index.
+     */
+    public int getModevValue(int index) {
+      return modev_.getInt(index);
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @param index The index to set the value at.
+     * @param value The enum numeric value on the wire for modev to set.
+     * @return This builder for chaining.
+     */
+    public Builder setModevValue(
+        int index, int value) {
+      ensureModevIsMutable();
+      modev_.setInt(index, value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @param value The enum numeric value on the wire for modev to add.
+     * @return This builder for chaining.
+     */
+    public Builder addModevValue(int value) {
+      ensureModevIsMutable();
+      modev_.addInt(value);
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>repeated .test.Mode modev = 32;</code>
+     * @param values The enum numeric values on the wire for modev to add.
+     * @return This builder for chaining.
+     */
+    public Builder addAllModevValue(
+        java.lang.Iterable<java.lang.Integer> values) {
+      ensureModevIsMutable();
+      for (int value : values) {
+        modev_.addInt(value);
+      }
+      onChanged();
+      return this;
     }
 
     // @@protoc_insertion_point(builder_scope:test.Main)

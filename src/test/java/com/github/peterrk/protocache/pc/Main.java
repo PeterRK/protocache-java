@@ -32,6 +32,7 @@ public final class Main extends com.github.peterrk.protocache.Message {
 	public static final int FIELD_matrix = 27;
 	public static final int FIELD_vector = 28;
 	public static final int FIELD_arrays = 29;
+	public static final int FIELD_modev = 31;
 
 	public Main(){}
 	public Main(byte[] data){ this(data, 0); }
@@ -163,6 +164,13 @@ public final class Main extends com.github.peterrk.protocache.Message {
 		}
 		return _arrays;
 	}
+	private com.github.peterrk.protocache.Int32Array _modev = null;
+	public com.github.peterrk.protocache.Int32Array getModev() {
+		if (_modev == null) {
+			_modev = getInt32Array(FIELD_modev);
+		}
+		return _modev;
+	}
 
 	@Override
 	public void init(byte[] data, int offset) {
@@ -182,5 +190,6 @@ public final class Main extends com.github.peterrk.protocache.Message {
 		_matrix = null;
 		_vector = null;
 		_arrays = null;
+		_modev = null;
 		super.init(data, offset);
 	}}

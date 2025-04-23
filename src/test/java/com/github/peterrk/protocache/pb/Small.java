@@ -43,28 +43,6 @@ private static final long serialVersionUID = 0L;
             com.github.peterrk.protocache.pb.Small.class, com.github.peterrk.protocache.pb.Small.Builder.class);
   }
 
-  public static final int I32_FIELD_NUMBER = 1;
-  private int i32_ = 0;
-  /**
-   * <code>int32 i32 = 1;</code>
-   * @return The i32.
-   */
-  @java.lang.Override
-  public int getI32() {
-    return i32_;
-  }
-
-  public static final int FLAG_FIELD_NUMBER = 2;
-  private boolean flag_ = false;
-  /**
-   * <code>bool flag = 2;</code>
-   * @return The flag.
-   */
-  @java.lang.Override
-  public boolean getFlag() {
-    return flag_;
-  }
-
   public static final int STR_FIELD_NUMBER = 4;
   @SuppressWarnings("serial")
   private volatile java.lang.Object str_ = "";
@@ -104,6 +82,45 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int I32_FIELD_NUMBER = 1;
+  private int i32_ = 0;
+  /**
+   * <code>int32 i32 = 1;</code>
+   * @return The i32.
+   */
+  @java.lang.Override
+  public int getI32() {
+    return i32_;
+  }
+
+  public static final int FLAG_FIELD_NUMBER = 2;
+  private boolean flag_ = false;
+  /**
+   * <code>bool flag = 2;</code>
+   * @return The flag.
+   */
+  @java.lang.Override
+  public boolean getFlag() {
+    return flag_;
+  }
+
+  public static final int JUNK_FIELD_NUMBER = 5;
+  private long junk_ = 0L;
+  /**
+   * <pre>
+   * skip 3
+   * </pre>
+   *
+   * <code>int64 junk = 5 [deprecated = true];</code>
+   * @deprecated test.Small.junk is deprecated.
+   *     See test.proto;l=20
+   * @return The junk.
+   */
+  @java.lang.Override
+  @java.lang.Deprecated public long getJunk() {
+    return junk_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -127,6 +144,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(str_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 4, str_);
     }
+    if (junk_ != 0L) {
+      output.writeInt64(5, junk_);
+    }
     getUnknownFields().writeTo(output);
   }
 
@@ -147,6 +167,10 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(str_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(4, str_);
     }
+    if (junk_ != 0L) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeInt64Size(5, junk_);
+    }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
     return size;
@@ -162,12 +186,14 @@ private static final long serialVersionUID = 0L;
     }
     com.github.peterrk.protocache.pb.Small other = (com.github.peterrk.protocache.pb.Small) obj;
 
+    if (!getStr()
+        .equals(other.getStr())) return false;
     if (getI32()
         != other.getI32()) return false;
     if (getFlag()
         != other.getFlag()) return false;
-    if (!getStr()
-        .equals(other.getStr())) return false;
+    if (getJunk()
+        != other.getJunk()) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -179,13 +205,16 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
+    hash = (37 * hash) + STR_FIELD_NUMBER;
+    hash = (53 * hash) + getStr().hashCode();
     hash = (37 * hash) + I32_FIELD_NUMBER;
     hash = (53 * hash) + getI32();
     hash = (37 * hash) + FLAG_FIELD_NUMBER;
     hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
         getFlag());
-    hash = (37 * hash) + STR_FIELD_NUMBER;
-    hash = (53 * hash) + getStr().hashCode();
+    hash = (37 * hash) + JUNK_FIELD_NUMBER;
+    hash = (53 * hash) + com.google.protobuf.Internal.hashLong(
+        getJunk());
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -317,9 +346,10 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
+      str_ = "";
       i32_ = 0;
       flag_ = false;
-      str_ = "";
+      junk_ = 0L;
       return this;
     }
 
@@ -354,13 +384,16 @@ private static final long serialVersionUID = 0L;
     private void buildPartial0(com.github.peterrk.protocache.pb.Small result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result.i32_ = i32_;
+        result.str_ = str_;
       }
       if (((from_bitField0_ & 0x00000002) != 0)) {
-        result.flag_ = flag_;
+        result.i32_ = i32_;
       }
       if (((from_bitField0_ & 0x00000004) != 0)) {
-        result.str_ = str_;
+        result.flag_ = flag_;
+      }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.junk_ = junk_;
       }
     }
 
@@ -376,16 +409,19 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.github.peterrk.protocache.pb.Small other) {
       if (other == com.github.peterrk.protocache.pb.Small.getDefaultInstance()) return this;
+      if (!other.getStr().isEmpty()) {
+        str_ = other.str_;
+        bitField0_ |= 0x00000001;
+        onChanged();
+      }
       if (other.getI32() != 0) {
         setI32(other.getI32());
       }
       if (other.getFlag() != false) {
         setFlag(other.getFlag());
       }
-      if (!other.getStr().isEmpty()) {
-        str_ = other.str_;
-        bitField0_ |= 0x00000004;
-        onChanged();
+      if (other.getJunk() != 0L) {
+        setJunk(other.getJunk());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -415,19 +451,24 @@ private static final long serialVersionUID = 0L;
               break;
             case 8: {
               i32_ = input.readInt32();
-              bitField0_ |= 0x00000001;
+              bitField0_ |= 0x00000002;
               break;
             } // case 8
             case 16: {
               flag_ = input.readBool();
-              bitField0_ |= 0x00000002;
+              bitField0_ |= 0x00000004;
               break;
             } // case 16
             case 34: {
               str_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000004;
+              bitField0_ |= 0x00000001;
               break;
             } // case 34
+            case 40: {
+              junk_ = input.readInt64();
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 40
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -444,70 +485,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
     private int bitField0_;
-
-    private int i32_ ;
-    /**
-     * <code>int32 i32 = 1;</code>
-     * @return The i32.
-     */
-    @java.lang.Override
-    public int getI32() {
-      return i32_;
-    }
-    /**
-     * <code>int32 i32 = 1;</code>
-     * @param value The i32 to set.
-     * @return This builder for chaining.
-     */
-    public Builder setI32(int value) {
-
-      i32_ = value;
-      bitField0_ |= 0x00000001;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>int32 i32 = 1;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearI32() {
-      bitField0_ = (bitField0_ & ~0x00000001);
-      i32_ = 0;
-      onChanged();
-      return this;
-    }
-
-    private boolean flag_ ;
-    /**
-     * <code>bool flag = 2;</code>
-     * @return The flag.
-     */
-    @java.lang.Override
-    public boolean getFlag() {
-      return flag_;
-    }
-    /**
-     * <code>bool flag = 2;</code>
-     * @param value The flag to set.
-     * @return This builder for chaining.
-     */
-    public Builder setFlag(boolean value) {
-
-      flag_ = value;
-      bitField0_ |= 0x00000002;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>bool flag = 2;</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearFlag() {
-      bitField0_ = (bitField0_ & ~0x00000002);
-      flag_ = false;
-      onChanged();
-      return this;
-    }
 
     private java.lang.Object str_ = "";
     /**
@@ -552,7 +529,7 @@ private static final long serialVersionUID = 0L;
         java.lang.String value) {
       if (value == null) { throw new NullPointerException(); }
       str_ = value;
-      bitField0_ |= 0x00000004;
+      bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
@@ -562,7 +539,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearStr() {
       str_ = getDefaultInstance().getStr();
-      bitField0_ = (bitField0_ & ~0x00000004);
+      bitField0_ = (bitField0_ & ~0x00000001);
       onChanged();
       return this;
     }
@@ -576,7 +553,121 @@ private static final long serialVersionUID = 0L;
       if (value == null) { throw new NullPointerException(); }
       checkByteStringIsUtf8(value);
       str_ = value;
+      bitField0_ |= 0x00000001;
+      onChanged();
+      return this;
+    }
+
+    private int i32_ ;
+    /**
+     * <code>int32 i32 = 1;</code>
+     * @return The i32.
+     */
+    @java.lang.Override
+    public int getI32() {
+      return i32_;
+    }
+    /**
+     * <code>int32 i32 = 1;</code>
+     * @param value The i32 to set.
+     * @return This builder for chaining.
+     */
+    public Builder setI32(int value) {
+
+      i32_ = value;
+      bitField0_ |= 0x00000002;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>int32 i32 = 1;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearI32() {
+      bitField0_ = (bitField0_ & ~0x00000002);
+      i32_ = 0;
+      onChanged();
+      return this;
+    }
+
+    private boolean flag_ ;
+    /**
+     * <code>bool flag = 2;</code>
+     * @return The flag.
+     */
+    @java.lang.Override
+    public boolean getFlag() {
+      return flag_;
+    }
+    /**
+     * <code>bool flag = 2;</code>
+     * @param value The flag to set.
+     * @return This builder for chaining.
+     */
+    public Builder setFlag(boolean value) {
+
+      flag_ = value;
       bitField0_ |= 0x00000004;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>bool flag = 2;</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearFlag() {
+      bitField0_ = (bitField0_ & ~0x00000004);
+      flag_ = false;
+      onChanged();
+      return this;
+    }
+
+    private long junk_ ;
+    /**
+     * <pre>
+     * skip 3
+     * </pre>
+     *
+     * <code>int64 junk = 5 [deprecated = true];</code>
+     * @deprecated test.Small.junk is deprecated.
+     *     See test.proto;l=20
+     * @return The junk.
+     */
+    @java.lang.Override
+    @java.lang.Deprecated public long getJunk() {
+      return junk_;
+    }
+    /**
+     * <pre>
+     * skip 3
+     * </pre>
+     *
+     * <code>int64 junk = 5 [deprecated = true];</code>
+     * @deprecated test.Small.junk is deprecated.
+     *     See test.proto;l=20
+     * @param value The junk to set.
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder setJunk(long value) {
+
+      junk_ = value;
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <pre>
+     * skip 3
+     * </pre>
+     *
+     * <code>int64 junk = 5 [deprecated = true];</code>
+     * @deprecated test.Small.junk is deprecated.
+     *     See test.proto;l=20
+     * @return This builder for chaining.
+     */
+    @java.lang.Deprecated public Builder clearJunk() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      junk_ = 0L;
       onChanged();
       return this;
     }

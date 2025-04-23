@@ -10,26 +10,26 @@ public interface Vec2DOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
   java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> 
-      getList();
+      getXList();
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
-  com.github.peterrk.protocache.pb.Vec2D.Vec1D get(int index);
+  com.github.peterrk.protocache.pb.Vec2D.Vec1D getX(int index);
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
-  int getCount();
+  int getXCount();
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
   java.util.List<? extends com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder> 
-      getOrBuilderList();
+      getXOrBuilderList();
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
-  com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder getOrBuilder(
+  com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder getXOrBuilder(
       int index);
 }

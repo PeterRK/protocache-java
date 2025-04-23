@@ -76,7 +76,7 @@ public class ProtoCache {
             }
         }
 
-        if (fields.length == 1 && fields[0].getName().equals("_")) {
+        if (fields.length == 1 && (fields[0].getName().equals("_") || fields[0].getName().equals("_x_"))) {
             // trim message wrapper
             byte[] out = parts.get(0);
             if (out == null) {

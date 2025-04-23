@@ -401,4 +401,33 @@ com.github.peterrk.protocache.pb.Small defaultValue);
    * <code>.test.ArrMap arrays = 30;</code>
    */
   com.github.peterrk.protocache.pb.ArrMapOrBuilder getArraysOrBuilder();
+
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @return A list containing the modev.
+   */
+  java.util.List<com.github.peterrk.protocache.pb.Mode> getModevList();
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @return The count of modev.
+   */
+  int getModevCount();
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @param index The index of the element to return.
+   * @return The modev at the given index.
+   */
+  com.github.peterrk.protocache.pb.Mode getModev(int index);
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @return A list containing the enum numeric values on the wire for modev.
+   */
+  java.util.List<java.lang.Integer>
+  getModevValueList();
+  /**
+   * <code>repeated .test.Mode modev = 32;</code>
+   * @param index The index of the value to return.
+   * @return The enum numeric value on the wire of modev at the given index.
+   */
+  int getModevValue(int index);
 }

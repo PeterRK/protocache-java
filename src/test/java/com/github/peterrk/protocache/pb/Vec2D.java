@@ -27,7 +27,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private Vec2D() {
-    _ = java.util.Collections.emptyList();
+    X_ = java.util.Collections.emptyList();
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -48,21 +48,21 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated float _ = 1;</code>
-     * @return A list containing the .
+     * <code>repeated float _x_ = 1;</code>
+     * @return A list containing the x.
      */
-    java.util.List<java.lang.Float> getList();
+    java.util.List<java.lang.Float> getXList();
     /**
-     * <code>repeated float _ = 1;</code>
-     * @return The count of .
+     * <code>repeated float _x_ = 1;</code>
+     * @return The count of x.
      */
-    int getCount();
+    int getXCount();
     /**
-     * <code>repeated float _ = 1;</code>
+     * <code>repeated float _x_ = 1;</code>
      * @param index The index of the element to return.
-     * @return The  at the given index.
+     * @return The x at the given index.
      */
-    float get(int index);
+    float getX(int index);
   }
   /**
    * Protobuf type {@code test.Vec2D.Vec1D}
@@ -86,7 +86,7 @@ private static final long serialVersionUID = 0L;
       super(builder);
     }
     private Vec1D() {
-      _ = emptyFloatList();
+      X_ = emptyFloatList();
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -102,35 +102,35 @@ private static final long serialVersionUID = 0L;
               com.github.peterrk.protocache.pb.Vec2D.Vec1D.class, com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder.class);
     }
 
-    public static final int __FIELD_NUMBER = 1;
+    public static final int _X__FIELD_NUMBER = 1;
     @SuppressWarnings("serial")
-    private com.google.protobuf.Internal.FloatList _ =
+    private com.google.protobuf.Internal.FloatList X_ =
         emptyFloatList();
     /**
-     * <code>repeated float _ = 1;</code>
-     * @return A list containing the .
+     * <code>repeated float _x_ = 1;</code>
+     * @return A list containing the x.
      */
     @java.lang.Override
     public java.util.List<java.lang.Float>
-        getList() {
-      return _;
+        getXList() {
+      return X_;
     }
     /**
-     * <code>repeated float _ = 1;</code>
-     * @return The count of .
+     * <code>repeated float _x_ = 1;</code>
+     * @return The count of x.
      */
-    public int getCount() {
-      return _.size();
+    public int getXCount() {
+      return X_.size();
     }
     /**
-     * <code>repeated float _ = 1;</code>
+     * <code>repeated float _x_ = 1;</code>
      * @param index The index of the element to return.
-     * @return The  at the given index.
+     * @return The x at the given index.
      */
-    public float get(int index) {
-      return _.getFloat(index);
+    public float getX(int index) {
+      return X_.getFloat(index);
     }
-    private int MemoizedSerializedSize = -1;
+    private int XMemoizedSerializedSize = -1;
 
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
@@ -147,12 +147,12 @@ private static final long serialVersionUID = 0L;
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (getList().size() > 0) {
+      if (getXList().size() > 0) {
         output.writeUInt32NoTag(10);
-        output.writeUInt32NoTag(MemoizedSerializedSize);
+        output.writeUInt32NoTag(XMemoizedSerializedSize);
       }
-      for (int i = 0; i < _.size(); i++) {
-        output.writeFloatNoTag(_.getFloat(i));
+      for (int i = 0; i < X_.size(); i++) {
+        output.writeFloatNoTag(X_.getFloat(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -165,14 +165,14 @@ private static final long serialVersionUID = 0L;
       size = 0;
       {
         int dataSize = 0;
-        dataSize = 4 * getList().size();
+        dataSize = 4 * getXList().size();
         size += dataSize;
-        if (!getList().isEmpty()) {
+        if (!getXList().isEmpty()) {
           size += 1;
           size += com.google.protobuf.CodedOutputStream
               .computeInt32SizeNoTag(dataSize);
         }
-        MemoizedSerializedSize = dataSize;
+        XMemoizedSerializedSize = dataSize;
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -189,8 +189,8 @@ private static final long serialVersionUID = 0L;
       }
       com.github.peterrk.protocache.pb.Vec2D.Vec1D other = (com.github.peterrk.protocache.pb.Vec2D.Vec1D) obj;
 
-      if (!getList()
-          .equals(other.getList())) return false;
+      if (!getXList()
+          .equals(other.getXList())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -202,9 +202,9 @@ private static final long serialVersionUID = 0L;
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (getCount() > 0) {
-        hash = (37 * hash) + __FIELD_NUMBER;
-        hash = (53 * hash) + getList().hashCode();
+      if (getXCount() > 0) {
+        hash = (37 * hash) + _X__FIELD_NUMBER;
+        hash = (53 * hash) + getXList().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -337,7 +337,7 @@ private static final long serialVersionUID = 0L;
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        _ = emptyFloatList();
+        X_ = emptyFloatList();
         return this;
       }
 
@@ -372,8 +372,8 @@ private static final long serialVersionUID = 0L;
       private void buildPartial0(com.github.peterrk.protocache.pb.Vec2D.Vec1D result) {
         int from_bitField0_ = bitField0_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          _.makeImmutable();
-          result._ = _;
+          X_.makeImmutable();
+          result.X_ = X_;
         }
       }
 
@@ -389,14 +389,14 @@ private static final long serialVersionUID = 0L;
 
       public Builder mergeFrom(com.github.peterrk.protocache.pb.Vec2D.Vec1D other) {
         if (other == com.github.peterrk.protocache.pb.Vec2D.Vec1D.getDefaultInstance()) return this;
-        if (!other._.isEmpty()) {
-          if (_.isEmpty()) {
-            _ = other._;
-            _.makeImmutable();
+        if (!other.X_.isEmpty()) {
+          if (X_.isEmpty()) {
+            X_ = other.X_;
+            X_.makeImmutable();
             bitField0_ |= 0x00000001;
           } else {
-            ensureIsMutable();
-            _.addAll(other._);
+            ensureXIsMutable();
+            X_.addAll(other.X_);
           }
           onChanged();
         }
@@ -428,17 +428,17 @@ private static final long serialVersionUID = 0L;
                 break;
               case 13: {
                 float v = input.readFloat();
-                ensureIsMutable();
-                _.addFloat(v);
+                ensureXIsMutable();
+                X_.addFloat(v);
                 break;
               } // case 13
               case 10: {
                 int length = input.readRawVarint32();
                 int limit = input.pushLimit(length);
                 int alloc = length > 4096 ? 4096 : length;
-                ensureIsMutable(alloc / 4);
+                ensureXIsMutable(alloc / 4);
                 while (input.getBytesUntilLimit() > 0) {
-                  _.addFloat(input.readFloat());
+                  X_.addFloat(input.readFloat());
                 }
                 input.popLimit(limit);
                 break;
@@ -460,82 +460,92 @@ private static final long serialVersionUID = 0L;
       }
       private int bitField0_;
 
-      private com.google.protobuf.Internal.FloatList _ = emptyFloatList();
-      private void ensureIsMutable() {
-        if (!_.isModifiable()) {
-          _ = makeMutableCopy(_);
+      private com.google.protobuf.Internal.FloatList X_ = emptyFloatList();
+      private void ensureXIsMutable() {
+        if (!X_.isModifiable()) {
+          X_ = makeMutableCopy(X_);
         }
         bitField0_ |= 0x00000001;
       }
-      private void ensureIsMutable(int capacity) {
-        if (!_.isModifiable()) {
-          _ = makeMutableCopy(_, capacity);
+      private void ensureXIsMutable(int capacity) {
+        if (!X_.isModifiable()) {
+          X_ = makeMutableCopy(X_, capacity);
         }
         bitField0_ |= 0x00000001;
       }
       /**
-       * <code>repeated float _ = 1;</code>
-       * @return A list containing the .
+       * <code>repeated float _x_ = 1;</code>
+       * @return A list containing the x.
        */
       public java.util.List<java.lang.Float>
-          getList() {
-        _.makeImmutable();
-        return _;
+          getXList() {
+        X_.makeImmutable();
+        return X_;
       }
       /**
-       * <code>repeated float _ = 1;</code>
-       * @return The count of .
+       * <code>repeated float _x_ = 1;</code>
+       * @return The count of x.
        */
-      public int getCount() {
-        return _.size();
+      public int getXCount() {
+        return X_.size();
       }
       /**
-       * <code>repeated float _ = 1;</code>
+       * <code>repeated float _x_ = 1;</code>
        * @param index The index of the element to return.
-       * @return The  at the given index.
+       * @return The x at the given index.
        */
-      public float get(int index) {
-        return _.getFloat(index);
+      public float getX(int index) {
+        return X_.getFloat(index);
       }
       /**
-       * <code>repeated float _ = 1;</code>
+       * <code>repeated float _x_ = 1;</code>
        * @param index The index to set the value at.
-       * @param value The  to set.
+       * @param value The x to set.
        * @return This builder for chaining.
        */
-      public Builder set(
+      public Builder setX(
           int index, float value) {
 
-        ensureIsMutable();
-        _.setFloat(index, value);
+        ensureXIsMutable();
+        X_.setFloat(index, value);
         bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated float _ = 1;</code>
-       * @param value The  to add.
+       * <code>repeated float _x_ = 1;</code>
+       * @param value The x to add.
        * @return This builder for chaining.
        */
-      public Builder add(float value) {
+      public Builder addX(float value) {
 
-        ensureIsMutable();
-        _.addFloat(value);
+        ensureXIsMutable();
+        X_.addFloat(value);
         bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated float _ = 1;</code>
-       * @param values The  to add.
+       * <code>repeated float _x_ = 1;</code>
+       * @param values The x to add.
        * @return This builder for chaining.
        */
-      public Builder addAll(
+      public Builder addAllX(
           java.lang.Iterable<? extends java.lang.Float> values) {
-        ensureIsMutable();
+        ensureXIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, _);
+            values, X_);
         bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated float _x_ = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearX() {
+        X_ = emptyFloatList();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -591,45 +601,45 @@ private static final long serialVersionUID = 0L;
 
   }
 
-  public static final int __FIELD_NUMBER = 1;
+  public static final int _X__FIELD_NUMBER = 1;
   @SuppressWarnings("serial")
-  private java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> _;
+  private java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> X_;
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
   @java.lang.Override
-  public java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> getList() {
-    return _;
+  public java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> getXList() {
+    return X_;
   }
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
   @java.lang.Override
   public java.util.List<? extends com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder> 
-      getOrBuilderList() {
-    return _;
+      getXOrBuilderList() {
+    return X_;
   }
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
   @java.lang.Override
-  public int getCount() {
-    return _.size();
+  public int getXCount() {
+    return X_.size();
   }
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
   @java.lang.Override
-  public com.github.peterrk.protocache.pb.Vec2D.Vec1D get(int index) {
-    return _.get(index);
+  public com.github.peterrk.protocache.pb.Vec2D.Vec1D getX(int index) {
+    return X_.get(index);
   }
   /**
-   * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+   * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
    */
   @java.lang.Override
-  public com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder getOrBuilder(
+  public com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder getXOrBuilder(
       int index) {
-    return _.get(index);
+    return X_.get(index);
   }
 
   private byte memoizedIsInitialized = -1;
@@ -646,8 +656,8 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    for (int i = 0; i < _.size(); i++) {
-      output.writeMessage(1, _.get(i));
+    for (int i = 0; i < X_.size(); i++) {
+      output.writeMessage(1, X_.get(i));
     }
     getUnknownFields().writeTo(output);
   }
@@ -658,9 +668,9 @@ private static final long serialVersionUID = 0L;
     if (size != -1) return size;
 
     size = 0;
-    for (int i = 0; i < _.size(); i++) {
+    for (int i = 0; i < X_.size(); i++) {
       size += com.google.protobuf.CodedOutputStream
-        .computeMessageSize(1, _.get(i));
+        .computeMessageSize(1, X_.get(i));
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -677,8 +687,8 @@ private static final long serialVersionUID = 0L;
     }
     com.github.peterrk.protocache.pb.Vec2D other = (com.github.peterrk.protocache.pb.Vec2D) obj;
 
-    if (!getList()
-        .equals(other.getList())) return false;
+    if (!getXList()
+        .equals(other.getXList())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -690,9 +700,9 @@ private static final long serialVersionUID = 0L;
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    if (getCount() > 0) {
-      hash = (37 * hash) + __FIELD_NUMBER;
-      hash = (53 * hash) + getList().hashCode();
+    if (getXCount() > 0) {
+      hash = (37 * hash) + _X__FIELD_NUMBER;
+      hash = (53 * hash) + getXList().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -825,11 +835,11 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      if (Builder_ == null) {
-        _ = java.util.Collections.emptyList();
+      if (XBuilder_ == null) {
+        X_ = java.util.Collections.emptyList();
       } else {
-        _ = null;
-        Builder_.clear();
+        X_ = null;
+        XBuilder_.clear();
       }
       bitField0_ = (bitField0_ & ~0x00000001);
       return this;
@@ -865,14 +875,14 @@ private static final long serialVersionUID = 0L;
     }
 
     private void buildPartialRepeatedFields(com.github.peterrk.protocache.pb.Vec2D result) {
-      if (Builder_ == null) {
+      if (XBuilder_ == null) {
         if (((bitField0_ & 0x00000001) != 0)) {
-          _ = java.util.Collections.unmodifiableList(_);
+          X_ = java.util.Collections.unmodifiableList(X_);
           bitField0_ = (bitField0_ & ~0x00000001);
         }
-        result._ = _;
+        result.X_ = X_;
       } else {
-        result._ = Builder_.build();
+        result.X_ = XBuilder_.build();
       }
     }
 
@@ -892,29 +902,29 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(com.github.peterrk.protocache.pb.Vec2D other) {
       if (other == com.github.peterrk.protocache.pb.Vec2D.getDefaultInstance()) return this;
-      if (Builder_ == null) {
-        if (!other._.isEmpty()) {
-          if (_.isEmpty()) {
-            _ = other._;
+      if (XBuilder_ == null) {
+        if (!other.X_.isEmpty()) {
+          if (X_.isEmpty()) {
+            X_ = other.X_;
             bitField0_ = (bitField0_ & ~0x00000001);
           } else {
-            ensureIsMutable();
-            _.addAll(other._);
+            ensureXIsMutable();
+            X_.addAll(other.X_);
           }
           onChanged();
         }
       } else {
-        if (!other._.isEmpty()) {
-          if (Builder_.isEmpty()) {
-            Builder_.dispose();
-            Builder_ = null;
-            _ = other._;
+        if (!other.X_.isEmpty()) {
+          if (XBuilder_.isEmpty()) {
+            XBuilder_.dispose();
+            XBuilder_ = null;
+            X_ = other.X_;
             bitField0_ = (bitField0_ & ~0x00000001);
-            Builder_ = 
+            XBuilder_ = 
               com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
-                 internalGetFieldBuilder() : null;
+                 internalGetXFieldBuilder() : null;
           } else {
-            Builder_.addAllMessages(other._);
+            XBuilder_.addAllMessages(other.X_);
           }
         }
       }
@@ -949,11 +959,11 @@ private static final long serialVersionUID = 0L;
                   input.readMessage(
                       com.github.peterrk.protocache.pb.Vec2D.Vec1D.parser(),
                       extensionRegistry);
-              if (Builder_ == null) {
-                ensureIsMutable();
-                _.add(m);
+              if (XBuilder_ == null) {
+                ensureXIsMutable();
+                X_.add(m);
               } else {
-                Builder_.addMessage(m);
+                XBuilder_.addMessage(m);
               }
               break;
             } // case 10
@@ -974,231 +984,244 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> _ =
+    private java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> X_ =
       java.util.Collections.emptyList();
-    private void ensureIsMutable() {
+    private void ensureXIsMutable() {
       if (!((bitField0_ & 0x00000001) != 0)) {
-        _ = new java.util.ArrayList<com.github.peterrk.protocache.pb.Vec2D.Vec1D>(_);
+        X_ = new java.util.ArrayList<com.github.peterrk.protocache.pb.Vec2D.Vec1D>(X_);
         bitField0_ |= 0x00000001;
        }
     }
 
     private com.google.protobuf.RepeatedFieldBuilder<
-        com.github.peterrk.protocache.pb.Vec2D.Vec1D, com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder, com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder> Builder_;
+        com.github.peterrk.protocache.pb.Vec2D.Vec1D, com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder, com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder> XBuilder_;
 
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> getList() {
-      if (Builder_ == null) {
-        return java.util.Collections.unmodifiableList(_);
+    public java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D> getXList() {
+      if (XBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(X_);
       } else {
-        return Builder_.getMessageList();
+        return XBuilder_.getMessageList();
       }
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public int getCount() {
-      if (Builder_ == null) {
-        return _.size();
+    public int getXCount() {
+      if (XBuilder_ == null) {
+        return X_.size();
       } else {
-        return Builder_.getCount();
+        return XBuilder_.getCount();
       }
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public com.github.peterrk.protocache.pb.Vec2D.Vec1D get(int index) {
-      if (Builder_ == null) {
-        return _.get(index);
+    public com.github.peterrk.protocache.pb.Vec2D.Vec1D getX(int index) {
+      if (XBuilder_ == null) {
+        return X_.get(index);
       } else {
-        return Builder_.getMessage(index);
+        return XBuilder_.getMessage(index);
       }
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public Builder set(
+    public Builder setX(
         int index, com.github.peterrk.protocache.pb.Vec2D.Vec1D value) {
-      if (Builder_ == null) {
+      if (XBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureIsMutable();
-        _.set(index, value);
+        ensureXIsMutable();
+        X_.set(index, value);
         onChanged();
       } else {
-        Builder_.setMessage(index, value);
+        XBuilder_.setMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public Builder set(
+    public Builder setX(
         int index, com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder builderForValue) {
-      if (Builder_ == null) {
-        ensureIsMutable();
-        _.set(index, builderForValue.build());
+      if (XBuilder_ == null) {
+        ensureXIsMutable();
+        X_.set(index, builderForValue.build());
         onChanged();
       } else {
-        Builder_.setMessage(index, builderForValue.build());
+        XBuilder_.setMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public Builder add(com.github.peterrk.protocache.pb.Vec2D.Vec1D value) {
-      if (Builder_ == null) {
+    public Builder addX(com.github.peterrk.protocache.pb.Vec2D.Vec1D value) {
+      if (XBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureIsMutable();
-        _.add(value);
+        ensureXIsMutable();
+        X_.add(value);
         onChanged();
       } else {
-        Builder_.addMessage(value);
+        XBuilder_.addMessage(value);
       }
       return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public Builder add(
+    public Builder addX(
         int index, com.github.peterrk.protocache.pb.Vec2D.Vec1D value) {
-      if (Builder_ == null) {
+      if (XBuilder_ == null) {
         if (value == null) {
           throw new NullPointerException();
         }
-        ensureIsMutable();
-        _.add(index, value);
+        ensureXIsMutable();
+        X_.add(index, value);
         onChanged();
       } else {
-        Builder_.addMessage(index, value);
+        XBuilder_.addMessage(index, value);
       }
       return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public Builder add(
+    public Builder addX(
         com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder builderForValue) {
-      if (Builder_ == null) {
-        ensureIsMutable();
-        _.add(builderForValue.build());
+      if (XBuilder_ == null) {
+        ensureXIsMutable();
+        X_.add(builderForValue.build());
         onChanged();
       } else {
-        Builder_.addMessage(builderForValue.build());
+        XBuilder_.addMessage(builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public Builder add(
+    public Builder addX(
         int index, com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder builderForValue) {
-      if (Builder_ == null) {
-        ensureIsMutable();
-        _.add(index, builderForValue.build());
+      if (XBuilder_ == null) {
+        ensureXIsMutable();
+        X_.add(index, builderForValue.build());
         onChanged();
       } else {
-        Builder_.addMessage(index, builderForValue.build());
+        XBuilder_.addMessage(index, builderForValue.build());
       }
       return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public Builder addAll(
+    public Builder addAllX(
         java.lang.Iterable<? extends com.github.peterrk.protocache.pb.Vec2D.Vec1D> values) {
-      if (Builder_ == null) {
-        ensureIsMutable();
+      if (XBuilder_ == null) {
+        ensureXIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, _);
+            values, X_);
         onChanged();
       } else {
-        Builder_.addAllMessages(values);
+        XBuilder_.addAllMessages(values);
       }
       return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public Builder remove(int index) {
-      if (Builder_ == null) {
-        ensureIsMutable();
-        _.remove(index);
+    public Builder clearX() {
+      if (XBuilder_ == null) {
+        X_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
       } else {
-        Builder_.remove(index);
+        XBuilder_.clear();
       }
       return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder getBuilder(
-        int index) {
-      return internalGetFieldBuilder().getBuilder(index);
+    public Builder removeX(int index) {
+      if (XBuilder_ == null) {
+        ensureXIsMutable();
+        X_.remove(index);
+        onChanged();
+      } else {
+        XBuilder_.remove(index);
+      }
+      return this;
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder getOrBuilder(
+    public com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder getXBuilder(
         int index) {
-      if (Builder_ == null) {
-        return _.get(index);  } else {
-        return Builder_.getMessageOrBuilder(index);
+      return internalGetXFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
+     */
+    public com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder getXOrBuilder(
+        int index) {
+      if (XBuilder_ == null) {
+        return X_.get(index);  } else {
+        return XBuilder_.getMessageOrBuilder(index);
       }
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
     public java.util.List<? extends com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder> 
-         getOrBuilderList() {
-      if (Builder_ != null) {
-        return Builder_.getMessageOrBuilderList();
+         getXOrBuilderList() {
+      if (XBuilder_ != null) {
+        return XBuilder_.getMessageOrBuilderList();
       } else {
-        return java.util.Collections.unmodifiableList(_);
+        return java.util.Collections.unmodifiableList(X_);
       }
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder addBuilder() {
-      return internalGetFieldBuilder().addBuilder(
+    public com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder addXBuilder() {
+      return internalGetXFieldBuilder().addBuilder(
           com.github.peterrk.protocache.pb.Vec2D.Vec1D.getDefaultInstance());
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
-    public com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder addBuilder(
+    public com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder addXBuilder(
         int index) {
-      return internalGetFieldBuilder().addBuilder(
+      return internalGetXFieldBuilder().addBuilder(
           index, com.github.peterrk.protocache.pb.Vec2D.Vec1D.getDefaultInstance());
     }
     /**
-     * <code>repeated .test.Vec2D.Vec1D _ = 1;</code>
+     * <code>repeated .test.Vec2D.Vec1D _x_ = 1;</code>
      */
     public java.util.List<com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder> 
-         getBuilderList() {
-      return internalGetFieldBuilder().getBuilderList();
+         getXBuilderList() {
+      return internalGetXFieldBuilder().getBuilderList();
     }
     private com.google.protobuf.RepeatedFieldBuilder<
         com.github.peterrk.protocache.pb.Vec2D.Vec1D, com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder, com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder> 
-        internalGetFieldBuilder() {
-      if (Builder_ == null) {
-        Builder_ = new com.google.protobuf.RepeatedFieldBuilder<
+        internalGetXFieldBuilder() {
+      if (XBuilder_ == null) {
+        XBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
             com.github.peterrk.protocache.pb.Vec2D.Vec1D, com.github.peterrk.protocache.pb.Vec2D.Vec1D.Builder, com.github.peterrk.protocache.pb.Vec2D.Vec1DOrBuilder>(
-                _,
+                X_,
                 ((bitField0_ & 0x00000001) != 0),
                 getParentForChildren(),
                 isClean());
-        _ = null;
+        X_ = null;
       }
-      return Builder_;
+      return XBuilder_;
     }
 
     // @@protoc_insertion_point(builder_scope:test.Vec2D)

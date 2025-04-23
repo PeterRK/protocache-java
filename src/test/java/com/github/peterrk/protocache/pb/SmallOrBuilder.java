@@ -10,6 +10,18 @@ public interface SmallOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
+   * <code>string str = 4;</code>
+   * @return The str.
+   */
+  java.lang.String getStr();
+  /**
+   * <code>string str = 4;</code>
+   * @return The bytes for str.
+   */
+  com.google.protobuf.ByteString
+      getStrBytes();
+
+  /**
    * <code>int32 i32 = 1;</code>
    * @return The i32.
    */
@@ -22,14 +34,14 @@ public interface SmallOrBuilder extends
   boolean getFlag();
 
   /**
-   * <code>string str = 4;</code>
-   * @return The str.
+   * <pre>
+   * skip 3
+   * </pre>
+   *
+   * <code>int64 junk = 5 [deprecated = true];</code>
+   * @deprecated test.Small.junk is deprecated.
+   *     See test.proto;l=20
+   * @return The junk.
    */
-  java.lang.String getStr();
-  /**
-   * <code>string str = 4;</code>
-   * @return The bytes for str.
-   */
-  com.google.protobuf.ByteString
-      getStrBytes();
+  @java.lang.Deprecated long getJunk();
 }

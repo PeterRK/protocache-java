@@ -10,36 +10,36 @@ public interface ArrMapOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
-  int getCount();
+  int getXCount();
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
-  boolean contains(
+  boolean containsX(
       java.lang.String key);
   /**
-   * Use {@link #getMap()} instead.
+   * Use {@link #getXMap()} instead.
    */
   @java.lang.Deprecated
   java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array>
-  get();
+  getX();
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
   java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array>
-  getMap();
+  getXMap();
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
   /* nullable */
-com.github.peterrk.protocache.pb.ArrMap.Array getOrDefault(
+com.github.peterrk.protocache.pb.ArrMap.Array getXOrDefault(
       java.lang.String key,
       /* nullable */
 com.github.peterrk.protocache.pb.ArrMap.Array defaultValue);
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
-  com.github.peterrk.protocache.pb.ArrMap.Array getOrThrow(
+  com.github.peterrk.protocache.pb.ArrMap.Array getXOrThrow(
       java.lang.String key);
 }

@@ -23,16 +23,16 @@ message Small {
 
 message Vec2D {
 	message Vec1D {
-		repeated float _ = 1;
+		repeated float _x_ = 1;
 	}
-	repeated Vec1D _ = 1;
+	repeated Vec1D _x_ = 1;
 }
 
 message ArrMap {
 	message Array {
-		repeated float _ = 1;
+		repeated float _x_ = 1;
 	}
-	map<string,Array> _ = 1;
+	map<string,Array> _x_ = 1;
 }
 
 message Main {
@@ -66,6 +66,7 @@ message Main {
     Vec2D matrix = 28;
     repeated ArrMap vector = 29;
     ArrMap arrays = 30;
+    repeated Mode modev = 32;
 }
 
 message CyclicA {

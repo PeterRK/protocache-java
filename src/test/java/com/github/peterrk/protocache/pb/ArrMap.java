@@ -40,7 +40,7 @@ private static final long serialVersionUID = 0L;
       int number) {
     switch (number) {
       case 1:
-        return internalGet();
+        return internalGetX();
       default:
         throw new RuntimeException(
             "Invalid map field number: " + number);
@@ -59,21 +59,21 @@ private static final long serialVersionUID = 0L;
       com.google.protobuf.MessageOrBuilder {
 
     /**
-     * <code>repeated float _ = 1;</code>
-     * @return A list containing the .
+     * <code>repeated float _x_ = 1;</code>
+     * @return A list containing the x.
      */
-    java.util.List<java.lang.Float> getList();
+    java.util.List<java.lang.Float> getXList();
     /**
-     * <code>repeated float _ = 1;</code>
-     * @return The count of .
+     * <code>repeated float _x_ = 1;</code>
+     * @return The count of x.
      */
-    int getCount();
+    int getXCount();
     /**
-     * <code>repeated float _ = 1;</code>
+     * <code>repeated float _x_ = 1;</code>
      * @param index The index of the element to return.
-     * @return The  at the given index.
+     * @return The x at the given index.
      */
-    float get(int index);
+    float getX(int index);
   }
   /**
    * Protobuf type {@code test.ArrMap.Array}
@@ -97,7 +97,7 @@ private static final long serialVersionUID = 0L;
       super(builder);
     }
     private Array() {
-      _ = emptyFloatList();
+      X_ = emptyFloatList();
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -113,35 +113,35 @@ private static final long serialVersionUID = 0L;
               com.github.peterrk.protocache.pb.ArrMap.Array.class, com.github.peterrk.protocache.pb.ArrMap.Array.Builder.class);
     }
 
-    public static final int __FIELD_NUMBER = 1;
+    public static final int _X__FIELD_NUMBER = 1;
     @SuppressWarnings("serial")
-    private com.google.protobuf.Internal.FloatList _ =
+    private com.google.protobuf.Internal.FloatList X_ =
         emptyFloatList();
     /**
-     * <code>repeated float _ = 1;</code>
-     * @return A list containing the .
+     * <code>repeated float _x_ = 1;</code>
+     * @return A list containing the x.
      */
     @java.lang.Override
     public java.util.List<java.lang.Float>
-        getList() {
-      return _;
+        getXList() {
+      return X_;
     }
     /**
-     * <code>repeated float _ = 1;</code>
-     * @return The count of .
+     * <code>repeated float _x_ = 1;</code>
+     * @return The count of x.
      */
-    public int getCount() {
-      return _.size();
+    public int getXCount() {
+      return X_.size();
     }
     /**
-     * <code>repeated float _ = 1;</code>
+     * <code>repeated float _x_ = 1;</code>
      * @param index The index of the element to return.
-     * @return The  at the given index.
+     * @return The x at the given index.
      */
-    public float get(int index) {
-      return _.getFloat(index);
+    public float getX(int index) {
+      return X_.getFloat(index);
     }
-    private int MemoizedSerializedSize = -1;
+    private int XMemoizedSerializedSize = -1;
 
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
@@ -158,12 +158,12 @@ private static final long serialVersionUID = 0L;
     public void writeTo(com.google.protobuf.CodedOutputStream output)
                         throws java.io.IOException {
       getSerializedSize();
-      if (getList().size() > 0) {
+      if (getXList().size() > 0) {
         output.writeUInt32NoTag(10);
-        output.writeUInt32NoTag(MemoizedSerializedSize);
+        output.writeUInt32NoTag(XMemoizedSerializedSize);
       }
-      for (int i = 0; i < _.size(); i++) {
-        output.writeFloatNoTag(_.getFloat(i));
+      for (int i = 0; i < X_.size(); i++) {
+        output.writeFloatNoTag(X_.getFloat(i));
       }
       getUnknownFields().writeTo(output);
     }
@@ -176,14 +176,14 @@ private static final long serialVersionUID = 0L;
       size = 0;
       {
         int dataSize = 0;
-        dataSize = 4 * getList().size();
+        dataSize = 4 * getXList().size();
         size += dataSize;
-        if (!getList().isEmpty()) {
+        if (!getXList().isEmpty()) {
           size += 1;
           size += com.google.protobuf.CodedOutputStream
               .computeInt32SizeNoTag(dataSize);
         }
-        MemoizedSerializedSize = dataSize;
+        XMemoizedSerializedSize = dataSize;
       }
       size += getUnknownFields().getSerializedSize();
       memoizedSize = size;
@@ -200,8 +200,8 @@ private static final long serialVersionUID = 0L;
       }
       com.github.peterrk.protocache.pb.ArrMap.Array other = (com.github.peterrk.protocache.pb.ArrMap.Array) obj;
 
-      if (!getList()
-          .equals(other.getList())) return false;
+      if (!getXList()
+          .equals(other.getXList())) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -213,9 +213,9 @@ private static final long serialVersionUID = 0L;
       }
       int hash = 41;
       hash = (19 * hash) + getDescriptor().hashCode();
-      if (getCount() > 0) {
-        hash = (37 * hash) + __FIELD_NUMBER;
-        hash = (53 * hash) + getList().hashCode();
+      if (getXCount() > 0) {
+        hash = (37 * hash) + _X__FIELD_NUMBER;
+        hash = (53 * hash) + getXList().hashCode();
       }
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
@@ -348,7 +348,7 @@ private static final long serialVersionUID = 0L;
       public Builder clear() {
         super.clear();
         bitField0_ = 0;
-        _ = emptyFloatList();
+        X_ = emptyFloatList();
         return this;
       }
 
@@ -383,8 +383,8 @@ private static final long serialVersionUID = 0L;
       private void buildPartial0(com.github.peterrk.protocache.pb.ArrMap.Array result) {
         int from_bitField0_ = bitField0_;
         if (((from_bitField0_ & 0x00000001) != 0)) {
-          _.makeImmutable();
-          result._ = _;
+          X_.makeImmutable();
+          result.X_ = X_;
         }
       }
 
@@ -400,14 +400,14 @@ private static final long serialVersionUID = 0L;
 
       public Builder mergeFrom(com.github.peterrk.protocache.pb.ArrMap.Array other) {
         if (other == com.github.peterrk.protocache.pb.ArrMap.Array.getDefaultInstance()) return this;
-        if (!other._.isEmpty()) {
-          if (_.isEmpty()) {
-            _ = other._;
-            _.makeImmutable();
+        if (!other.X_.isEmpty()) {
+          if (X_.isEmpty()) {
+            X_ = other.X_;
+            X_.makeImmutable();
             bitField0_ |= 0x00000001;
           } else {
-            ensureIsMutable();
-            _.addAll(other._);
+            ensureXIsMutable();
+            X_.addAll(other.X_);
           }
           onChanged();
         }
@@ -439,17 +439,17 @@ private static final long serialVersionUID = 0L;
                 break;
               case 13: {
                 float v = input.readFloat();
-                ensureIsMutable();
-                _.addFloat(v);
+                ensureXIsMutable();
+                X_.addFloat(v);
                 break;
               } // case 13
               case 10: {
                 int length = input.readRawVarint32();
                 int limit = input.pushLimit(length);
                 int alloc = length > 4096 ? 4096 : length;
-                ensureIsMutable(alloc / 4);
+                ensureXIsMutable(alloc / 4);
                 while (input.getBytesUntilLimit() > 0) {
-                  _.addFloat(input.readFloat());
+                  X_.addFloat(input.readFloat());
                 }
                 input.popLimit(limit);
                 break;
@@ -471,82 +471,92 @@ private static final long serialVersionUID = 0L;
       }
       private int bitField0_;
 
-      private com.google.protobuf.Internal.FloatList _ = emptyFloatList();
-      private void ensureIsMutable() {
-        if (!_.isModifiable()) {
-          _ = makeMutableCopy(_);
+      private com.google.protobuf.Internal.FloatList X_ = emptyFloatList();
+      private void ensureXIsMutable() {
+        if (!X_.isModifiable()) {
+          X_ = makeMutableCopy(X_);
         }
         bitField0_ |= 0x00000001;
       }
-      private void ensureIsMutable(int capacity) {
-        if (!_.isModifiable()) {
-          _ = makeMutableCopy(_, capacity);
+      private void ensureXIsMutable(int capacity) {
+        if (!X_.isModifiable()) {
+          X_ = makeMutableCopy(X_, capacity);
         }
         bitField0_ |= 0x00000001;
       }
       /**
-       * <code>repeated float _ = 1;</code>
-       * @return A list containing the .
+       * <code>repeated float _x_ = 1;</code>
+       * @return A list containing the x.
        */
       public java.util.List<java.lang.Float>
-          getList() {
-        _.makeImmutable();
-        return _;
+          getXList() {
+        X_.makeImmutable();
+        return X_;
       }
       /**
-       * <code>repeated float _ = 1;</code>
-       * @return The count of .
+       * <code>repeated float _x_ = 1;</code>
+       * @return The count of x.
        */
-      public int getCount() {
-        return _.size();
+      public int getXCount() {
+        return X_.size();
       }
       /**
-       * <code>repeated float _ = 1;</code>
+       * <code>repeated float _x_ = 1;</code>
        * @param index The index of the element to return.
-       * @return The  at the given index.
+       * @return The x at the given index.
        */
-      public float get(int index) {
-        return _.getFloat(index);
+      public float getX(int index) {
+        return X_.getFloat(index);
       }
       /**
-       * <code>repeated float _ = 1;</code>
+       * <code>repeated float _x_ = 1;</code>
        * @param index The index to set the value at.
-       * @param value The  to set.
+       * @param value The x to set.
        * @return This builder for chaining.
        */
-      public Builder set(
+      public Builder setX(
           int index, float value) {
 
-        ensureIsMutable();
-        _.setFloat(index, value);
+        ensureXIsMutable();
+        X_.setFloat(index, value);
         bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated float _ = 1;</code>
-       * @param value The  to add.
+       * <code>repeated float _x_ = 1;</code>
+       * @param value The x to add.
        * @return This builder for chaining.
        */
-      public Builder add(float value) {
+      public Builder addX(float value) {
 
-        ensureIsMutable();
-        _.addFloat(value);
+        ensureXIsMutable();
+        X_.addFloat(value);
         bitField0_ |= 0x00000001;
         onChanged();
         return this;
       }
       /**
-       * <code>repeated float _ = 1;</code>
-       * @param values The  to add.
+       * <code>repeated float _x_ = 1;</code>
+       * @param values The x to add.
        * @return This builder for chaining.
        */
-      public Builder addAll(
+      public Builder addAllX(
           java.lang.Iterable<? extends java.lang.Float> values) {
-        ensureIsMutable();
+        ensureXIsMutable();
         com.google.protobuf.AbstractMessageLite.Builder.addAll(
-            values, _);
+            values, X_);
         bitField0_ |= 0x00000001;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>repeated float _x_ = 1;</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearX() {
+        X_ = emptyFloatList();
+        bitField0_ = (bitField0_ & ~0x00000001);
         onChanged();
         return this;
       }
@@ -602,13 +612,13 @@ private static final long serialVersionUID = 0L;
 
   }
 
-  public static final int __FIELD_NUMBER = 1;
-  private static final class DefaultEntryHolder {
+  public static final int _X__FIELD_NUMBER = 1;
+  private static final class XDefaultEntryHolder {
     static final com.google.protobuf.MapEntry<
         java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> defaultEntry =
             com.google.protobuf.MapEntry
             .<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array>newDefaultInstance(
-                com.github.peterrk.protocache.pb.Test.internal_static_test_ArrMap_Entry_descriptor, 
+                com.github.peterrk.protocache.pb.Test.internal_static_test_ArrMap_XEntry_descriptor, 
                 com.google.protobuf.WireFormat.FieldType.STRING,
                 "",
                 com.google.protobuf.WireFormat.FieldType.MESSAGE,
@@ -616,65 +626,65 @@ private static final long serialVersionUID = 0L;
   }
   @SuppressWarnings("serial")
   private com.google.protobuf.MapField<
-      java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> _;
+      java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> X_;
   private com.google.protobuf.MapField<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array>
-  internalGet() {
-    if (_ == null) {
+  internalGetX() {
+    if (X_ == null) {
       return com.google.protobuf.MapField.emptyMapField(
-          DefaultEntryHolder.defaultEntry);
+          XDefaultEntryHolder.defaultEntry);
     }
-    return _;
+    return X_;
   }
-  public int getCount() {
-    return internalGet().getMap().size();
+  public int getXCount() {
+    return internalGetX().getMap().size();
   }
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
   @java.lang.Override
-  public boolean contains(
+  public boolean containsX(
       java.lang.String key) {
     if (key == null) { throw new NullPointerException("map key"); }
-    return internalGet().getMap().containsKey(key);
+    return internalGetX().getMap().containsKey(key);
   }
   /**
-   * Use {@link #getMap()} instead.
+   * Use {@link #getXMap()} instead.
    */
   @java.lang.Override
   @java.lang.Deprecated
-  public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> get() {
-    return getMap();
+  public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> getX() {
+    return getXMap();
   }
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
   @java.lang.Override
-  public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> getMap() {
-    return internalGet().getMap();
+  public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> getXMap() {
+    return internalGetX().getMap();
   }
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
   @java.lang.Override
   public /* nullable */
-com.github.peterrk.protocache.pb.ArrMap.Array getOrDefault(
+com.github.peterrk.protocache.pb.ArrMap.Array getXOrDefault(
       java.lang.String key,
       /* nullable */
 com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
     if (key == null) { throw new NullPointerException("map key"); }
     java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> map =
-        internalGet().getMap();
+        internalGetX().getMap();
     return map.containsKey(key) ? map.get(key) : defaultValue;
   }
   /**
-   * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+   * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
    */
   @java.lang.Override
-  public com.github.peterrk.protocache.pb.ArrMap.Array getOrThrow(
+  public com.github.peterrk.protocache.pb.ArrMap.Array getXOrThrow(
       java.lang.String key) {
     if (key == null) { throw new NullPointerException("map key"); }
     java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> map =
-        internalGet().getMap();
+        internalGetX().getMap();
     if (!map.containsKey(key)) {
       throw new java.lang.IllegalArgumentException();
     }
@@ -698,8 +708,8 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
     com.google.protobuf.GeneratedMessage
       .serializeStringMapTo(
         output,
-        internalGet(),
-        DefaultEntryHolder.defaultEntry,
+        internalGetX(),
+        XDefaultEntryHolder.defaultEntry,
         1);
     getUnknownFields().writeTo(output);
   }
@@ -711,14 +721,14 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
 
     size = 0;
     for (java.util.Map.Entry<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> entry
-         : internalGet().getMap().entrySet()) {
+         : internalGetX().getMap().entrySet()) {
       com.google.protobuf.MapEntry<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array>
-      __ = DefaultEntryHolder.defaultEntry.newBuilderForType()
+      X__ = XDefaultEntryHolder.defaultEntry.newBuilderForType()
           .setKey(entry.getKey())
           .setValue(entry.getValue())
           .build();
       size += com.google.protobuf.CodedOutputStream
-          .computeMessageSize(1, __);
+          .computeMessageSize(1, X__);
     }
     size += getUnknownFields().getSerializedSize();
     memoizedSize = size;
@@ -735,8 +745,8 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
     }
     com.github.peterrk.protocache.pb.ArrMap other = (com.github.peterrk.protocache.pb.ArrMap) obj;
 
-    if (!internalGet().equals(
-        other.internalGet())) return false;
+    if (!internalGetX().equals(
+        other.internalGetX())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -748,9 +758,9 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
     }
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
-    if (!internalGet().getMap().isEmpty()) {
-      hash = (37 * hash) + __FIELD_NUMBER;
-      hash = (53 * hash) + internalGet().hashCode();
+    if (!internalGetX().getMap().isEmpty()) {
+      hash = (37 * hash) + _X__FIELD_NUMBER;
+      hash = (53 * hash) + internalGetX().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -866,7 +876,7 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
         int number) {
       switch (number) {
         case 1:
-          return internalGet();
+          return internalGetX();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -877,7 +887,7 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
         int number) {
       switch (number) {
         case 1:
-          return internalGetMutable();
+          return internalGetMutableX();
         default:
           throw new RuntimeException(
               "Invalid map field number: " + number);
@@ -905,7 +915,7 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      internalGetMutable().clear();
+      internalGetMutableX().clear();
       return this;
     }
 
@@ -940,7 +950,7 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
     private void buildPartial0(com.github.peterrk.protocache.pb.ArrMap result) {
       int from_bitField0_ = bitField0_;
       if (((from_bitField0_ & 0x00000001) != 0)) {
-        result._ = internalGet().build(DefaultEntryHolder.defaultEntry);
+        result.X_ = internalGetX().build(XDefaultEntryHolder.defaultEntry);
       }
     }
 
@@ -956,8 +966,8 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
 
     public Builder mergeFrom(com.github.peterrk.protocache.pb.ArrMap other) {
       if (other == com.github.peterrk.protocache.pb.ArrMap.getDefaultInstance()) return this;
-      internalGetMutable().mergeFrom(
-          other.internalGet());
+      internalGetMutableX().mergeFrom(
+          other.internalGetX());
       bitField0_ |= 0x00000001;
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -987,10 +997,10 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
               break;
             case 10: {
               com.google.protobuf.MapEntry<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array>
-              __ = input.readMessage(
-                  DefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
-              internalGetMutable().ensureBuilderMap().put(
-                  __.getKey(), __.getValue());
+              X__ = input.readMessage(
+                  XDefaultEntryHolder.defaultEntry.getParserForType(), extensionRegistry);
+              internalGetMutableX().ensureBuilderMap().put(
+                  X__.getKey(), X__.getValue());
               bitField0_ |= 0x00000001;
               break;
             } // case 10
@@ -1011,7 +1021,7 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
     }
     private int bitField0_;
 
-    private static final class Converter implements com.google.protobuf.MapFieldBuilder.Converter<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder, com.github.peterrk.protocache.pb.ArrMap.Array> {
+    private static final class XConverter implements com.google.protobuf.MapFieldBuilder.Converter<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder, com.github.peterrk.protocache.pb.ArrMap.Array> {
       @java.lang.Override
       public com.github.peterrk.protocache.pb.ArrMap.Array build(com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder val) {
         if (val instanceof com.github.peterrk.protocache.pb.ArrMap.Array) { return (com.github.peterrk.protocache.pb.ArrMap.Array) val; }
@@ -1020,89 +1030,94 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
 
       @java.lang.Override
       public com.google.protobuf.MapEntry<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> defaultEntry() {
-        return DefaultEntryHolder.defaultEntry;
+        return XDefaultEntryHolder.defaultEntry;
       }
     };
-    private static final Converter Converter = new Converter();
+    private static final XConverter XConverter = new XConverter();
 
     private com.google.protobuf.MapFieldBuilder<
-        java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder, com.github.peterrk.protocache.pb.ArrMap.Array, com.github.peterrk.protocache.pb.ArrMap.Array.Builder> _;
+        java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder, com.github.peterrk.protocache.pb.ArrMap.Array, com.github.peterrk.protocache.pb.ArrMap.Array.Builder> X_;
     private com.google.protobuf.MapFieldBuilder<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder, com.github.peterrk.protocache.pb.ArrMap.Array, com.github.peterrk.protocache.pb.ArrMap.Array.Builder>
-        internalGet() {
-      if (_ == null) {
-        return new com.google.protobuf.MapFieldBuilder<>(Converter);
+        internalGetX() {
+      if (X_ == null) {
+        return new com.google.protobuf.MapFieldBuilder<>(XConverter);
       }
-      return _;
+      return X_;
     }
     private com.google.protobuf.MapFieldBuilder<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder, com.github.peterrk.protocache.pb.ArrMap.Array, com.github.peterrk.protocache.pb.ArrMap.Array.Builder>
-        internalGetMutable() {
-      if (_ == null) {
-        _ = new com.google.protobuf.MapFieldBuilder<>(Converter);
+        internalGetMutableX() {
+      if (X_ == null) {
+        X_ = new com.google.protobuf.MapFieldBuilder<>(XConverter);
       }
       bitField0_ |= 0x00000001;
       onChanged();
-      return _;
+      return X_;
     }
-    public int getCount() {
-      return internalGet().ensureBuilderMap().size();
+    public int getXCount() {
+      return internalGetX().ensureBuilderMap().size();
     }
     /**
-     * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+     * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
      */
     @java.lang.Override
-    public boolean contains(
+    public boolean containsX(
         java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      return internalGet().ensureBuilderMap().containsKey(key);
+      return internalGetX().ensureBuilderMap().containsKey(key);
     }
     /**
-     * Use {@link #getMap()} instead.
+     * Use {@link #getXMap()} instead.
      */
     @java.lang.Override
     @java.lang.Deprecated
-    public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> get() {
-      return getMap();
+    public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> getX() {
+      return getXMap();
     }
     /**
-     * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+     * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
      */
     @java.lang.Override
-    public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> getMap() {
-      return internalGet().getImmutableMap();
+    public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> getXMap() {
+      return internalGetX().getImmutableMap();
     }
     /**
-     * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+     * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
      */
     @java.lang.Override
     public /* nullable */
-com.github.peterrk.protocache.pb.ArrMap.Array getOrDefault(
+com.github.peterrk.protocache.pb.ArrMap.Array getXOrDefault(
         java.lang.String key,
         /* nullable */
 com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder> map = internalGetMutable().ensureBuilderMap();
-      return map.containsKey(key) ? Converter.build(map.get(key)) : defaultValue;
+      java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder> map = internalGetMutableX().ensureBuilderMap();
+      return map.containsKey(key) ? XConverter.build(map.get(key)) : defaultValue;
     }
     /**
-     * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+     * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
      */
     @java.lang.Override
-    public com.github.peterrk.protocache.pb.ArrMap.Array getOrThrow(
+    public com.github.peterrk.protocache.pb.ArrMap.Array getXOrThrow(
         java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder> map = internalGetMutable().ensureBuilderMap();
+      java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder> map = internalGetMutableX().ensureBuilderMap();
       if (!map.containsKey(key)) {
         throw new java.lang.IllegalArgumentException();
       }
-      return Converter.build(map.get(key));
+      return XConverter.build(map.get(key));
+    }
+    public Builder clearX() {
+      bitField0_ = (bitField0_ & ~0x00000001);
+      internalGetMutableX().clear();
+      return this;
     }
     /**
-     * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+     * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
      */
-    public Builder remove(
+    public Builder removeX(
         java.lang.String key) {
       if (key == null) { throw new NullPointerException("map key"); }
-      internalGetMutable().ensureBuilderMap()
+      internalGetMutableX().ensureBuilderMap()
           .remove(key);
       return this;
     }
@@ -1111,44 +1126,44 @@ com.github.peterrk.protocache.pb.ArrMap.Array defaultValue) {
      */
     @java.lang.Deprecated
     public java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array>
-        getMutable() {
+        getMutableX() {
       bitField0_ |= 0x00000001;
-      return internalGetMutable().ensureMessageMap();
+      return internalGetMutableX().ensureMessageMap();
     }
     /**
-     * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+     * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
      */
-    public Builder put(
+    public Builder putX(
         java.lang.String key,
         com.github.peterrk.protocache.pb.ArrMap.Array value) {
       if (key == null) { throw new NullPointerException("map key"); }
       if (value == null) { throw new NullPointerException("map value"); }
-      internalGetMutable().ensureBuilderMap()
+      internalGetMutableX().ensureBuilderMap()
           .put(key, value);
       bitField0_ |= 0x00000001;
       return this;
     }
     /**
-     * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+     * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
      */
-    public Builder putAll(
+    public Builder putAllX(
         java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> values) {
       for (java.util.Map.Entry<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.Array> e : values.entrySet()) {
         if (e.getKey() == null || e.getValue() == null) {
           throw new NullPointerException();
         }
       }
-      internalGetMutable().ensureBuilderMap()
+      internalGetMutableX().ensureBuilderMap()
           .putAll(values);
       bitField0_ |= 0x00000001;
       return this;
     }
     /**
-     * <code>map&lt;string, .test.ArrMap.Array&gt; _ = 1;</code>
+     * <code>map&lt;string, .test.ArrMap.Array&gt; _x_ = 1;</code>
      */
-    public com.github.peterrk.protocache.pb.ArrMap.Array.Builder putBuilderIfAbsent(
+    public com.github.peterrk.protocache.pb.ArrMap.Array.Builder putXBuilderIfAbsent(
         java.lang.String key) {
-      java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder> builderMap = internalGetMutable().ensureBuilderMap();
+      java.util.Map<java.lang.String, com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder> builderMap = internalGetMutableX().ensureBuilderMap();
       com.github.peterrk.protocache.pb.ArrMap.ArrayOrBuilder entry = builderMap.get(key);
       if (entry == null) {
         entry = com.github.peterrk.protocache.pb.ArrMap.Array.newBuilder();

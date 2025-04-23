@@ -51,10 +51,10 @@ public final class Test {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_test_ArrMap_Array_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_test_ArrMap_Entry_descriptor;
+    internal_static_test_ArrMap_XEntry_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_test_ArrMap_Entry_fieldAccessorTable;
+      internal_static_test_ArrMap_XEntry_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_test_Main_descriptor;
   static final 
@@ -80,6 +80,16 @@ public final class Test {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_test_CyclicB_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_test_Deprecated_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_test_Deprecated_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_test_Deprecated_Valid_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_test_Deprecated_Valid_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -89,35 +99,38 @@ public final class Test {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\ntest.proto\022\004test\"/\n\005Small\022\013\n\003i32\030\001 \001(\005" +
-      "\022\014\n\004flag\030\002 \001(\010\022\013\n\003str\030\004 \001(\t\"9\n\005Vec2D\022\034\n\001" +
-      "_\030\001 \003(\0132\021.test.Vec2D.Vec1D\032\022\n\005Vec1D\022\t\n\001_" +
-      "\030\001 \003(\002\"x\n\006ArrMap\022\035\n\001_\030\001 \003(\0132\022.test.ArrMa" +
-      "p.Entry\032\022\n\005Array\022\t\n\001_\030\001 \003(\002\032;\n\005Entry\022\013\n\003" +
-      "key\030\001 \001(\t\022!\n\005value\030\002 \001(\0132\022.test.ArrMap.A" +
-      "rray:\0028\001\"\244\005\n\004Main\022\013\n\003i32\030\001 \001(\005\022\013\n\003u32\030\002 " +
-      "\001(\r\022\013\n\003i64\030\003 \001(\003\022\013\n\003u64\030\004 \001(\004\022\014\n\004flag\030\005 " +
-      "\001(\010\022\030\n\004mode\030\006 \001(\0162\n.test.Mode\022\013\n\003str\030\007 \001" +
-      "(\t\022\014\n\004data\030\010 \001(\014\022\013\n\003f32\030\t \001(\002\022\013\n\003f64\030\n \001" +
-      "(\001\022\033\n\006object\030\013 \001(\0132\013.test.Small\022\014\n\004i32v\030" +
-      "\014 \003(\005\022\014\n\004u64v\030\r \003(\004\022\014\n\004strv\030\016 \003(\t\022\r\n\005dat" +
-      "av\030\017 \003(\014\022\014\n\004f32v\030\020 \003(\002\022\014\n\004f64v\030\021 \003(\001\022\r\n\005" +
-      "flags\030\022 \003(\010\022\034\n\007objectv\030\023 \003(\0132\013.test.Smal" +
-      "l\022\r\n\005t_u32\030\024 \001(\007\022\r\n\005t_i32\030\025 \001(\017\022\r\n\005t_s32" +
-      "\030\026 \001(\021\022\r\n\005t_u64\030\027 \001(\006\022\r\n\005t_i64\030\030 \001(\020\022\r\n\005" +
-      "t_s64\030\031 \001(\022\022$\n\005index\030\032 \003(\0132\025.test.Main.I" +
-      "ndexEntry\022(\n\007objects\030\033 \003(\0132\027.test.Main.O" +
-      "bjectsEntry\022\033\n\006matrix\030\034 \001(\0132\013.test.Vec2D" +
-      "\022\034\n\006vector\030\035 \003(\0132\014.test.ArrMap\022\034\n\006arrays" +
-      "\030\036 \001(\0132\014.test.ArrMap\032,\n\nIndexEntry\022\013\n\003ke" +
-      "y\030\001 \001(\t\022\r\n\005value\030\002 \001(\005:\0028\001\032;\n\014ObjectsEnt" +
-      "ry\022\013\n\003key\030\001 \001(\005\022\032\n\005value\030\002 \001(\0132\013.test.Sm" +
-      "all:\0028\001\"7\n\007CyclicA\022\r\n\005value\030\001 \001(\005\022\035\n\006cyc" +
-      "lic\030\002 \001(\0132\r.test.CyclicB\"7\n\007CyclicB\022\r\n\005v" +
-      "alue\030\001 \001(\005\022\035\n\006cyclic\030\002 \001(\0132\r.test.Cyclic" +
-      "A**\n\004Mode\022\n\n\006MODE_A\020\000\022\n\n\006MODE_B\020\001\022\n\n\006MOD" +
-      "E_C\020\002B\'\n com.github.peterrk.protocache.p" +
-      "bP\001\370\001\001b\006proto3"
+      "\n\ntest.proto\022\004test\"A\n\005Small\022\013\n\003str\030\004 \001(\t" +
+      "\022\013\n\003i32\030\001 \001(\005\022\014\n\004flag\030\002 \001(\010\022\020\n\004junk\030\005 \001(" +
+      "\003B\002\030\001\"=\n\005Vec2D\022\036\n\003_x_\030\001 \003(\0132\021.test.Vec2D" +
+      ".Vec1D\032\024\n\005Vec1D\022\013\n\003_x_\030\001 \003(\002\"~\n\006ArrMap\022 " +
+      "\n\003_x_\030\001 \003(\0132\023.test.ArrMap.XEntry\032\024\n\005Arra" +
+      "y\022\013\n\003_x_\030\001 \003(\002\032<\n\006XEntry\022\013\n\003key\030\001 \001(\t\022!\n" +
+      "\005value\030\002 \001(\0132\022.test.ArrMap.Array:\0028\001\"\277\005\n" +
+      "\004Main\022\013\n\003i32\030\001 \001(\005\022\013\n\003u32\030\002 \001(\r\022\013\n\003i64\030\003" +
+      " \001(\003\022\013\n\003u64\030\004 \001(\004\022\014\n\004flag\030\005 \001(\010\022\030\n\004mode\030" +
+      "\006 \001(\0162\n.test.Mode\022\013\n\003str\030\007 \001(\t\022\014\n\004data\030\010" +
+      " \001(\014\022\013\n\003f32\030\t \001(\002\022\013\n\003f64\030\n \001(\001\022\033\n\006object" +
+      "\030\013 \001(\0132\013.test.Small\022\014\n\004i32v\030\014 \003(\005\022\014\n\004u64" +
+      "v\030\r \003(\004\022\014\n\004strv\030\016 \003(\t\022\r\n\005datav\030\017 \003(\014\022\014\n\004" +
+      "f32v\030\020 \003(\002\022\014\n\004f64v\030\021 \003(\001\022\r\n\005flags\030\022 \003(\010\022" +
+      "\034\n\007objectv\030\023 \003(\0132\013.test.Small\022\r\n\005t_u32\030\024" +
+      " \001(\007\022\r\n\005t_i32\030\025 \001(\017\022\r\n\005t_s32\030\026 \001(\021\022\r\n\005t_" +
+      "u64\030\027 \001(\006\022\r\n\005t_i64\030\030 \001(\020\022\r\n\005t_s64\030\031 \001(\022\022" +
+      "$\n\005index\030\032 \003(\0132\025.test.Main.IndexEntry\022(\n" +
+      "\007objects\030\033 \003(\0132\027.test.Main.ObjectsEntry\022" +
+      "\033\n\006matrix\030\034 \001(\0132\013.test.Vec2D\022\034\n\006vector\030\035" +
+      " \003(\0132\014.test.ArrMap\022\034\n\006arrays\030\036 \001(\0132\014.tes" +
+      "t.ArrMap\022\031\n\005modev\030  \003(\0162\n.test.Mode\032,\n\nI" +
+      "ndexEntry\022\013\n\003key\030\001 \001(\t\022\r\n\005value\030\002 \001(\005:\0028" +
+      "\001\032;\n\014ObjectsEntry\022\013\n\003key\030\001 \001(\005\022\032\n\005value\030" +
+      "\002 \001(\0132\013.test.Small:\0028\001\"7\n\007CyclicA\022\r\n\005val" +
+      "ue\030\001 \001(\005\022\035\n\006cyclic\030\002 \001(\0132\r.test.CyclicB\"" +
+      "7\n\007CyclicB\022\r\n\005value\030\001 \001(\005\022\035\n\006cyclic\030\002 \001(" +
+      "\0132\r.test.CyclicA\"4\n\nDeprecated\022\020\n\004junk\030\001" +
+      " \001(\005B\002\030\001\032\024\n\005Valid\022\013\n\003val\030\001 \001(\005**\n\004Mode\022\n" +
+      "\n\006MODE_A\020\000\022\n\n\006MODE_B\020\001\022\n\n\006MODE_C\020\002B\'\n co" +
+      "m.github.peterrk.protocache.pbP\001\370\001\001b\006pro" +
+      "to3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -128,43 +141,43 @@ public final class Test {
     internal_static_test_Small_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_test_Small_descriptor,
-        new java.lang.String[] { "I32", "Flag", "Str", });
+        new java.lang.String[] { "Str", "I32", "Flag", "Junk", });
     internal_static_test_Vec2D_descriptor =
       getDescriptor().getMessageTypes().get(1);
     internal_static_test_Vec2D_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_test_Vec2D_descriptor,
-        new java.lang.String[] { "", });
+        new java.lang.String[] { "X", });
     internal_static_test_Vec2D_Vec1D_descriptor =
       internal_static_test_Vec2D_descriptor.getNestedTypes().get(0);
     internal_static_test_Vec2D_Vec1D_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_test_Vec2D_Vec1D_descriptor,
-        new java.lang.String[] { "", });
+        new java.lang.String[] { "X", });
     internal_static_test_ArrMap_descriptor =
       getDescriptor().getMessageTypes().get(2);
     internal_static_test_ArrMap_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_test_ArrMap_descriptor,
-        new java.lang.String[] { "", });
+        new java.lang.String[] { "X", });
     internal_static_test_ArrMap_Array_descriptor =
       internal_static_test_ArrMap_descriptor.getNestedTypes().get(0);
     internal_static_test_ArrMap_Array_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_test_ArrMap_Array_descriptor,
-        new java.lang.String[] { "", });
-    internal_static_test_ArrMap_Entry_descriptor =
+        new java.lang.String[] { "X", });
+    internal_static_test_ArrMap_XEntry_descriptor =
       internal_static_test_ArrMap_descriptor.getNestedTypes().get(1);
-    internal_static_test_ArrMap_Entry_fieldAccessorTable = new
+    internal_static_test_ArrMap_XEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_test_ArrMap_Entry_descriptor,
+        internal_static_test_ArrMap_XEntry_descriptor,
         new java.lang.String[] { "Key", "Value", });
     internal_static_test_Main_descriptor =
       getDescriptor().getMessageTypes().get(3);
     internal_static_test_Main_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_test_Main_descriptor,
-        new java.lang.String[] { "I32", "U32", "I64", "U64", "Flag", "Mode", "Str", "Data", "F32", "F64", "Object", "I32V", "U64V", "Strv", "Datav", "F32V", "F64V", "Flags", "Objectv", "TU32", "TI32", "TS32", "TU64", "TI64", "TS64", "Index", "Objects", "Matrix", "Vector", "Arrays", });
+        new java.lang.String[] { "I32", "U32", "I64", "U64", "Flag", "Mode", "Str", "Data", "F32", "F64", "Object", "I32V", "U64V", "Strv", "Datav", "F32V", "F64V", "Flags", "Objectv", "TU32", "TI32", "TS32", "TU64", "TI64", "TS64", "Index", "Objects", "Matrix", "Vector", "Arrays", "Modev", });
     internal_static_test_Main_IndexEntry_descriptor =
       internal_static_test_Main_descriptor.getNestedTypes().get(0);
     internal_static_test_Main_IndexEntry_fieldAccessorTable = new
@@ -189,6 +202,18 @@ public final class Test {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_test_CyclicB_descriptor,
         new java.lang.String[] { "Value", "Cyclic", });
+    internal_static_test_Deprecated_descriptor =
+      getDescriptor().getMessageTypes().get(6);
+    internal_static_test_Deprecated_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_test_Deprecated_descriptor,
+        new java.lang.String[] { "Junk", });
+    internal_static_test_Deprecated_Valid_descriptor =
+      internal_static_test_Deprecated_descriptor.getNestedTypes().get(0);
+    internal_static_test_Deprecated_Valid_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_test_Deprecated_Valid_descriptor,
+        new java.lang.String[] { "Val", });
     descriptor.resolveAllFeaturesImmutable();
   }
 

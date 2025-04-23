@@ -523,20 +523,20 @@ public class AccessBenchmark {
         }
 
         void traverse(com.github.peterrk.protocache.pb.ArrMap root) {
-            for (Map.Entry<String, com.github.peterrk.protocache.pb.ArrMap.Array> entry : root.getMap().entrySet()) {
+            for (Map.Entry<String, com.github.peterrk.protocache.pb.ArrMap.Array> entry : root.getXMap().entrySet()) {
                 junk.consume(entry.getKey());
                 com.github.peterrk.protocache.pb.ArrMap.Array vec = entry.getValue();
-                for (int i = 0; i < vec.getCount(); i++) {
-                    junk.consume(vec.get(i));
+                for (int i = 0; i < vec.getXCount(); i++) {
+                    junk.consume(vec.getX(i));
                 }
             }
         }
 
         void traverse(com.github.peterrk.protocache.pb.Vec2D root) {
-            for (int i = 0; i < root.getCount(); i++) {
-                com.github.peterrk.protocache.pb.Vec2D.Vec1D vec = root.get(i);
-                for (int j = 0; j < vec.getCount(); j++) {
-                    junk.consume(vec.get(j));
+            for (int i = 0; i < root.getXCount(); i++) {
+                com.github.peterrk.protocache.pb.Vec2D.Vec1D vec = root.getX(i);
+                for (int j = 0; j < vec.getXCount(); j++) {
+                    junk.consume(vec.getX(j));
                 }
             }
         }

@@ -144,10 +144,10 @@ public class ProtoCacheTest {
         } catch (IOException e) {
             Assertions.fail();
         }
-        Assertions.assertEquals(48, raw.length);
-        Assertions.assertEquals(0xd, Data.getInt(raw, 16));
-        Assertions.assertEquals(1, Data.getInt(raw, 20));
+        Assertions.assertEquals(68, raw.length);
+        Assertions.assertEquals(0xd, Data.getInt(raw, 20));
         Assertions.assertEquals(1, Data.getInt(raw, 24));
+        Assertions.assertEquals(1, Data.getInt(raw, 28));
     }
 
     @Test
