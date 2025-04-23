@@ -48,27 +48,27 @@ public class ProtoCacheTest {
         Assertions.assertEquals("tmp", leaf.getStr());
 
         Int32Array i32v = root.getI32V();
-        Assertions.assertEquals(i32v.size(), 2);
-        Assertions.assertEquals(i32v.get(0), 1);
-        Assertions.assertEquals(i32v.get(1), 2);
+        Assertions.assertEquals(2, i32v.size());
+        Assertions.assertEquals(1, i32v.get(0));
+        Assertions.assertEquals(2, i32v.get(1));
 
         Int64Array u64v = root.getU64V();
-        Assertions.assertEquals(u64v.size(), 1);
-        Assertions.assertEquals(u64v.get(0), 12345678987654321L);
+        Assertions.assertEquals(1, u64v.size());
+        Assertions.assertEquals(12345678987654321L, u64v.get(0));
 
         String[] expectedStrv = new String[]{
                 "abc", "apple", "banana", "orange", "pear", "grape",
                 "strawberry", "cherry", "mango", "watermelon"};
         StrArray strv = root.getStrv();
-        Assertions.assertEquals(strv.size(), expectedStrv.length);
+        Assertions.assertEquals(expectedStrv.length, strv.size());
         for (int i = 0; i < expectedStrv.length; i++) {
-            Assertions.assertEquals(strv.get(i), expectedStrv[i]);
+            Assertions.assertEquals(expectedStrv[i], strv.get(i));
         }
 
         Float32Array f32v = root.getF32V();
-        Assertions.assertEquals(f32v.size(), 2);
-        Assertions.assertEquals(f32v.get(0), 1.1f);
-        Assertions.assertEquals(f32v.get(1), 2.2f);
+        Assertions.assertEquals(2, f32v.size());
+        Assertions.assertEquals(1.1f, f32v.get(0));
+        Assertions.assertEquals(2.2f, f32v.get(1));
 
         double[] expectedF64v = new double[]{9.9, 8.8, 7.7, 6.6, 5.5};
         Float64Array f64v = root.getF64V();
@@ -85,52 +85,52 @@ public class ProtoCacheTest {
         }
 
         Array<Small> objv = root.getObjectv();
-        Assertions.assertEquals(objv.size(), 3);
-        Assertions.assertEquals(objv.fastGet(0, leaf).getI32(), 1);
+        Assertions.assertEquals(3, objv.size());
+        Assertions.assertEquals(1, objv.fastGet(0, leaf).getI32());
         Assertions.assertTrue(objv.fastGet(1, leaf).getFlag());
-        Assertions.assertEquals(objv.fastGet(2, leaf).getStr(), "good luck!");
+        Assertions.assertEquals("good luck!", objv.fastGet(2, leaf).getStr());
 
         Assertions.assertFalse(root.hasField(Main.FIELD_t_i32));
 
         Int32 i32 = new Int32();
         StrDict<Int32> map1 = root.getIndex();
-        Assertions.assertEquals(map1.size(), 6);
+        Assertions.assertEquals(6, map1.size());
         Int32 val1 = map1.find("abc-1", Int32::new);
         Assertions.assertNotNull(val1);
-        Assertions.assertEquals(val1.get(), 1);
+        Assertions.assertEquals(1, val1.get());
         val1 = map1.fastFind("abc-2", i32);
         Assertions.assertNotNull(val1);
-        Assertions.assertEquals(val1.get(), 2);
+        Assertions.assertEquals(2, val1.get());
         Assertions.assertNull(map1.fastFind("abc-3", i32));
         Assertions.assertNull(map1.find("abc-4", Int32::new));
 
         Int32Dict<Small> map2 = root.getObjects();
         for (int i = 0; i < map2.size(); i++) {
             int key = map2.key(i);
-            Assertions.assertNotEquals(key, 0);
+            Assertions.assertNotEquals(0, key);
             Assertions.assertEquals(key, map2.fastGetValue(i, leaf).getI32());
         }
 
         Vec2D matrix = root.getMatrix();
-        Assertions.assertEquals(matrix.size(), 3);
+        Assertions.assertEquals(3, matrix.size());
         Vec2D.Vec1D line = matrix.get(2, Vec2D.Vec1D::new);
-        Assertions.assertEquals(line.size(), 3);
-        Assertions.assertEquals(line.get(2), 9);
+        Assertions.assertEquals(3, line.size());
+        Assertions.assertEquals(9, line.get(2));
 
         Array<ArrMap> vector = root.getVector();
-        Assertions.assertEquals(vector.size(), 2);
+        Assertions.assertEquals(2, vector.size());
         ArrMap map3 = vector.get(0, ArrMap::new);
         ArrMap.Array val3 = map3.find("lv2", ArrMap.Array::new);
         Assertions.assertNotNull(val3);
-        Assertions.assertEquals(val3.size(), 2);
-        Assertions.assertEquals(val3.get(0), 21);
-        Assertions.assertEquals(val3.get(1), 22);
+        Assertions.assertEquals(2, val3.size());
+        Assertions.assertEquals(21, val3.get(0));
+        Assertions.assertEquals(22, val3.get(1));
 
         ArrMap map4 = root.getArrays();
         ArrMap.Array val4 = map4.find("lv5", ArrMap.Array::new);
-        Assertions.assertEquals(val4.size(), 2);
-        Assertions.assertEquals(val4.get(0), 51);
-        Assertions.assertEquals(val4.get(1), 52);
+        Assertions.assertEquals(2, val4.size());
+        Assertions.assertEquals(51, val4.get(0));
+        Assertions.assertEquals(52, val4.get(1));
     }
 
     @Test
@@ -144,10 +144,10 @@ public class ProtoCacheTest {
         } catch (IOException e) {
             Assertions.fail();
         }
-        Assertions.assertEquals(raw.length, 48);
-        Assertions.assertEquals(Data.getInt(raw, 16), 0xd);
-        Assertions.assertEquals(Data.getInt(raw, 20), 1);
-        Assertions.assertEquals(Data.getInt(raw, 24), 1);
+        Assertions.assertEquals(48, raw.length);
+        Assertions.assertEquals(0xd, Data.getInt(raw, 16));
+        Assertions.assertEquals(1, Data.getInt(raw, 20));
+        Assertions.assertEquals(1, Data.getInt(raw, 24));
     }
 
     @Test
