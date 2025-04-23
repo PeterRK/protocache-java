@@ -3,10 +3,12 @@ package com.github.peterrk.protocache;
 import java.util.function.Supplier;
 
 abstract class Dict<V extends IUnit> extends IUnit.Complex {
-    private final static byte[] empty = new byte[4];
+    private final static PerfectHash emptyIndex;
 
     static {
+        byte[] empty = new byte[4];
         Data.putInt(empty, 0, 0);
+        emptyIndex = new PerfectHash(empty);
     }
 
     protected PerfectHash index;
@@ -17,7 +19,7 @@ abstract class Dict<V extends IUnit> extends IUnit.Complex {
     @Override
     public void init(byte[] data, int offset) {
         if (offset < 0) {
-            index = new PerfectHash(empty);
+            index = emptyIndex;
             bodyOffset = 4;
             keyWidth = 0;
             valueWidth = 0;
