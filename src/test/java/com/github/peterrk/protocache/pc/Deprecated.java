@@ -5,9 +5,9 @@ public final class Deprecated extends com.github.peterrk.protocache.Message {
 
 		public static final int FIELD_val = 0;
 
-		public Valid(){}
-		public Valid(byte[] data){ this(data, 0); }
-		public Valid(byte[] data, int offset){ super(data, offset); }
+		public Valid() {}
+		public Valid(byte[] data) { this(data, 0); }
+		public Valid(byte[] data, int offset) { super(data, offset); }
 
 		public int getVal() { return getInt32(FIELD_val); }
 	}

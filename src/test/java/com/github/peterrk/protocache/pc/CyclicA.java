@@ -5,9 +5,9 @@ public final class CyclicA extends com.github.peterrk.protocache.Message {
 	public static final int FIELD_value = 0;
 	public static final int FIELD_cyclic = 1;
 
-	public CyclicA(){}
-	public CyclicA(byte[] data){ this(data, 0); }
-	public CyclicA(byte[] data, int offset){ super(data, offset); }
+	public CyclicA() {}
+	public CyclicA(byte[] data) { this(data, 0); }
+	public CyclicA(byte[] data, int offset) { super(data, offset); }
 
 	public int getValue() { return getInt32(FIELD_value); }
 	private com.github.peterrk.protocache.pc.CyclicB _cyclic = null;

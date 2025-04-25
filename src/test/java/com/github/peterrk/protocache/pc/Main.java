@@ -34,9 +34,9 @@ public final class Main extends com.github.peterrk.protocache.Message {
 	public static final int FIELD_arrays = 29;
 	public static final int FIELD_modev = 31;
 
-	public Main(){}
-	public Main(byte[] data){ this(data, 0); }
-	public Main(byte[] data, int offset){ super(data, offset); }
+	public Main() {}
+	public Main(byte[] data) { this(data, 0); }
+	public Main(byte[] data, int offset) { super(data, offset); }
 
 	public int getI32() { return getInt32(FIELD_i32); }
 	public int getU32() { return getInt32(FIELD_u32); }
