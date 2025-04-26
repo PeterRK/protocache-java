@@ -4,8 +4,13 @@
 
 package com.github.peterrk.protocache;
 
-public class BytesArray extends Array<Bytes> {
+public class BytesArray extends ArrayType {
+    @Override
+    public void init(byte[] data, int offset) {
+        init(data, offset, 0);
+    }
+
     public byte[] get(int idx) {
-        return Bytes.extract(data, Complex.jump(data, fieldOffset(idx)));
+        return Bytes.extractBytes(data, Unit.jump(data, fieldOffset(idx)));
     }
 }

@@ -563,7 +563,7 @@ public class ProtoCache {
 
         @Override
         public byte[] next() {
-            return Bytes.extract(iterator.next(), 0);
+            return Bytes.extractBytes(iterator.next(), 0);
         }
     }
 }

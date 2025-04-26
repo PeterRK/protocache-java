@@ -167,8 +167,8 @@ public class Message extends IUnit.Complex {
         return IUnit.NewByField(data, getFieldOffset(id), Float64Array::new);
     }
 
-    public StrArray getStrArray(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), StrArray::new);
+    public StringArray getStrArray(int id) {
+        return IUnit.NewByField(data, getFieldOffset(id), StringArray::new);
     }
 
     public BytesArray getBytesArray(int id) {

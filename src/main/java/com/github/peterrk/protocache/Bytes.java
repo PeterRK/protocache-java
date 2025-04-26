@@ -4,13 +4,11 @@
 
 package com.github.peterrk.protocache;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
-public final class Bytes extends IUnit.Complex {
-    final static byte[] empty = new byte[0];
-    private byte[] value = null;
-
-    static byte[] extract(byte[] data, int offset) {
+public final class Bytes {
+    static byte[] extractBytes(byte[] data, int offset) {
         int mark = 0;
         for (int sft = 0; sft < 32; sft += 7) {
             byte b = data[offset++];
@@ -26,16 +24,19 @@ public final class Bytes extends IUnit.Complex {
         throw new IllegalArgumentException("illegal bytes");
     }
 
-    public byte[] get() {
-        return value;
-    }
-
-    @Override
-    public void init(byte[] data, int offset) {
-        if (offset < 0) {
-            value = empty;
-            return;
+    static String extractString(byte[] data, int offset) {
+        int mark = 0;
+        for (int sft = 0; sft < 32; sft += 7) {
+            byte b = data[offset++];
+            mark |= ((int) b & 0x7f) << sft;
+            if ((b & 0x80) == 0) {
+                if ((mark & 3) != 0) {
+                    break;
+                }
+                int size = mark >>> 2;
+                return new String(data, offset, size, StandardCharsets.UTF_8);
+            }
         }
-        value = extract(data, offset);
+        throw new IllegalArgumentException("illegal string");
     }
 }

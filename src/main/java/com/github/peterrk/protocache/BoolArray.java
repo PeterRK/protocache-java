@@ -4,7 +4,7 @@
 
 package com.github.peterrk.protocache;
 
-public class BoolArray extends IUnit.Complex {
+public class BoolArray extends Unit {
     private byte[] data;
     private int bodyOffset = -1;
     private int cnt = 0;
@@ -12,9 +12,9 @@ public class BoolArray extends IUnit.Complex {
     @Override
     public void init(byte[] data, int offset) {
         if (offset < 0) {
-            cnt = 0;
             this.data = null;
             this.bodyOffset = -1;
+            cnt = 0;
             return;
         }
         this.data = data;
@@ -26,8 +26,8 @@ public class BoolArray extends IUnit.Complex {
                 if ((mark & 3) != 0) {
                     break;
                 }
-                cnt = mark >>> 2;
                 bodyOffset = offset;
+                cnt = mark >>> 2;
                 return;
             }
         }

@@ -4,34 +4,13 @@
 
 package com.github.peterrk.protocache;
 
-public class Float32Array extends IUnit.Complex {
-    private int size;
-    private byte[] data;
-    private int bodyOffset = -1;
-
+public class Float32Array extends ArrayType {
     @Override
     public void init(byte[] data, int offset) {
-        if (offset < 0) {
-            size = 0;
-            this.data = null;
-            this.bodyOffset = -1;
-            return;
-        }
-        int mark = Data.getInt(data, offset);
-        if ((mark & 3) != 1) {
-            throw new IllegalArgumentException("illegal float array");
-        }
-        size = mark >>> 2;
-        this.data = data;
-        this.bodyOffset = offset + 4;
-    }
-
-    public int size() {
-        return size;
+        init(data, offset, 1);
     }
 
     public float get(int idx) {
-        int fieldOffset = bodyOffset + idx * 4;
-        return Data.getFloat(data, fieldOffset);
+        return Data.getFloat(data, fieldOffset(idx));
     }
 }

@@ -2,22 +2,18 @@ package com.github.peterrk.protocache;
 
 import java.util.function.Supplier;
 
-public class Int64Dict<V extends IUnit> extends Dict<V> {
+public abstract class Int64Dict extends DictType {
     private byte[] tmp = null;
 
-    @Override
-    public void init(byte[] data, int offset) {
-        super.init(data, offset);
-        if (keyWidth != 8) {
-            throw new IllegalArgumentException("illegal map");
-        }
+    protected void init(byte[] data, int offset, int word) {
+        init(data, offset, 2, word);
     }
 
     public long key(int idx) {
         return Data.getLong(index.data, keyFieldOffset(idx));
     }
 
-    private int find(long key) {
+    public int find(long key) {
         if (tmp == null) {
             tmp = new byte[8];
         }
@@ -29,20 +25,91 @@ public class Int64Dict<V extends IUnit> extends Dict<V> {
         return valueFieldOffset(idx);
     }
 
-    public V find(long key, Supplier<V> supplier) {
-        int valueOffset = find(key);
-        if (valueOffset < 0) {
-            return null;
+    public static class BoolValue extends Int64Dict {
+        @Override
+        public void init(byte[] data, int offset) {
+            init(data, offset, 1);
         }
-        return IUnit.NewByField(index.data, valueOffset, supplier);
+        public boolean value(int idx) {
+            return index.data[valueFieldOffset(idx)] != 0;
+        }
     }
 
-    public V fastFind(long key, V unit) {
-        int valueOffset = find(key);
-        if (valueOffset < 0) {
-            return null;
+    public static class Int32Value extends Int64Dict {
+        @Override
+        public void init(byte[] data, int offset) {
+            init(data, offset, 1);
         }
-        unit.initByField(index.data, valueOffset);
-        return unit;
+        public int value(int idx) {
+            return Data.getInt(index.data, valueFieldOffset(idx));
+        }
+    }
+
+    public static class Int64Value extends Int64Dict {
+        @Override
+        public void init(byte[] data, int offset) {
+            init(data, offset, 2);
+        }
+        public long value(int idx) {
+            return Data.getLong(index.data, valueFieldOffset(idx));
+        }
+    }
+
+    public static class Float2Value extends Int64Dict {
+        @Override
+        public void init(byte[] data, int offset) {
+            init(data, offset, 1);
+        }
+        public float value(int idx) {
+            return Data.getFloat(index.data, valueFieldOffset(idx));
+        }
+    }
+
+    public static class float64Value extends Int64Dict {
+        @Override
+        public void init(byte[] data, int offset) {
+            init(data, offset, 2);
+        }
+        public double value(int idx) {
+            return Data.getDouble(index.data, valueFieldOffset(idx));
+        }
+    }
+
+    public static class StringValue extends Int64Dict {
+        @Override
+        public void init(byte[] data, int offset) {
+            init(data, offset, 0);
+        }
+
+        public String value(int idx) {
+            return Bytes.extractString(index.data, Unit.jump(index.data, valueFieldOffset(idx)));
+        }
+    }
+
+    public static class BytesValue extends Int64Dict {
+        @Override
+        public void init(byte[] data, int offset) {
+            init(data, offset, 0);
+        }
+
+        public byte[] value(int idx) {
+            return Bytes.extractBytes(index.data, Unit.jump(index.data, valueFieldOffset(idx)));
+        }
+    }
+
+    public static class ObjectValue<V extends Unit> extends Int64Dict {
+        @Override
+        public void init(byte[] data, int offset) {
+            init(data, offset, 0);
+        }
+
+        public V value(int idx, Supplier<V> supplier) {
+            return Unit.NewByField(index.data, valueFieldOffset(idx), supplier);
+        }
+
+        public V value(int idx, V unit) {
+            unit.initByField(index.data, valueFieldOffset(idx));
+            return unit;
+        }
     }
 }
