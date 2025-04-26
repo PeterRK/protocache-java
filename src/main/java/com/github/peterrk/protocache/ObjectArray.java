@@ -12,7 +12,7 @@ public class ObjectArray<T extends Unit> extends ArrayType {
         return Unit.NewByField(data, fieldOffset(idx), supplier);
     }
 
-    public T get(int idx, T unit) {
+    public T fastGet(int idx, T unit) {
         unit.initByField(data, fieldOffset(idx));
         return unit;
     }

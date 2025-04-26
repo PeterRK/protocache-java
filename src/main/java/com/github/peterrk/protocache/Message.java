@@ -16,9 +16,7 @@ public class Message extends Unit {
     private byte[] data;
     private int offset = -1;
 
-    public Message() {
-    }
-
+    public Message() {}
     public Message(byte[] data, int offset) {
         init(data, offset);
     }
@@ -142,7 +140,7 @@ public class Message extends Unit {
         return Unit.NewByField(data, getFieldOffset(id), supplier);
     }
 
-    public <T extends Unit> T getField(int id, T unit) {
+    public <T extends Unit> T fastGetField(int id, T unit) {
         unit.initByField(data, getFieldOffset(id));
         return unit;
     }

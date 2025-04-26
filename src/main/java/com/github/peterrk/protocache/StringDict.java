@@ -102,7 +102,7 @@ public abstract class StringDict extends DictType {
             return Unit.NewByField(index.data, valueFieldOffset(idx), supplier);
         }
 
-        public V value(int idx, V unit) {
+        public V fastGetValue(int idx, V unit) {
             unit.initByField(index.data, valueFieldOffset(idx));
             return unit;
         }
