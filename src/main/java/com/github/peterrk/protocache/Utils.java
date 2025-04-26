@@ -3,31 +3,44 @@ package com.github.peterrk.protocache;
 import java.io.ByteArrayOutputStream;
 
 public class Utils {
-    private static final class Int {
-        int v = 0;
-    }
+    private static final class CompressContext {
+        byte[] src;
+        int k;
+        ByteArrayOutputStream out;
+        CompressContext(byte[] src) {
+            this.src = src;
+            k = 0;
+            out = new ByteArrayOutputStream();
+            int n = src.length;
+            while ((n & ~0x7f) != 0) {
+                out.write(0x80 | (n & 0x7f));
+                n >>>= 7;
+            }
+            out.write(n);
+        }
 
-    private static int pick(byte[] src, Int k) {
-        int cnt = 1;
-        byte ch = src[k.v++];
-        if (ch == 0) {
-            while (k.v < src.length && cnt < 4 && src[k.v] == 0) {
-                k.v++;
-                cnt++;
+        int pick() {
+            int cnt = 1;
+            byte ch = src[k++];
+            if (ch == 0) {
+                while (k < src.length && cnt < 4 && src[k] == 0) {
+                    k++;
+                    cnt++;
+                }
+                return 0x8 | (cnt - 1);
+            } else if (ch == (byte)0xff) {
+                while (k < src.length && cnt < 4 && src[k] == (byte)0xff) {
+                    k++;
+                    cnt++;
+                }
+                return 0xC | (cnt - 1);
+            } else {
+                while (k < src.length && cnt < 7 && src[k] != 0 && src[k] != (byte)0xff) {
+                    k++;
+                    cnt++;
+                }
+                return cnt;
             }
-            return 0x8 | (cnt - 1);
-        } else if (ch == (byte)0xff) {
-            while (k.v < src.length && cnt < 4 && src[k.v] == (byte)0xff) {
-                k.v++;
-                cnt++;
-            }
-            return 0xC | (cnt - 1);
-        } else {
-            while (k.v < src.length && cnt < 7 && src[k.v] != 0 && src[k.v] != (byte)0xff) {
-                k.v++;
-                cnt++;
-            }
-            return cnt;
         }
     }
 
@@ -35,84 +48,91 @@ public class Utils {
         if (src.length == 0) {
             return new byte[0];
         }
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        int n = src.length;
-        while ((n & ~0x7f) != 0) {
-            buf.write(0x80 | (n & 0x7f));
-            n >>>= 7;
-        }
-        buf.write(n);
-
-        Int k = new Int();
-        while (k.v < src.length) {
-            int x = k.v;
-            int a = pick(src, k);
-            if (k.v == src.length) {
-                buf.write(a);
+        CompressContext context = new CompressContext(src);
+        while (context.k < src.length) {
+            int x = context.k;
+            int a = context.pick();
+            if (context.k == src.length) {
+                context.out.write(a);
                 if ((a & 0x8) == 0) {
-                    buf.write(src, x, a);
+                    context.out.write(src, x, a);
                 }
                 break;
             }
-            int y = k.v;
-            int b = pick(src, k);
-            buf.write(a|(b<<4));
+            int y = context.k;
+            int b = context.pick();
+            context.out.write(a|(b<<4));
             if ((a & 0x8) == 0) {
-                buf.write(src, x, a);
+                context.out.write(src, x, a);
             }
             if ((b & 0x8) == 0) {
-                buf.write(src, y, b);
+                context.out.write(src, y, b);
             }
         }
-        return buf.toByteArray();
+        return context.out.toByteArray();
     }
 
-    private static boolean unpack(byte[] src, Int k, ByteArrayOutputStream buf, int mark) {
-        if ((mark & 8) != 0) {
-            int cnt = (mark & 3) + 1;
-            int ch = 0;
-            if ((mark & 4) != 0) {
-                ch = 0xff;
-            }
-            for (; cnt != 0; cnt--) {
-                buf.write(ch);
-            }
-        } else {
-            int l = mark & 7;
-            if (k.v+l > src.length) {
-                return false;
-            }
-            buf.write(src, k.v, l);
-            k.v += l;
+    private static final class DecompressContext {
+        byte[] src;
+        byte[] out;
+        int k;
+        int off;
+        DecompressContext(byte[] src, int k, int size) {
+            this.src = src;
+            this.k = k;
+            out = new byte[size];
+            off = 0;
         }
-        return true;
+
+        boolean unpack(int mark) {
+            if ((mark & 8) != 0) {
+                int cnt = (mark & 3) + 1;
+                if (off+cnt > out.length) {
+                    return false;
+                }
+                byte v = 0;
+                if ((mark & 4) != 0) {
+                    v = (byte)0xff;
+                }
+                for (; cnt != 0; cnt--) {
+                    out[off++] = v;
+                }
+            } else {
+                int l = mark & 7;
+                if (k+l > src.length) {
+                    return false;
+                }
+                for (; l != 0; l--) {
+                    out[off++] = src[k++];
+                }
+            }
+            return true;
+        }
     }
 
     public static byte[] decompress(byte[] src) {
         if (src.length == 0) {
             return new byte[0];
         }
-        Int k = new Int();
+        int k = 0;
         int size = 0;
         for (int sft = 0; sft < 32; sft += 7) {
-            byte b = src[k.v++];
+            byte b = src[k++];
             size |= ((int) b & 0x7f) << sft;
             if ((b & 0x80) == 0) {
                 break;
             }
         }
-
-        ByteArrayOutputStream buf = new ByteArrayOutputStream();
-        while (k.v < src.length) {
-            int mark = src[k.v++] & 0xff;
-            if (!unpack(src, k, buf, mark&0xf) || !unpack(src, k, buf, mark>>4)) {
+        DecompressContext context = new DecompressContext(src, k, size);
+        while (context.k < src.length) {
+            int mark = src[context.k++] & 0xff;
+            if (!context.unpack(mark&0xf) || !context.unpack(mark>>4)) {
                 throw new IllegalArgumentException("broken data");
             }
         }
-        byte[] out = buf.toByteArray();
-        if (out.length != size) {
+        if (context.out.length != size) {
             throw new IllegalArgumentException("size mismatch");
         }
-        return out;
+        return context.out;
     }
 }

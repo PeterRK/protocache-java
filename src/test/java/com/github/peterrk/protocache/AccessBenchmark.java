@@ -78,6 +78,28 @@ public class AccessBenchmark {
         ctx.traverse(root);
     }
 
+    @Benchmark
+    public void compress(CompressState ctx) {
+        Utils.compress(ctx.raw);
+    }
+
+    @Benchmark
+    public void decompress(CompressState ctx) {
+        Utils.decompress(ctx.compressed);
+    }
+
+    @State(Scope.Thread)
+    public static class CompressState {
+        byte[] raw;
+        byte[] compressed;
+
+        @Setup(value = Level.Trial)
+        public void setup() throws IOException {
+            raw = Files.readAllBytes(Paths.get("test.pc"));
+            compressed = Utils.compress(raw);
+        }
+    }
+
     @State(Scope.Thread)
     public static class FuryState extends FuryStateBase {
         Fury fury;
