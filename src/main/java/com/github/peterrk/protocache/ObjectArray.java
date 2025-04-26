@@ -1,15 +1,12 @@
 package com.github.peterrk.protocache;
 
-import java.util.function.Supplier;
-
-public class ObjectArray<T extends Unit> extends ArrayType {
+public class ObjectArray<T extends IUnit> extends ArrayType {
     @Override
     public void init(byte[] data, int offset) {
         init(data, offset, 0);
     }
 
     public T get(int idx, T unit) {
-        unit.initByField(data, fieldOffset(idx));
-        return unit;
+        return IUnit.initByField(data, fieldOffset(idx), unit);
     }
 }

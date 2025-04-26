@@ -1,7 +1,5 @@
 package com.github.peterrk.protocache;
 
-import java.util.function.Supplier;
-
 public abstract class Int32Dict extends DictType {
     private byte[] tmp = null;
 
@@ -82,7 +80,7 @@ public abstract class Int32Dict extends DictType {
         }
 
         public String getValue(int idx) {
-            return Bytes.extractString(index.data, Unit.jump(index.data, valueFieldOffset(idx)));
+            return Bytes.extractString(index.data, IUnit.jump(index.data, valueFieldOffset(idx)));
         }
     }
 
@@ -93,19 +91,18 @@ public abstract class Int32Dict extends DictType {
         }
 
         public byte[] getValue(int idx) {
-            return Bytes.extractBytes(index.data, Unit.jump(index.data, valueFieldOffset(idx)));
+            return Bytes.extractBytes(index.data, IUnit.jump(index.data, valueFieldOffset(idx)));
         }
     }
 
-    public static class ObjectValue<V extends Unit> extends Int32Dict {
+    public static class ObjectValue<V extends IUnit> extends Int32Dict {
         @Override
         public void init(byte[] data, int offset) {
             init(data, offset, 0);
         }
 
         public V getValue(int idx, V unit) {
-            unit.initByField(index.data, valueFieldOffset(idx));
-            return unit;
+            return IUnit.initByField(index.data, valueFieldOffset(idx), unit);
         }
     }
 }

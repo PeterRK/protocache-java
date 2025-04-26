@@ -1,6 +1,6 @@
 package com.github.peterrk.protocache;
 
-abstract class DictType extends Unit {
+abstract class DictType implements IUnit {
     private final static PerfectHash emptyIndex;
 
     static {

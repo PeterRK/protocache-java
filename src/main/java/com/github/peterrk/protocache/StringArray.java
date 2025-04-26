@@ -11,6 +11,6 @@ public class StringArray extends ArrayType {
     }
 
     public String get(int idx) {
-        return Bytes.extractString(data, Unit.jump(data, fieldOffset(idx)));
+        return Bytes.extractString(data, IUnit.jump(data, fieldOffset(idx)));
     }
 }

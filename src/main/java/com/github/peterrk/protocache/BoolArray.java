@@ -4,7 +4,7 @@
 
 package com.github.peterrk.protocache;
 
-public class BoolArray extends Unit {
+public class BoolArray implements IUnit {
     private byte[] data;
     private int bodyOffset = -1;
     private int cnt = 0;

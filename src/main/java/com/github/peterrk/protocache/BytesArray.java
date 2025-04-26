@@ -11,6 +11,6 @@ public class BytesArray extends ArrayType {
     }
 
     public byte[] get(int idx) {
-        return Bytes.extractBytes(data, Unit.jump(data, fieldOffset(idx)));
+        return Bytes.extractBytes(data, IUnit.jump(data, fieldOffset(idx)));
     }
 }

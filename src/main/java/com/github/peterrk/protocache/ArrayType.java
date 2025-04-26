@@ -4,7 +4,7 @@
 
 package com.github.peterrk.protocache;
 
-abstract class ArrayType extends Unit {
+abstract class ArrayType implements IUnit {
     protected byte[] data;
     private int bodyOffset = -1;
     private int size;
