@@ -6,7 +6,7 @@ package com.github.peterrk.protocache;
 
 import java.util.function.Supplier;
 
-public class Message extends IUnit.Complex {
+public class Message extends Unit {
     private final static byte[] empty = new byte[4];
 
     static {
@@ -131,47 +131,47 @@ public class Message extends IUnit.Complex {
     }
 
     public byte[] getBytes(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), Bytes::new).get();
+        return Bytes.extractBytes(data, Unit.jump(data, getFieldOffset(id)));
     }
 
     public String getStr(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), Str::new).get();
+        return Bytes.extractString(data, Unit.jump(data, getFieldOffset(id)));
     }
 
-    public <T extends IUnit.Complex> T getField(int id, Supplier<T> supplier) {
-        return IUnit.NewByField(data, getFieldOffset(id), supplier);
+    public <T extends Unit> T getField(int id, Supplier<T> supplier) {
+        return Unit.NewByField(data, getFieldOffset(id), supplier);
     }
 
-    public <T extends IUnit.Complex> T fastGetField(int id, T unit) {
+    public <T extends Unit> T getField(int id, T unit) {
         unit.initByField(data, getFieldOffset(id));
         return unit;
     }
 
     public BoolArray getBoolArray(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), BoolArray::new);
+        return Unit.NewByField(data, getFieldOffset(id), BoolArray::new);
     }
 
     public Int32Array getInt32Array(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), Int32Array::new);
+        return Unit.NewByField(data, getFieldOffset(id), Int32Array::new);
     }
 
     public Int64Array getInt64Array(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), Int64Array::new);
+        return Unit.NewByField(data, getFieldOffset(id), Int64Array::new);
     }
 
     public Float32Array getFloat32Array(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), Float32Array::new);
+        return Unit.NewByField(data, getFieldOffset(id), Float32Array::new);
     }
 
     public Float64Array getFloat64Array(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), Float64Array::new);
+        return Unit.NewByField(data, getFieldOffset(id), Float64Array::new);
     }
 
     public StringArray getStrArray(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), StringArray::new);
+        return Unit.NewByField(data, getFieldOffset(id), StringArray::new);
     }
 
     public BytesArray getBytesArray(int id) {
-        return IUnit.NewByField(data, getFieldOffset(id), BytesArray::new);
+        return Unit.NewByField(data, getFieldOffset(id), BytesArray::new);
     }
 }
