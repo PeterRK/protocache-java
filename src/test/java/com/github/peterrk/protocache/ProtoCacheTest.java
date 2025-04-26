@@ -59,7 +59,7 @@ public class ProtoCacheTest {
         String[] expectedStrv = new String[]{
                 "abc", "apple", "banana", "orange", "pear", "grape",
                 "strawberry", "cherry", "mango", "watermelon"};
-        StrArray strv = root.getStrv();
+        StringArray strv = root.getStrv();
         Assertions.assertEquals(expectedStrv.length, strv.size());
         for (int i = 0; i < expectedStrv.length; i++) {
             Assertions.assertEquals(expectedStrv[i], strv.get(i));
@@ -84,50 +84,55 @@ public class ProtoCacheTest {
             Assertions.assertEquals(flags.get(i), expectedFlags[i]);
         }
 
-        Array<Small> objv = root.getObjectv();
+        leaf = new Small();
+        ObjectArray<Small> objv = root.getObjectv();
         Assertions.assertEquals(3, objv.size());
-        Assertions.assertEquals(1, objv.fastGet(0, leaf).getI32());
-        Assertions.assertTrue(objv.fastGet(1, leaf).getFlag());
-        Assertions.assertEquals("good luck!", objv.fastGet(2, leaf).getStr());
+        Assertions.assertEquals(1, objv.get(0, leaf).getI32());
+        Assertions.assertTrue(objv.get(1, leaf).getFlag());
+        Assertions.assertEquals("good luck!", objv.get(2, leaf).getStr());
 
         Assertions.assertFalse(root.hasField(Main.FIELD_t_i32));
 
-        Int32 i32 = new Int32();
-        StrDict<Int32> map1 = root.getIndex();
+        StringDict.Int32Value map1 = root.getIndex();
         Assertions.assertEquals(6, map1.size());
-        Int32 val1 = map1.find("abc-1", Int32::new);
-        Assertions.assertNotNull(val1);
-        Assertions.assertEquals(1, val1.get());
-        val1 = map1.fastFind("abc-2", i32);
-        Assertions.assertNotNull(val1);
-        Assertions.assertEquals(2, val1.get());
-        Assertions.assertNull(map1.fastFind("abc-3", i32));
-        Assertions.assertNull(map1.find("abc-4", Int32::new));
+        int idx = map1.find("abc-1");
+        Assertions.assertTrue(idx >= 0);
+        Assertions.assertEquals(1, map1.getValue(idx));
+        idx = map1.find("abc-2");
+        Assertions.assertTrue(idx >= 0);
+        Assertions.assertEquals(2, map1.getValue(idx));
+        Assertions.assertFalse(map1.find("abc-3") >= 0);
+        Assertions.assertFalse(map1.find("abc-4") >= 0);
 
-        Int32Dict<Small> map2 = root.getObjects();
+        Int32Dict.ObjectValue<Small> map2 = root.getObjects();
         for (int i = 0; i < map2.size(); i++) {
-            int key = map2.key(i);
+            int key = map2.getKey(i);
             Assertions.assertNotEquals(0, key);
-            Assertions.assertEquals(key, map2.fastGetValue(i, leaf).getI32());
+            idx = map2.find(key);
+            Assertions.assertTrue(idx >= 0);
+            Assertions.assertEquals(key, map2.getValue(i, leaf).getI32());
         }
 
         Vec2D matrix = root.getMatrix();
         Assertions.assertEquals(3, matrix.size());
-        Vec2D.Vec1D line = matrix.get(2, Vec2D.Vec1D::new);
+        Vec2D.Vec1D line = matrix.get(2, new Vec2D.Vec1D());
         Assertions.assertEquals(3, line.size());
         Assertions.assertEquals(9, line.get(2));
 
-        Array<ArrMap> vector = root.getVector();
+        ObjectArray<ArrMap> vector = root.getVector();
         Assertions.assertEquals(2, vector.size());
-        ArrMap map3 = vector.get(0, ArrMap::new);
-        ArrMap.Array val3 = map3.find("lv2", ArrMap.Array::new);
-        Assertions.assertNotNull(val3);
+        ArrMap map3 = vector.get(0, new ArrMap());
+        idx =  map3.find("lv2");
+        Assertions.assertTrue(idx >= 0);
+        ArrMap.Array val3 = map3.getValue(idx, new ArrMap.Array());
         Assertions.assertEquals(2, val3.size());
         Assertions.assertEquals(21, val3.get(0));
         Assertions.assertEquals(22, val3.get(1));
 
         ArrMap map4 = root.getArrays();
-        ArrMap.Array val4 = map4.find("lv5", ArrMap.Array::new);
+        idx =  map4.find("lv5");
+        Assertions.assertTrue(idx >= 0);
+        ArrMap.Array val4 = map4.getValue(idx, new ArrMap.Array());
         Assertions.assertEquals(2, val4.size());
         Assertions.assertEquals(51, val4.get(0));
         Assertions.assertEquals(52, val4.get(1));

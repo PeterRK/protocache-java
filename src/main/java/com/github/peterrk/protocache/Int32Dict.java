@@ -9,7 +9,7 @@ public abstract class Int32Dict extends DictType {
         init(data, offset, 1, word);
     }
 
-    public int key(int idx) {
+    public int getKey(int idx) {
         return Data.getInt(index.data, keyFieldOffset(idx));
     }
 
@@ -19,10 +19,10 @@ public abstract class Int32Dict extends DictType {
         }
         Data.putInt(tmp, 0, key);
         int idx = index.locate(tmp);
-        if (idx >= index.getSize() || key != this.key(idx)) {
+        if (idx >= index.getSize() || key != this.getKey(idx)) {
             return -1;
         }
-        return valueFieldOffset(idx);
+        return idx;
     }
 
     public static class BoolValue extends Int32Dict {
@@ -30,7 +30,7 @@ public abstract class Int32Dict extends DictType {
         public void init(byte[] data, int offset) {
             init(data, offset, 1);
         }
-        public boolean value(int idx) {
+        public boolean getValue(int idx) {
             return index.data[valueFieldOffset(idx)] != 0;
         }
     }
@@ -40,7 +40,7 @@ public abstract class Int32Dict extends DictType {
         public void init(byte[] data, int offset) {
             init(data, offset, 1);
         }
-        public int value(int idx) {
+        public int getValue(int idx) {
             return Data.getInt(index.data, valueFieldOffset(idx));
         }
     }
@@ -50,7 +50,7 @@ public abstract class Int32Dict extends DictType {
         public void init(byte[] data, int offset) {
             init(data, offset, 2);
         }
-        public long value(int idx) {
+        public long getValue(int idx) {
             return Data.getLong(index.data, valueFieldOffset(idx));
         }
     }
@@ -60,7 +60,7 @@ public abstract class Int32Dict extends DictType {
         public void init(byte[] data, int offset) {
             init(data, offset, 1);
         }
-        public float value(int idx) {
+        public float getValue(int idx) {
             return Data.getFloat(index.data, valueFieldOffset(idx));
         }
     }
@@ -70,7 +70,7 @@ public abstract class Int32Dict extends DictType {
         public void init(byte[] data, int offset) {
             init(data, offset, 2);
         }
-        public double value(int idx) {
+        public double getValue(int idx) {
             return Data.getDouble(index.data, valueFieldOffset(idx));
         }
     }
@@ -81,7 +81,7 @@ public abstract class Int32Dict extends DictType {
             init(data, offset, 0);
         }
 
-        public String value(int idx) {
+        public String getValue(int idx) {
             return Bytes.extractString(index.data, Unit.jump(index.data, valueFieldOffset(idx)));
         }
     }
@@ -92,7 +92,7 @@ public abstract class Int32Dict extends DictType {
             init(data, offset, 0);
         }
 
-        public byte[] value(int idx) {
+        public byte[] getValue(int idx) {
             return Bytes.extractBytes(index.data, Unit.jump(index.data, valueFieldOffset(idx)));
         }
     }
@@ -103,11 +103,7 @@ public abstract class Int32Dict extends DictType {
             init(data, offset, 0);
         }
 
-        public V value(int idx, Supplier<V> supplier) {
-            return Unit.NewByField(index.data, valueFieldOffset(idx), supplier);
-        }
-
-        public V fastGetValue(int idx, V unit) {
+        public V getValue(int idx, V unit) {
             unit.initByField(index.data, valueFieldOffset(idx));
             return unit;
         }

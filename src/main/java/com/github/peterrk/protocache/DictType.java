@@ -18,8 +18,8 @@ abstract class DictType extends Unit {
         if (offset < 0) {
             index = emptyIndex;
             bodyOffset = 4;
-            keyWidth = keyWord;
-            valueWidth = valueWord;
+            keyWidth = keyWord * 4;
+            valueWidth = valueWord * 4;
             return;
         }
         index = new PerfectHash(data, offset);
@@ -42,6 +42,6 @@ abstract class DictType extends Unit {
     }
 
     protected int valueFieldOffset(int idx) {
-        return bodyOffset + idx * (keyWidth + valueWidth) + 4;
+        return keyFieldOffset(idx) + keyWidth;
     }
 }

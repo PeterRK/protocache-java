@@ -1,5 +1,7 @@
 package com.github.peterrk.protocache;
 
+import com.github.peterrk.protocache.pc.ArrMap;
+import com.github.peterrk.protocache.pc.Small;
 import com.google.gson.Gson;
 import org.apache.fury.Fury;
 import org.apache.fury.config.Language;
@@ -320,7 +322,6 @@ public class AccessBenchmark {
 
     @State(Scope.Thread)
     public static class ProtoCacheState {
-        private final Int32 tmpI32 = new Int32();
         private final com.github.peterrk.protocache.pc.Small tmpSmall = new com.github.peterrk.protocache.pc.Small();
         private final com.github.peterrk.protocache.pc.ArrMap tmpArrMap = new com.github.peterrk.protocache.pc.ArrMap();
         private final com.github.peterrk.protocache.pc.ArrMap.Array tmpArrMapArray = new com.github.peterrk.protocache.pc.ArrMap.Array();
@@ -359,7 +360,7 @@ public class AccessBenchmark {
             for (int i = 0; i < u64v.size(); i++) {
                 junk.consume(u64v.get(i));
             }
-            StrArray strv = root.getStrv();
+            StringArray strv = root.getStrv();
             for (int i = 0; i < strv.size(); i++) {
                 junk.consume(strv.get(i));
             }
@@ -379,9 +380,9 @@ public class AccessBenchmark {
             for (int i = 0; i < flags.size(); i++) {
                 junk.consume(flags.get(i));
             }
-            Array<com.github.peterrk.protocache.pc.Small> objv = root.getObjectv();
+            ObjectArray<Small> objv = root.getObjectv();
             for (int i = 0; i < objv.size(); i++) {
-                traverse(objv.fastGet(i, tmpSmall));
+                traverse(objv.get(i, tmpSmall));
             }
 
             junk.consume(root.getTU32());
@@ -391,23 +392,23 @@ public class AccessBenchmark {
             junk.consume(root.getTI64());
             junk.consume(root.getTS64());
 
-            StrDict<Int32> map1 = root.getIndex();
+            StringDict.Int32Value map1 = root.getIndex();
             for (int i = 0; i < map1.size(); i++) {
-                junk.consume(map1.key(i));
-                junk.consume(map1.fastGetValue(i, tmpI32).get());
+                junk.consume(map1.getKey(i));
+                junk.consume(map1.getValue(i));
             }
 
-            Int32Dict<com.github.peterrk.protocache.pc.Small> map2 = root.getObjects();
+            Int32Dict.ObjectValue<com.github.peterrk.protocache.pc.Small> map2 = root.getObjects();
             for (int i = 0; i < map2.size(); i++) {
-                junk.consume(map2.key(i));
-                traverse(map2.fastGetValue(i, tmpSmall));
+                junk.consume(map2.getKey(i));
+                traverse(map2.getValue(i, tmpSmall));
             }
 
             traverse(root.getMatrix());
 
-            Array<com.github.peterrk.protocache.pc.ArrMap> vec = root.getVector();
+            ObjectArray<com.github.peterrk.protocache.pc.ArrMap> vec = root.getVector();
             for (int i = 0; i < vec.size(); i++) {
-                traverse(vec.fastGet(i, tmpArrMap));
+                traverse(vec.get(i, tmpArrMap));
             }
             traverse(root.getArrays());
         }
@@ -420,8 +421,8 @@ public class AccessBenchmark {
 
         void traverse(com.github.peterrk.protocache.pc.ArrMap map) {
             for (int i = 0; i < map.size(); i++) {
-                junk.consume(map.key(i));
-                map.fastGetValue(i, tmpArrMapArray);
+                junk.consume(map.getKey(i));
+                map.getValue(i, tmpArrMapArray);
                 for (int j = 0; j < tmpArrMapArray.size(); j++) {
                     junk.consume(tmpArrMapArray.get(j));
                 }
@@ -430,7 +431,7 @@ public class AccessBenchmark {
 
         void traverse(com.github.peterrk.protocache.pc.Vec2D vec) {
             for (int i = 0; i < vec.size(); i++) {
-                vec.fastGet(i, tmpVec2DVec1D);
+                vec.get(i, tmpVec2DVec1D);
                 for (int j = 0; j < tmpVec2DVec1D.size(); j++) {
                     junk.consume(tmpVec2DVec1D.get(j));
                 }

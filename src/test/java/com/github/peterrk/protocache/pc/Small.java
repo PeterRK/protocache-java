@@ -10,12 +10,12 @@ public final class Small extends com.github.peterrk.protocache.Message {
 	public Small(byte[] data) { this(data, 0); }
 	public Small(byte[] data, int offset) { super(data, offset); }
 
-	public int getI32() { return getInt32(FIELD_i32); }
-	public boolean getFlag() { return getBool(FIELD_flag); }
+	public int getI32() { return fetchInt32(FIELD_i32); }
+	public boolean getFlag() { return fetchBool(FIELD_flag); }
 	private String _str = null;
 	public String getStr() {
 		if (_str == null) {
-			_str = getStr(FIELD_str);
+			_str = fetchString(FIELD_str);
 		}
 		return _str;
 	}

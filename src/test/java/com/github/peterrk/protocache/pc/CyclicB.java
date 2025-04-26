@@ -9,11 +9,11 @@ public final class CyclicB extends com.github.peterrk.protocache.Message {
 	public CyclicB(byte[] data) { this(data, 0); }
 	public CyclicB(byte[] data, int offset) { super(data, offset); }
 
-	public int getValue() { return getInt32(FIELD_value); }
+	public int getValue() { return fetchInt32(FIELD_value); }
 	private com.github.peterrk.protocache.pc.CyclicA _cyclic = null;
 	public com.github.peterrk.protocache.pc.CyclicA getCyclic() {
 		if (_cyclic == null) {
-			_cyclic = getField(FIELD_cyclic, com.github.peterrk.protocache.pc.CyclicA::new);
+			_cyclic = fetchObject(FIELD_cyclic, new com.github.peterrk.protocache.pc.CyclicA());
 		}
 		return _cyclic;
 	}

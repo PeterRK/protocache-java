@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 public class Message extends Unit {
     private final static byte[] empty = new byte[4];
+    private final static byte[] emptyBytes = new byte[0];
 
     static {
         Data.putInt(empty, 0, 0);
@@ -50,7 +51,7 @@ public class Message extends Unit {
         }
     }
 
-    private int getFieldOffset(int id) {
+    private int calcFieldOffset(int id) {
         int section = (int) data[offset] & 0xff;
         int off = 1 + section * 2;
         if (id < 12) {
@@ -88,88 +89,92 @@ public class Message extends Unit {
         return offset + off * 4;
     }
 
-    public boolean getBool(int id) {
-        int fieldOffset = getFieldOffset(id);
+    public boolean fetchBool(int id) {
+        int fieldOffset = calcFieldOffset(id);
         if (fieldOffset < 0) {
             return false;
         }
         return data[fieldOffset] != 0;
     }
 
-    public int getInt32(int id) {
-        int fieldOffset = getFieldOffset(id);
+    public int fetchInt32(int id) {
+        int fieldOffset = calcFieldOffset(id);
         if (fieldOffset < 0) {
             return 0;
         }
         return Data.getInt(data, fieldOffset);
     }
 
-    public long getInt64(int id) {
-        int fieldOffset = getFieldOffset(id);
+    public long fetchInt64(int id) {
+        int fieldOffset = calcFieldOffset(id);
         if (fieldOffset < 0) {
             return 0;
         }
         return Data.getLong(data, fieldOffset);
     }
 
-    public float getFloat32(int id) {
-        int fieldOffset = getFieldOffset(id);
+    public float fetchFloat32(int id) {
+        int fieldOffset = calcFieldOffset(id);
         if (fieldOffset < 0) {
             return 0;
         }
         return Data.getFloat(data, fieldOffset);
     }
 
-    public double getFloat64(int id) {
-        int fieldOffset = getFieldOffset(id);
+    public double fetchFloat64(int id) {
+        int fieldOffset = calcFieldOffset(id);
         if (fieldOffset < 0) {
             return 0;
         }
         return Data.getDouble(data, fieldOffset);
     }
 
-    public byte[] getBytes(int id) {
-        return Bytes.extractBytes(data, Unit.jump(data, getFieldOffset(id)));
+    public byte[] fetchBytes(int id) {
+        int fieldOffset = calcFieldOffset(id);
+        if (fieldOffset < 0) {
+            return emptyBytes;
+        }
+        return Bytes.extractBytes(data, Unit.jump(data, fieldOffset));
     }
 
-    public String getStr(int id) {
-        return Bytes.extractString(data, Unit.jump(data, getFieldOffset(id)));
+    public String fetchString(int id) {
+        int fieldOffset = calcFieldOffset(id);
+        if (fieldOffset < 0) {
+            return "";
+        }
+        return Bytes.extractString(data, Unit.jump(data, fieldOffset));
     }
 
-    public <T extends Unit> T getField(int id, Supplier<T> supplier) {
-        return Unit.NewByField(data, getFieldOffset(id), supplier);
-    }
-
-    public <T extends Unit> T fastGetField(int id, T unit) {
-        unit.initByField(data, getFieldOffset(id));
+    public <T extends Unit> T fetchObject(int id, T unit) {
+        unit.initByField(data, calcFieldOffset(id));
         return unit;
     }
 
-    public BoolArray getBoolArray(int id) {
-        return Unit.NewByField(data, getFieldOffset(id), BoolArray::new);
+    public BoolArray fetchBoolArray(int id) {
+        return Unit.NewByField(data, calcFieldOffset(id), BoolArray::new);
     }
 
-    public Int32Array getInt32Array(int id) {
-        return Unit.NewByField(data, getFieldOffset(id), Int32Array::new);
+    public Int32Array fetchInt32Array(int id) {
+        return Unit.NewByField(data, calcFieldOffset(id), Int32Array::new);
     }
 
-    public Int64Array getInt64Array(int id) {
-        return Unit.NewByField(data, getFieldOffset(id), Int64Array::new);
+    public Int64Array fetchInt64Array(int id) {
+        return Unit.NewByField(data, calcFieldOffset(id), Int64Array::new);
     }
 
-    public Float32Array getFloat32Array(int id) {
-        return Unit.NewByField(data, getFieldOffset(id), Float32Array::new);
+    public Float32Array fetchFloat32Array(int id) {
+        return Unit.NewByField(data, calcFieldOffset(id), Float32Array::new);
     }
 
-    public Float64Array getFloat64Array(int id) {
-        return Unit.NewByField(data, getFieldOffset(id), Float64Array::new);
+    public Float64Array fetchFloat64Array(int id) {
+        return Unit.NewByField(data, calcFieldOffset(id), Float64Array::new);
     }
 
-    public StringArray getStrArray(int id) {
-        return Unit.NewByField(data, getFieldOffset(id), StringArray::new);
+    public StringArray fetchStringArray(int id) {
+        return Unit.NewByField(data, calcFieldOffset(id), StringArray::new);
     }
 
-    public BytesArray getBytesArray(int id) {
-        return Unit.NewByField(data, getFieldOffset(id), BytesArray::new);
+    public BytesArray fetchBytesArray(int id) {
+        return Unit.NewByField(data, calcFieldOffset(id), BytesArray::new);
     }
 }
