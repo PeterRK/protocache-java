@@ -130,7 +130,7 @@ public class Utils {
                 throw new IllegalArgumentException("broken data");
             }
         }
-        if (context.out.length != size) {
+        if (context.off != size) {
             throw new IllegalArgumentException("size mismatch");
         }
         return context.out;
