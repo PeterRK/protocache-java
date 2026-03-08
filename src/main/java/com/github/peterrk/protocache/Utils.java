@@ -110,20 +110,8 @@ public class Utils {
         }
     }
 
-    public static byte[] decompress(byte[] src) {
-        if (src.length == 0) {
-            return new byte[0];
-        }
-        int k = 0;
-        int size = 0;
-        for (int sft = 0; sft < 32; sft += 7) {
-            byte b = src[k++];
-            size |= ((int) b & 0x7f) << sft;
-            if ((b & 0x80) == 0) {
-                break;
-            }
-        }
-        DecompressContext context = new DecompressContext(src, k, size);
+    private static byte[] decompress(byte[] src, int off, int size) {
+        DecompressContext context = new DecompressContext(src, off, size);
         while (context.k < src.length) {
             int mark = src[context.k++] & 0xff;
             if (!context.unpack(mark&0xf) || !context.unpack(mark>>4)) {
@@ -134,5 +122,21 @@ public class Utils {
             throw new IllegalArgumentException("size mismatch");
         }
         return context.out;
+    }
+
+    public static byte[] decompress(byte[] src) {
+        if (src.length == 0) {
+            return new byte[0];
+        }
+        int k = 0;
+        int size = 0;
+        for (int sft = 0; sft < 32; sft += 7) {
+            byte b = src[k++];
+            size |= ((int) b & 0x7f) << sft;
+            if ((b & 0x80) == 0) {
+                return decompress(src, k, size);
+            }
+        }
+        throw new IllegalArgumentException("broken data");
     }
 }
