@@ -4,135 +4,61 @@
 
 package com.github.peterrk.protocache;
 
-import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 
 final class Data {
 
-    private static final sun.misc.Unsafe unsafe;
-    private static final long bytesBaseOffset;
-
-    static {
-        sun.misc.Unsafe handle = null;
-        int offset = 0;
-        try {
-            java.lang.reflect.Field field = sun.misc.Unsafe.class.getDeclaredField("theUnsafe");
-            field.setAccessible(true);
-            handle = (sun.misc.Unsafe) field.get(null);
-            offset = handle.arrayBaseOffset(byte[].class);
-            byte[] tmp = new byte[]{(byte) 0xff, 0};
-            if (handle.getShort(tmp, offset) != 0xff) {
-                handle = null;
-            }
-        } catch (Exception ignored) {
-        }
-        unsafe = handle;
-        bytesBaseOffset = offset;
-    }
+    private static final VarHandle SHORT_VIEW =
+            MethodHandles.byteArrayViewVarHandle(short[].class, ByteOrder.LITTLE_ENDIAN);
+    private static final VarHandle INT_VIEW =
+            MethodHandles.byteArrayViewVarHandle(int[].class, ByteOrder.LITTLE_ENDIAN);
+    private static final VarHandle LONG_VIEW =
+            MethodHandles.byteArrayViewVarHandle(long[].class, ByteOrder.LITTLE_ENDIAN);
+    private static final VarHandle FLOAT_VIEW =
+            MethodHandles.byteArrayViewVarHandle(float[].class, ByteOrder.LITTLE_ENDIAN);
+    private static final VarHandle DOUBLE_VIEW =
+            MethodHandles.byteArrayViewVarHandle(double[].class, ByteOrder.LITTLE_ENDIAN);
 
     public static short getShort(byte[] data, int offset) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 2) {
-                throw new IndexOutOfBoundsException();
-            }
-            return unsafe.getShort(data, bytesBaseOffset + offset);
-        }
-        return ByteBuffer.wrap(data, offset, 2).order(ByteOrder.LITTLE_ENDIAN).getShort();
+        return (short) SHORT_VIEW.get(data, offset);
     }
 
     public static int getInt(byte[] data, int offset) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 4) {
-                throw new IndexOutOfBoundsException();
-            }
-            return unsafe.getInt(data, bytesBaseOffset + offset);
-        }
-        return ByteBuffer.wrap(data, offset, 4).order(ByteOrder.LITTLE_ENDIAN).getInt();
+        return (int) INT_VIEW.get(data, offset);
     }
 
     public static long getLong(byte[] data, int offset) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 8) {
-                throw new IndexOutOfBoundsException();
-            }
-            return unsafe.getLong(data, bytesBaseOffset + offset);
-        }
-        return ByteBuffer.wrap(data, offset, 8).order(ByteOrder.LITTLE_ENDIAN).getLong();
+        return (long) LONG_VIEW.get(data, offset);
     }
 
     public static float getFloat(byte[] data, int offset) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 4) {
-                throw new IndexOutOfBoundsException();
-            }
-            return unsafe.getFloat(data, bytesBaseOffset + offset);
-        }
-        return ByteBuffer.wrap(data, offset, 4).order(ByteOrder.LITTLE_ENDIAN).getFloat();
+        return (float) FLOAT_VIEW.get(data, offset);
     }
 
     public static double getDouble(byte[] data, int offset) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 8) {
-                throw new IndexOutOfBoundsException();
-            }
-            return unsafe.getDouble(data, bytesBaseOffset + offset);
-        }
-        return ByteBuffer.wrap(data, offset, 8).order(ByteOrder.LITTLE_ENDIAN).getDouble();
+        return (double) DOUBLE_VIEW.get(data, offset);
     }
 
     public static void putShort(byte[] data, int offset, short value) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 2) {
-                throw new IndexOutOfBoundsException();
-            }
-            unsafe.putShort(data, bytesBaseOffset + offset, value);
-            return;
-        }
-        ByteBuffer.wrap(data, offset, 2).order(ByteOrder.LITTLE_ENDIAN).putShort(value);
+        SHORT_VIEW.set(data, offset, value);
     }
 
     public static void putInt(byte[] data, int offset, int value) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 4) {
-                throw new IndexOutOfBoundsException();
-            }
-            unsafe.putInt(data, bytesBaseOffset + offset, value);
-            return;
-        }
-        ByteBuffer.wrap(data, offset, 4).order(ByteOrder.LITTLE_ENDIAN).putInt(value);
+        INT_VIEW.set(data, offset, value);
     }
 
     public static void putLong(byte[] data, int offset, long value) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 8) {
-                throw new IndexOutOfBoundsException();
-            }
-            unsafe.putLong(data, bytesBaseOffset + offset, value);
-            return;
-        }
-        ByteBuffer.wrap(data, offset, 8).order(ByteOrder.LITTLE_ENDIAN).putLong(value);
+        LONG_VIEW.set(data, offset, value);
     }
 
     public static void putFloat(byte[] data, int offset, float value) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 4) {
-                throw new IndexOutOfBoundsException();
-            }
-            unsafe.putFloat(data, bytesBaseOffset + offset, value);
-            return;
-        }
-        ByteBuffer.wrap(data, offset, 4).order(ByteOrder.LITTLE_ENDIAN).putFloat(value);
+        FLOAT_VIEW.set(data, offset, value);
     }
 
     public static void putDouble(byte[] data, int offset, double value) {
-        if (unsafe != null) {
-            if (offset < 0 || offset > data.length - 8) {
-                throw new IndexOutOfBoundsException();
-            }
-            unsafe.putDouble(data, bytesBaseOffset + offset, value);
-            return;
-        }
-        ByteBuffer.wrap(data, offset, 8).order(ByteOrder.LITTLE_ENDIAN).putDouble(value);
+        DOUBLE_VIEW.set(data, offset, value);
     }
 
     public static final class View {
