@@ -58,9 +58,9 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.apache.fury</groupId>
-            <artifactId>fury-core</artifactId>
-            <version>0.10.0</version>
+            <groupId>org.apache.fory</groupId>
+            <artifactId>fory-core</artifactId>
+            <version>0.14.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>

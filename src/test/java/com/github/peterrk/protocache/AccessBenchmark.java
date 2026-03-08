@@ -3,8 +3,8 @@ package com.github.peterrk.protocache;
 import com.github.peterrk.protocache.pc.ArrMap;
 import com.github.peterrk.protocache.pc.Small;
 import com.google.gson.Gson;
-import org.apache.fury.Fury;
-import org.apache.fury.config.Language;
+import org.apache.fory.Fory;
+import org.apache.fory.config.Language;
 import org.openjdk.jmh.annotations.*;
 
 import java.io.IOException;
@@ -49,14 +49,14 @@ public class AccessBenchmark {
     }
 
     @Benchmark
-    public void traverseFury(FuryState ctx) {
-        com.github.peterrk.protocache.fr.Main root = (com.github.peterrk.protocache.fr.Main) ctx.fury.deserialize(ctx.raw);
+    public void traverseFory(ForyState ctx) {
+        com.github.peterrk.protocache.fr.Main root = (com.github.peterrk.protocache.fr.Main) ctx.fory.deserialize(ctx.raw);
         ctx.traverse(root);
     }
 
     @Benchmark
-    public void traverseFuryJava(JavaFuryState ctx) {
-        com.github.peterrk.protocache.fr.Main root = (com.github.peterrk.protocache.fr.Main) ctx.fury.deserialize(ctx.raw);
+    public void traverseForyJava(JavaForyState ctx) {
+        com.github.peterrk.protocache.fr.Main root = (com.github.peterrk.protocache.fr.Main) ctx.fory.deserialize(ctx.raw);
         ctx.traverse(root);
     }
 
@@ -101,58 +101,58 @@ public class AccessBenchmark {
     }
 
     @State(Scope.Thread)
-    public static class FuryState extends FuryStateBase {
-        Fury fury;
+    public static class ForyState extends ForyStateBase {
+        Fory fory;
 
         @Setup(value = Level.Trial)
         public void setup() throws IOException {
-            byte[] tmp = Files.readAllBytes(Paths.get("test-fury.json"));
+            byte[] tmp = Files.readAllBytes(Paths.get("test-fory.json"));
             Gson gson = new Gson();
             com.github.peterrk.protocache.fr.Main root = gson.fromJson(new String(tmp, StandardCharsets.UTF_8), com.github.peterrk.protocache.fr.Main.class);
             wash(root);
 
-            fury = Fury.builder().withLanguage(Language.XLANG).build();
-            fury.register(com.github.peterrk.protocache.fr.Small.class, "test.Small");
-            fury.register(com.github.peterrk.protocache.fr.Main.class, "test.Main");
-            fury.register(java.util.Map.class, "java.util.Map");
+            fory = Fory.builder().withLanguage(Language.XLANG).withCodegen(false).build();
+            fory.register(com.github.peterrk.protocache.fr.Small.class, "test.Small");
+            fory.register(com.github.peterrk.protocache.fr.Main.class, "test.Main");
+            //fory.register(java.util.Map.class, "java.util.Map");
 
-            raw = fury.serialize(root);
-            //fury.deserialize(raw);
+            raw = fory.serialize(root);
+            //fory.deserialize(raw);
 
             junk = new Junk();
         }
     }
 
     @State(Scope.Thread)
-    public static class JavaFuryState extends FuryStateBase {
-        Fury fury;
+    public static class JavaForyState extends ForyStateBase {
+        Fory fory;
 
         @Setup(value = Level.Trial)
         public void setup() throws IOException {
-            byte[] tmp = Files.readAllBytes(Paths.get("test-fury.json"));
+            byte[] tmp = Files.readAllBytes(Paths.get("test-fory.json"));
             Gson gson = new Gson();
             com.github.peterrk.protocache.fr.Main root = gson.fromJson(new String(tmp, StandardCharsets.UTF_8), com.github.peterrk.protocache.fr.Main.class);
             wash(root);
 
-            fury = Fury.builder().withLanguage(Language.JAVA).build();
-            fury.register(com.github.peterrk.protocache.fr.Small.class);
-            fury.register(com.github.peterrk.protocache.fr.Main.class);
-            fury.register(java.util.Map.class);
+            fory = Fory.builder().withLanguage(Language.JAVA).build();
+            fory.register(com.github.peterrk.protocache.fr.Small.class);
+            fory.register(com.github.peterrk.protocache.fr.Main.class);
+            fory.register(java.util.Map.class);
 
-            raw = fury.serialize(root);
-            //fury.deserialize(raw);
+            raw = fory.serialize(root);
+            //fory.deserialize(raw);
 
             junk = new Junk();
         }
     }
 
     @State(Scope.Thread)
-    public static class DummyState extends FuryStateBase {
+    public static class DummyState extends ForyStateBase {
         com.github.peterrk.protocache.fr.Main root;
 
         @Setup(value = Level.Trial)
         public void setup() throws IOException {
-            byte[] tmp = Files.readAllBytes(Paths.get("test-fury.json"));
+            byte[] tmp = Files.readAllBytes(Paths.get("test-fory.json"));
             Gson gson = new Gson();
             root = gson.fromJson(new String(tmp, StandardCharsets.UTF_8), com.github.peterrk.protocache.fr.Main.class);
             junk = new Junk();
@@ -160,7 +160,7 @@ public class AccessBenchmark {
     }
 
     @State(Scope.Thread)
-    public static class FuryStateBase {
+    public static class ForyStateBase {
         Junk junk;
         byte[] raw;
 
@@ -177,6 +177,16 @@ public class AccessBenchmark {
                 root.vector[i] = new HashMap<>(root.vector[i]);
             }
             root.arrays = new HashMap<>(root.arrays);
+
+            if (root.i32v == null) root.i32v = new int[0];
+            if (root.u64v == null) root.u64v = new long[0];
+            if (root.strv == null) root.strv = new String[0];
+            if (root.datav == null) root.datav = new byte[0][];
+            if (root.f32v == null) root.f32v = new float[0];
+            if (root.f64v == null) root.f64v = new double[0];
+            if (root.flags == null) root.flags = new boolean[0];
+            if (root.objectv == null) root.objectv = new com.github.peterrk.protocache.fr.Small[0];
+            if (root.matrix == null) root.matrix = new float[0][];
         }
 
         void traverse(com.github.peterrk.protocache.fr.Main root) {
