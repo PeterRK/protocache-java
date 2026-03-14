@@ -8,8 +8,6 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.Descriptors;
 import com.google.protobuf.Message;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -194,10 +192,9 @@ public class ProtoCache {
         return out;
     }
 
-    private static <T> byte[] serializeScalar(T value, int width, IByteBufferFiller<T> filler) {
+    private static <T> byte[] serializeScalar(T value, int width, IDataFiller<T> filler) {
         byte[] out = new byte[width * 4];
-        ByteBuffer buffer = ByteBuffer.wrap(out).order(ByteOrder.LITTLE_ENDIAN);
-        filler.fill(buffer, value);
+        filler.fill(out, 0, value);
         return out;
     }
 
@@ -210,40 +207,36 @@ public class ProtoCache {
             case STRING:
                 return serialize((String) value);
             case DOUBLE:
-                return serializeScalar(value, 2, (buffer, v) -> {
-                    buffer.putDouble((Double) v);
+                return serializeScalar(value, 2, (data, offset, v) -> {
+                    Data.putDouble(data, offset, (Double) v);
                 });
             case FLOAT:
-                return serializeScalar(value, 1, (buffer, v) -> {
-                    buffer.putFloat((Float) v);
+                return serializeScalar(value, 1, (data, offset, v) -> {
+                    Data.putFloat(data, offset, (Float) v);
                 });
             case FIXED64:
             case UINT64:
             case SFIXED64:
             case SINT64:
             case INT64:
-                return serializeScalar(value, 2, (buffer, v) -> {
-                    buffer.putLong((Long) v);
+                return serializeScalar(value, 2, (data, offset, v) -> {
+                    Data.putLong(data, offset, (Long) v);
                 });
             case FIXED32:
             case UINT32:
             case SFIXED32:
             case SINT32:
             case INT32:
-                return serializeScalar(value, 1, (buffer, v) -> {
-                    buffer.putInt((Integer) v);
+                return serializeScalar(value, 1, (data, offset, v) -> {
+                    Data.putInt(data, offset, (Integer) v);
                 });
             case BOOL:
-                return serializeScalar(value, 1, (buffer, v) -> {
-                    if ((Boolean) v) {
-                        buffer.putInt(1);
-                    } else {
-                        buffer.putInt(0);
-                    }
+                return serializeScalar(value, 1, (data, offset, v) -> {
+                    Data.putInt(data, offset, (Boolean) v ? 1 : 0);
                 });
             case ENUM:
-                return serializeScalar(value, 1, (buffer, v) -> {
-                    buffer.putInt(((Descriptors.EnumValueDescriptor) v).getNumber());
+                return serializeScalar(value, 1, (data, offset, v) -> {
+                    Data.putInt(data, offset, ((Descriptors.EnumValueDescriptor) v).getNumber());
                 });
         }
         throw new IllegalArgumentException(String.format("unsupported field: %s", field.getFullName()));
@@ -286,28 +279,28 @@ public class ProtoCache {
             case STRING:
                 return serializeObjectList(message, field, (object) -> serialize((String) object));
             case DOUBLE:
-                return serializeScalarList(message, field, 2, (buffer, value) -> {
-                    buffer.putDouble((Double) value);
+                return serializeScalarList(message, field, 2, (data, offset, value) -> {
+                    Data.putDouble(data, offset, (Double) value);
                 });
             case FLOAT:
-                return serializeScalarList(message, field, 1, (buffer, value) -> {
-                    buffer.putFloat((Float) value);
+                return serializeScalarList(message, field, 1, (data, offset, value) -> {
+                    Data.putFloat(data, offset, (Float) value);
                 });
             case FIXED64:
             case UINT64:
             case SFIXED64:
             case SINT64:
             case INT64:
-                return serializeScalarList(message, field, 2, (buffer, value) -> {
-                    buffer.putLong((Long) value);
+                return serializeScalarList(message, field, 2, (data, offset, value) -> {
+                    Data.putLong(data, offset, (Long) value);
                 });
             case FIXED32:
             case UINT32:
             case SFIXED32:
             case SINT32:
             case INT32:
-                return serializeScalarList(message, field, 1, (buffer, value) -> {
-                    buffer.putInt((Integer) value);
+                return serializeScalarList(message, field, 1, (data, offset, value) -> {
+                    Data.putInt(data, offset, (Integer) value);
                 });
             case BOOL:
                 int cnt = message.getRepeatedFieldCount(field);
@@ -321,8 +314,8 @@ public class ProtoCache {
                 }
                 return serialize(tmp);
             case ENUM:
-                return serializeScalarList(message, field, 1, (buffer, value) -> {
-                    buffer.putInt(((Descriptors.EnumValueDescriptor) value).getNumber());
+                return serializeScalarList(message, field, 1, (data, offset, value) -> {
+                    Data.putInt(data, offset, ((Descriptors.EnumValueDescriptor) value).getNumber());
                 });
             default:
                 throw new IllegalArgumentException(String.format("unsupported field: %s", field.getFullName()));
@@ -396,17 +389,18 @@ public class ProtoCache {
     }
 
     private static byte[] serializeScalarList(Message message, Descriptors.FieldDescriptor field,
-                                              int width, IByteBufferFiller<Object> filler) {
+                                              int width, IDataFiller<Object> filler) {
         int size = message.getRepeatedFieldCount(field);
         if (size >= (1 << 28)) {
             throw new IllegalArgumentException("array size overflow");
         }
         int mark = (size << 2) | width;
         byte[] out = new byte[4 + size * width * 4];
-        ByteBuffer buffer = ByteBuffer.wrap(out).order(ByteOrder.LITTLE_ENDIAN);
-        buffer.putInt(mark);
+        Data.putInt(out, 0, mark);
+        int off = 4;
         for (int i = 0; i < size; i++) {
-            filler.fill(buffer, message.getRepeatedField(field, i));
+            filler.fill(out, off, message.getRepeatedField(field, i));
+            off += width * 4;
         }
         return out;
     }
@@ -513,8 +507,8 @@ public class ProtoCache {
         return out;
     }
 
-    private interface IByteBufferFiller<T> {
-        void fill(ByteBuffer buffer, T object);
+    private interface IDataFiller<T> {
+        void fill(byte[] data, int offset, T object);
     }
 
     private interface ISerializer<T> {

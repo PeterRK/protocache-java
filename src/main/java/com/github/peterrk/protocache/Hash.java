@@ -4,9 +4,6 @@
 
 package com.github.peterrk.protocache;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-
 class Hash {
     private static long rot(long x, int k) {
         return (x << k) | (x >>> (64 - k));
@@ -21,56 +18,58 @@ class Hash {
         State s = new State(seed, seed, magic, magic);
 
         int len = data.length;
-        ByteBuffer buf = ByteBuffer.wrap(data).order(ByteOrder.LITTLE_ENDIAN);
-        while (buf.remaining() >= 32) {
-            s.c += buf.getLong();
-            s.d += buf.getLong();
+        int off = 0;
+        while (len - off >= 32) {
+            s.c += Data.getLong(data, off);
+            s.d += Data.getLong(data, off + 8);
             s.mix();
-            s.a += buf.getLong();
-            s.b += buf.getLong();
+            s.a += Data.getLong(data, off + 16);
+            s.b += Data.getLong(data, off + 24);
+            off += 32;
         }
-        if (buf.remaining() >= 16) {
-            s.c += buf.getLong();
-            s.d += buf.getLong();
+        if (len - off >= 16) {
+            s.c += Data.getLong(data, off);
+            s.d += Data.getLong(data, off + 8);
             s.mix();
+            off += 16;
         }
 
         s.d += ((long) len) << 56;
         switch (len & 0xf) {
             case 15:
-                s.d += ((long) buf.get(buf.position() + 14) & 0xff) << 48;
+                s.d += ((long) data[off + 14] & 0xff) << 48;
             case 14:
-                s.d += ((long) buf.get(buf.position() + 13) & 0xff) << 40;
+                s.d += ((long) data[off + 13] & 0xff) << 40;
             case 13:
-                s.d += ((long) buf.get(buf.position() + 12) & 0xff) << 32;
+                s.d += ((long) data[off + 12] & 0xff) << 32;
             case 12:
-                s.c += buf.getLong();
-                s.d += buf.getInt() & 0xffffffffL;
+                s.c += Data.getLong(data, off);
+                s.d += Data.getInt(data, off + 8) & 0xffffffffL;
                 break;
             case 11:
-                s.d += ((long) buf.get(buf.position() + 10) & 0xff) << 16;
+                s.d += ((long) data[off + 10] & 0xff) << 16;
             case 10:
-                s.d += ((long) buf.get(buf.position() + 9) & 0xff) << 8;
+                s.d += ((long) data[off + 9] & 0xff) << 8;
             case 9:
-                s.d += buf.get(buf.position() + 8) & 0xff;
+                s.d += data[off + 8] & 0xff;
             case 8:
-                s.c += buf.getLong();
+                s.c += Data.getLong(data, off);
                 break;
             case 7:
-                s.c += ((long) buf.get(buf.position() + 6) & 0xff) << 48;
+                s.c += ((long) data[off + 6] & 0xff) << 48;
             case 6:
-                s.c += ((long) buf.get(buf.position() + 5) & 0xff) << 40;
+                s.c += ((long) data[off + 5] & 0xff) << 40;
             case 5:
-                s.c += ((long) buf.get(buf.position() + 4) & 0xff) << 32;
+                s.c += ((long) data[off + 4] & 0xff) << 32;
             case 4:
-                s.c += buf.getInt() & 0xffffffffL;
+                s.c += Data.getInt(data, off) & 0xffffffffL;
                 break;
             case 3:
-                s.c += ((long) buf.get(buf.position() + 2) & 0xff) << 16;
+                s.c += ((long) data[off + 2] & 0xff) << 16;
             case 2:
-                s.c += ((long) buf.get(buf.position() + 1) & 0xff) << 8;
+                s.c += ((long) data[off + 1] & 0xff) << 8;
             case 1:
-                s.c += buf.get() & 0xff;
+                s.c += data[off] & 0xff;
                 break;
             case 0:
                 s.c += magic;
