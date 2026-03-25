@@ -22,18 +22,12 @@ public class Utils {
         int pick() {
             int cnt = 1;
             byte ch = src[k++];
-            if (ch == 0) {
-                while (k < src.length && cnt < 4 && src[k] == 0) {
+            if (ch == ((int)ch >> 1)) {
+                while (k < src.length && cnt < 4 && src[k] == ch) {
                     k++;
                     cnt++;
                 }
-                return 0x8 | (cnt - 1);
-            } else if (ch == (byte)0xff) {
-                while (k < src.length && cnt < 4 && src[k] == (byte)0xff) {
-                    k++;
-                    cnt++;
-                }
-                return 0xC | (cnt - 1);
+                return 0x8 | (ch & 0x4) | (cnt - 1);
             } else {
                 while (k < src.length && cnt < 7 && src[k] != 0 && src[k] != (byte)0xff) {
                     k++;
