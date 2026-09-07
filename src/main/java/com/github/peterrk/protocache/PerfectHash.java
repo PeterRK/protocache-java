@@ -118,19 +118,18 @@ public class PerfectHash {
         int[] free = new int[size];
         BitSet book = new BitSet(section*3);
 
-        Data.View bitmap = new Data.View(data, 8);
         int tableOffset = 8 + bmsz;
         Data.putInt(data, 0, size);
 
         Random rand = new Random();
-        for (int chance = (width == 1) ? 40 : 16; chance > 0; chance--) {
+        for (int chance = 40; chance > 0; chance--) {
             int seed = rand.nextInt();
             Data.putInt(data, 4, seed);
             graph.init(seed, src);
             if (!graph.tear(free, book)) {
                 continue;
             }
-            graph.mapping(free, book, data, bitmap.offset);
+            graph.mapping(free, book, data, 8);
             if (bmsz > 8) {
                 int cnt = 0;
                 switch (width) {
