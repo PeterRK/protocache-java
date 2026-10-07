@@ -15,13 +15,22 @@ public final class Bytes {
     static byte[] extractBytes(byte[] data, int offset) {
         int mark = 0;
         for (int sft = 0; sft < 32; sft += 7) {
+            if (offset < 0 || offset >= data.length) {
+                break;
+            }
             byte b = data[offset++];
+            if (sft == 28 && (b & 0xf0) != 0) {
+                break;
+            }
             mark |= ((int) b & 0x7f) << sft;
             if ((b & 0x80) == 0) {
                 if ((mark & 3) != 0) {
                     break;
                 }
                 int size = mark >>> 2;
+                if (size > data.length - offset) {
+                    break;
+                }
                 return Arrays.copyOfRange(data, offset, offset + size);
             }
         }
@@ -31,13 +40,22 @@ public final class Bytes {
     static String extractString(byte[] data, int offset) {
         int mark = 0;
         for (int sft = 0; sft < 32; sft += 7) {
+            if (offset < 0 || offset >= data.length) {
+                break;
+            }
             byte b = data[offset++];
+            if (sft == 28 && (b & 0xf0) != 0) {
+                break;
+            }
             mark |= ((int) b & 0x7f) << sft;
             if ((b & 0x80) == 0) {
                 if ((mark & 3) != 0) {
                     break;
                 }
                 int size = mark >>> 2;
+                if (size > data.length - offset) {
+                    break;
+                }
                 return new String(data, offset, size, StandardCharsets.UTF_8);
             }
         }
